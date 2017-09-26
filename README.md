@@ -1,2 +1,9 @@
 # straight-and-arrow
-The 2017 graduates' archery web app
+
+This is the 2017 graduates' archery web app
+
+# To Build Container
+`make init`
+
+# To Kill and Remove the Container
+`make tear-down`
