@@ -10,10 +10,12 @@ push-app:
 	docker push rohoolio/sanda_test:latest
 
 kill-app:
-	docker kill training
+	docker kill straightandarrow_web_1
+	docker kill straightandarrow_db_1
 
 remove-app:
-	docker rm training
+	docker rm straightandarrow_web_1
+	docker rm straightandarrow_db_1
 
 tear-down: kill-app remove-app
 

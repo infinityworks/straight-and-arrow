@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  web:
+    build: .
+    ports:
+     - "80:8888"
+    volumes:
+     - .:/sanda_test
+    links:
+     - db
+
+
