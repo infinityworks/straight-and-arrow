@@ -38,7 +38,11 @@ function connectToDB(){
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     if (connect_db == false){
-      res.write(dbError, USER_ID, USER_PW, HOST_DB);
+      res.write(dbError);
+      res.write(USER_ID);
+      res.write(USER_PW);
+      res.write(HOST_DB);
+
     	res.end(notConnected);
     }
     else{
