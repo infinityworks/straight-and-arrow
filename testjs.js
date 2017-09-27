@@ -9,13 +9,13 @@ var connection = mysql.createConnection({
   user     : 'root',
   password : 'example'
 });
-
-
+ var dbError;
 
 function connectToDB(){
 	if(connect_db == false){
 		connection.connect(function(err) {
   			if (err) {
+          dbError = err.message;
   				setTimeout(connectToDB, RETRY_TIME);
           return;
         }else{
@@ -28,8 +28,9 @@ function connectToDB(){
 
 
 http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.writeHead(200, {'Content-Type': 'text/html'});
     if (connect_db == false){
+      res.send(dbError);
     	res.end(notConnected);
     }
     else{
