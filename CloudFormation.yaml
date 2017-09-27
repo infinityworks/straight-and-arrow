@@ -46,6 +46,7 @@ Resources:
   ContainerInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
+      
       IamInstanceProfile: !Ref ECSIamInstanceProfile
       ImageId: !FindInMap 
         - AWSRegionArch2AMI
