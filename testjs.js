@@ -1,6 +1,6 @@
 var http = require('http');
-var connected = '<html><img src="https://ak1.picdn.net/shutterstock/videos/646681/thumb/6.jpg" alt="hit the bullseye"></html';
-var notConnected = '<html><img src="http://jewishjournal.com/images/bullseye.jpg" alt="missed the bullseye"></html';
+var connected = '<html><img src="https://ak1.picdn.net/shutterstock/videos/646681/thumb/6.jpg" alt="hit the bullseye"></html>';
+var notConnected = '<html><img src="http://jewishjournal.com/images/bullseye.jpg" alt="missed the bullseye"></html>';
 var connect_db = false;
 var RETRY_TIME = 1000;
 var mysql      = require('mysql');
