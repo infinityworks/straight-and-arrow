@@ -30,7 +30,7 @@ function connectToDB(){
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     if (connect_db == false){
-      res.send(dbError);
+      res.write(dbError);
     	res.end(notConnected);
     }
     else{
