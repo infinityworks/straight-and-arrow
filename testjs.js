@@ -4,19 +4,27 @@ var notConnected = '<html><img src="http://jewishjournal.com/images/bullseye.jpg
 var connect_db = false;
 var RETRY_TIME = 1000;
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'db',
-  user     : 'root',
-  password : 'example'
-});
- var dbError;
+
+var USER_ID = process.env.USER_ID
+var USER_PW = process.env.USER_PW
+var HOST_DB = process.env.HOST_DB
+var connection
+var dbError;
+
 
 function connectToDB(){
 	if(connect_db == false){
+    connection = mysql.createConnection({
+      host     : HOST_DB,
+      user     : USER_ID,
+      password : USER_PW
+    });
+    console.log('trying to connect')
 		connection.connect(function(err) {
   			if (err) {
           dbError = err.message;
   				setTimeout(connectToDB, RETRY_TIME);
+          console.log(`failed using id: ${USER_ID}, host: ${HOST_DB}, pw: ${USER_PW} : ${err.message}`);
           return;
         }else{
     			connect_db = true;
@@ -38,5 +46,6 @@ http.createServer(function (req, res) {
     }
     
 }).listen(8888);
+
 
 connectToDB();

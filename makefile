@@ -9,14 +9,14 @@ tag-app:
 push-app:
 	docker push rohoolio/sanda_test:latest
 
-kill-app:
-	docker kill straightandarrow_web_1
-	docker kill straightandarrow_db_1
+app-up:
+	docker-compose build
+	docker-compose up -d
 
-remove-app:
-	docker rm straightandarrow_web_1
-	docker rm straightandarrow_db_1
+app-down:
+	docker-compose down
 
-tear-down: kill-app remove-app
+seelog:
+	tail -f app.log
 
 init: build-app run-app
