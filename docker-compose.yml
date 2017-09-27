@@ -4,7 +4,7 @@ services:
     image: mariadb
     container_name: sqldb
     volumes: 
-     - ./testdata:/var/lib/mysql
+     - ./mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
 

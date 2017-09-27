@@ -20,7 +20,7 @@ seelog:
 	tail -f app.log
 
 testdata:
-	docker exec -t sqldb sh -c "mysql < /var/lib/mysql/useremail.sql -pexample"
+	docker exec -t sqldb sh -c "mysql < /var/lib/mysql/testdata/useremail.sql -pexample"
 
 dbconnect:
 	docker exec -it sqldb sh -c "mysql -uroot -pexample"
