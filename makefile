@@ -19,4 +19,12 @@ app-down:
 seelog:
 	tail -f app.log
 
+testdata:
+	docker exec -t sqldb sh -c "mysql < /var/lib/mysql/testdata/useremail.sql -pexample"
+
+dbconnect:
+	docker exec -it sqldb sh -c "mysql -uroot -pexample"
+
 init: build-app run-app
+
+.PHONY: testdata
