@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Amazon ECS Preview Quickstart Template
+Description: Boot up an ECS instance for Straight and Arrow
 Parameters:
   ClusterName:
     Description: Name of your Amazon ECS Cluster
     Type: String
     ConstraintDescription: must be a valid Amazon ECS Cluster.
-    Default: default
+    Default: straight-and-arrow
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: 'AWS::EC2::KeyPair::KeyName'
@@ -102,7 +102,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: 'ecs:*'
-                Resource: '*'
+                Resource: '*'    
 Outputs:
   ECSInstance:
     Description: Location for Amazon ECS Instance
