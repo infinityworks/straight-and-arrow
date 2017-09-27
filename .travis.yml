@@ -1,0 +1,7 @@
+language: node_js
+sudo: required
+services:
+  - docker
+after_success:
+  - bin/docker_push.sh
+  - bin/ecs_deploy.sh
