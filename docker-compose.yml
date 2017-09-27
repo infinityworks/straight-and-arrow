@@ -1,7 +1,10 @@
 version: '3'
 services:
   db:
-    image: mysql
+    image: mariadb
+    container_name: sqldb
+    volumes: 
+     - ./testdata:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
 
@@ -16,6 +19,6 @@ services:
     environment:
      - USER_ID=root
      - USER_PW=example
-     - HOST_DB=db
+     - HOST_DB=sqldb
 
 
