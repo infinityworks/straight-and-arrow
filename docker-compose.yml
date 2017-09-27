@@ -13,5 +13,9 @@ services:
      - .:/sanda_test
     links:
      - db
+    environment:
+     - USER_ID=root
+     - USER_PW=example
+     - HOST_DB=db
 
 
