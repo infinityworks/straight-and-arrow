@@ -9,4 +9,4 @@ Coming to you soon courtesy of the amazing 2017 graduate intake is the most incr
 `make app-down`
 
 # To see the current log
-`make seelog`
+`make viewlog`
