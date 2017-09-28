@@ -8,4 +8,6 @@ EXPOSE 8888
 
 ENV NAME training
 
-CMD ["node", "testjs.js"]
+RUN npm install forever -g
+
+CMD ["forever", "testjs.js"]
