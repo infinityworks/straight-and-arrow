@@ -4,7 +4,7 @@
   "description": "ttt",
   "main": "testjs.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",

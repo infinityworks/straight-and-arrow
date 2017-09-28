@@ -10,4 +10,6 @@ ENV NAME training
 
 RUN npm install forever -g
 
+RUN npm install -g jasmine 
+
 CMD ["forever", "testjs.js"]

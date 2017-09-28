@@ -11,7 +11,6 @@ var HOST_DB = process.env.HOST_DB
 var connection
 var dbError;
 
-
 function connectToDB(){
 	if(connect_db == false){
     connection = mysql.createConnection({
