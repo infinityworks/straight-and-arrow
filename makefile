@@ -19,6 +19,9 @@ app-down:
 seelog:
 	tail -f app.log
 
+viewlog:
+	docker logs -f straightandarrow_web_1
+
 testdata:
 	docker exec -t sqldb sh -c "mysql < /var/lib/mysql/testdata/useremail.sql -pexample"
 

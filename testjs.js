@@ -34,9 +34,13 @@ function connectToDB(){
   } 
 }
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+})
 
 http.createServer(function (req, res) {
     console.log(`${req.method}--- from ---${req.headers['user-agent']}--- on ---${req.url}`)
+    // throw new Error("dieeeee")
     res.writeHead(200, {'Content-Type': 'text/html'});
     if (connect_db == false){
       res.write(dbError);
