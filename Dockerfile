@@ -8,4 +8,4 @@ EXPOSE 8888
 
 ENV NAME training
 
-CMD ["sh", "init.sh"]
+CMD ["node", "testjs.js"]
