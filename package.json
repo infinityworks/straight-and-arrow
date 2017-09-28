@@ -16,7 +16,10 @@
     "url": "https://github.com/infinityworks/straight-and-arrow/issues"
   },
   "homepage": "https://github.com/infinityworks/straight-and-arrow#readme",
-  "devDependencies": {
+  "Dependencies": {
     "mysql": "^2.14.1"
+  },
+  "devDependencies": {
+    "jasmine": "^2.8.0"
   }
 }
