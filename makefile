@@ -25,6 +25,9 @@ testdata:
 dbconnect:
 	docker exec -it sqldb sh -c "mysql -uroot -pexample"
 
-init: build-app run-app
+init: app-up testdata
+
+runtests:
+	docker exec -it straightandarrow_web_1 npm test
 
 .PHONY: testdata
