@@ -50,13 +50,16 @@ input[type=submit]{
 	margin:0 auto;
 }
 
-/*
+
 .video-container { 
    position: relative; /* keeps the aspect ratio */ 
    padding-bottom: 56.25%; /* fine tunes the video positioning */ 
    padding-top: 60px; overflow: hidden;
+   margin-right: 8%;
+   margin-left: 8%;
+  
 }
 
 .video-container iframe,
 .video-container object,
-.video-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }*/
+.video-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 75%; }
