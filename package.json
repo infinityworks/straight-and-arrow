@@ -20,6 +20,7 @@
     "mysql": "^2.14.1"
   },
   "devDependencies": {
+    "express": "^4.16.0",
     "jasmine": "^2.8.0"
   }
 }

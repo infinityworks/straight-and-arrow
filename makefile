@@ -16,7 +16,6 @@ app-up:
 app-down:
 	docker-compose down
 
-
 viewlog:
 	docker logs -f straightandarrow_web_1
 
