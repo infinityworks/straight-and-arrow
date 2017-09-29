@@ -1,0 +1,17 @@
+h1{
+	font-weight: bold;
+	font-size: 42pt;
+	text-align: center;
+}
+
+p{
+	font-size: 20pt;
+	text-align: justify;
+	padding-left: 25%;
+	padding-right: 25%;
+}
+
+img{
+	display:block;
+	margin:0 auto;
+}
