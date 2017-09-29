@@ -15,3 +15,9 @@ img{
 	display:block;
 	margin:0 auto;
 }
+
+iframe{
+	display:block;
+	margin:0 auto;
+	margin-bottom: 50px;
+}
