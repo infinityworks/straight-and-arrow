@@ -11,6 +11,15 @@ var HOST_DB = process.env.HOST_DB
 var connection
 var dbError;
 
+function getUsers(res){
+  connection.query("SELECT * FROM arrowdb.user", function(err, result){
+    let respo = result.map(function(row){
+      return `${row.id}, ${row.name}, ${row.email} <br>`
+    })
+    res.end(respo.join(''))
+  })
+}
+
 function connectToDB(){
 	if(connect_db == false){
     connection = mysql.createConnection({
@@ -45,8 +54,8 @@ http.createServer(function (req, res) {
       res.write(dbError);
     	res.end(notConnected);
     }
-    else{
-    	res.end(connected);
+    else{ 
+      getUsers(res)
     }
     
 }).listen(8888);

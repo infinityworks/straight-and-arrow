@@ -10,4 +10,6 @@ ENV NAME training
 
 RUN npm install forever -g
 
-CMD ["forever", "testjs.js"]
+RUN npm install
+
+CMD ["forever", "./app/app.js"]
