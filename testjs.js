@@ -12,7 +12,7 @@ var connection
 var dbError;
 
 function getUsers(res){
-  connection.query("SELECT * FROM sanda.user", function(err, result){
+  connection.query("SELECT * FROM arrowdb.user", function(err, result){
     let respo = result.map(function(row){
       return `${row.id}, ${row.name}, ${row.email} <br>`
     })
