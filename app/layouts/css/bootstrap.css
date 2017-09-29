@@ -34,11 +34,6 @@
     page-break-inside: avoid;
   }
 
-  img.logo {
-  display:block;
-  margin:0 auto;
-
-  }
   p,
   h2,
   h3 {
