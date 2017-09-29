@@ -14,6 +14,9 @@ Coming to you soon courtesy of the amazing 2017 graduate intake is the most incr
 # To bring down the containers
 `make app-down`
 
+# To restart the app within the container
+`make reboot`
+
 # To see the current log
 `make viewlog`
 
