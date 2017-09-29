@@ -1,2 +1,4 @@
 mysql/*
 !mysql/testdata
+.DS_Store
+
