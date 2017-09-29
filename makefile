@@ -30,4 +30,7 @@ init: app-up testdata
 runtests:
 	docker exec -it straightandarrow_web_1 npm test
 
+reboot:
+	docker exec -t straightandarrow_web_1 sh -c "forever restartall"
+
 .PHONY: testdata
