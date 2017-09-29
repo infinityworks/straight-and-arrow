@@ -21,6 +21,10 @@
   },
   "devDependencies": {
     "express": "^4.16.0",
+    "express-handlebars": "^3.0.0",
     "jasmine": "^2.8.0"
+  },
+  "dependencies": {
+    "mysql": "^2.14.1"
   }
 }
