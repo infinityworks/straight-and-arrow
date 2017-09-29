@@ -6,11 +6,16 @@ h1{
 
 p{
 	font-size: 20pt;
-	text-align: justify;
-	padding-left: 25%;
-	padding-right: 25%;
+	text-align: center;
+	padding-left: 10%;
+	padding-right: 10%;
 }
 
+p1{
+	font-size: 15pt;
+	padding-right: 15%;
+	margin-top: 10px;
+} 
 img{
 	display:block;
 	margin:0 auto;
@@ -20,4 +25,27 @@ iframe{
 	display:block;
 	margin:0 auto;
 	margin-bottom: 50px;
+}
+
+div.inputbox{
+	display:block;
+	margin:0 auto;
+	width: 300px;
+	height: auto;
+}
+
+input[type=text]{
+	width: 150px;
+	border: 1px solid black;
+}
+
+input[type=text]:focus{
+	background-color: lightblue;
+}
+
+
+input[type=submit]{
+	width: 150px;
+	display:block;
+	margin:0 auto;
 }
