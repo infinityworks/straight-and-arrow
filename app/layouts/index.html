@@ -22,12 +22,15 @@
 		<iframe width="560" height="315" src="https://www.youtube.com/embed/BEG-ly9tQGk" frameborder="0" allowfullscreen></iframe>
 
 		<p> If you are interested, please enter and submit your email address below to stay updated</p><br>
-		<div class="inputbox">
+		<div class="input-group">
 			<form action="/capture-email" method="post">
-	  			<p1>Email:</p1>
-	  			<input type ="text" name="email">
-	  			<br><br>
-	  			<input type="submit" value="Submit">
+				<div class="entry">
+	  				<label for="email">Email</label>
+	  				<input type="email" name="email" id="email">
+	  			</div>
+	  			<div class="entry">
+	  				<input type="submit" value="Submit" class="btn btn-success">
+	  			</div>
 			</form>
 		</div><br><br>  
 
