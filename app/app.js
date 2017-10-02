@@ -13,7 +13,7 @@ app.get('/success', function(req,res){
 
 app.get('/users', require('./usertest'))
 app.post('/capture-email', function(req,res){
-    console.log(`${req.body['email']} ----from---- ${req.headers['user-agent']}`)
+    console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`)
     res.redirect('/success')
 })
 
