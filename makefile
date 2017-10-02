@@ -10,7 +10,6 @@ push-app:
 	docker push rohoolio/sanda_test:latest
 
 app-up:
-	docker-compose build
 	docker-compose up -d
 
 app-down:

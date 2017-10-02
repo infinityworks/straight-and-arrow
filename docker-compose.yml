@@ -4,7 +4,7 @@ services:
     image: mariadb
     container_name: sqldb
     volumes: 
-     - ./mysql:/var/lib/mysql
+     - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
 
@@ -20,5 +20,8 @@ services:
      - USER_ID=root
      - USER_PW=example
      - HOST_DB=sqldb
+
+volumes:
+    db_data:
 
 
