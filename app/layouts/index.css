@@ -27,7 +27,16 @@ input[type=email]{
 	border: 1px solid black;
 }
 
+input[type=text]{
+	width: 150px;
+	border: 1px solid black;
+}
+
 input[type=email]:focus{
+	background-color: AliceBlue;
+}
+
+input[type=text]:focus{
 	background-color: AliceBlue;
 }
 
@@ -35,9 +44,21 @@ input[type=submit]{
 	width: 150px;
 }
 
+.entry{
+	display: block;
+	margin: auto;
+}
+
+.entry input{
+	float:right;
+}
+
+label{
+	font-size: 14pt;
+	margin-right: 5px;
+}
 
 .input-group {
-	display: block;
 	margin: auto;
 }
 
