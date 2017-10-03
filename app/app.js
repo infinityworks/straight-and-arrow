@@ -3,9 +3,10 @@ const app = express();
 const path = require('path');
 const port = 8888;
 const bodyParser = require('body-parser');
+const validator = require('express-validator') 
 
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(validator)
 
 app.get('/success', function(req,res){
 	res.send('thanks for submitting your interest')
