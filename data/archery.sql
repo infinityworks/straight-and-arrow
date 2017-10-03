@@ -41,4 +41,5 @@ CREATE TABLE `tournament` (
 LOCK TABLES `tournament` WRITE;
 /*!40000 ALTER TABLE `tournament` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tournament` ENABLE KEYS */;
+INSERT INTO `tournament` VALUES (null, 'Leeds','Portsmouth','2017-10-05 10:00:00','2017-10-05 17:00:00');
 UNLOCK TABLES;
