@@ -24,6 +24,6 @@
     "mysql": "^2.14.1",
     "express": "^4.16.0",
     "express-handlebars": "^3.0.0",
-    "express-validator": "^4.2.0"
+    "express-validator": "^4.2.1"
   }
 }
