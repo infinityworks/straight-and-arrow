@@ -2,15 +2,15 @@
 <html>
 <head>
 	<meta content="width=device-width, initial-scale=1" name="viewport">
-	<title>Welcome to IWAO</title>
+	<title>{{title}}</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
 </head>
 <body>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<div class = "wrapper"> 
+
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation" >
 			<div class="container">
 		         <div class="navbar-header">
@@ -24,7 +24,7 @@
 			</div>
 
 
-		    <!-- Collect the nav links, forms, and other content for toggling -->
+    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="">Home</a></li>
@@ -35,36 +35,18 @@
 		</nav>
 		<img class="logo" height="150px" src="archerylogo.svg" width="150px">
 			
-			<h1>IWG Archery Organisation<br> Coming Soon!</h1><br>
-			
-
-			<p>As archers, we believe that archery is an exciting, competitive sport that deserves increased recognition and following amongst sports fans young and old. We also believe that people who try archery as a sport will become hooked and get many years of enjoyment from the sport.</p>
-
-			<p>Coming soon, we're launching a new free-to-enter competition based on live archery tournaments, both amateur and professional. You'll be able to compete against your friends and other archery enthusiasts in predicting results, follow archery tournaments in real time (arrow by arrow) and win prizes.</p>
-
-			<p>If this sounds exciting (or even if you're just a little bit intrigued) see below to register and be part of the product evolution!</p><br>
-
-			<div class="aspect">
-				<iframe src="https://www.youtube.com/embed/BEG-ly9tQGk" frameborder="0" allowfullscreen></iframe>
+		<h1>IWG Archery Organisation<br> Coming Soon!</h1><br>
+		
+			{{{content}}}
+		
+		
+			<div class="footer">
+				&copy; {{year}} IWAO. All rights reserved
 			</div>
 
-			<p> If you are interested, please enter and submit your email address below to stay updated</p><br>
-			<div class="input-group">
-				<form action="/capture-email" method="post">
-					<div class="entry">
-		  				<label for="fullname">Name:</label>
-		  				<input type="text" name="fullname" id="fullname" required>
-		  			</div>
-					<div class="entry">
-		  				<label for="email">Email:</label>
-		  				<input type="email" name="email" id="email" placeholder="example@email.com" required>
-		  			</div>
-		  			<div class="entry">
-		  				<input type="submit" value="Submit" class="btn btn-success">
-		  			</div>
-				</form>
-			</div><br><br>
-		</div>
+			
 
-	</body>
+	</div>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer="true"></script>
+</body>
 </html>

@@ -11,17 +11,27 @@ const config = {
 	// This is needed to direct to the database.
 	database: "arrowdb"
 }
+const mustacheExpress = require('mustache-express')
+const app = express();
+let date = new Date();
+
 
 function run(){
-	const app = express();
-	
-	app.listen(port)
+	app.listen(port);
 
-	app.use(express.static(path.join(__dirname, './layouts')));
 	app.use(bodyParser.urlencoded({extended: true}));
 
-	app.get('/success', goodRegister)
-	app.get('/fail', badRegister)
+	//Serving static code through public folder.
+	app.use(express.static(path.join(__dirname, './public')));
+
+
+	app.engine('html', mustacheExpress());
+	app.set('view engine', 'mustache');
+	app.set('views', __dirname + '/layouts');
+
+	app.get('/', showIndexPage);
+	app.get('/success', goodRegister);
+	app.get('/fail', badRegister);
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -43,7 +53,6 @@ function badRegister(req,res){
 
 function createLog(req,res){
 	const errors = validationResult(req);
-
 		if (!errors.isEmpty()){
 			console.log(errors.mapped());
 			res.redirect('/fail');
@@ -51,6 +60,13 @@ function createLog(req,res){
 			console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
 	    	res.redirect('/success');
 		}
+}
+
+
+function showIndexPage(req, res){
+	app.render('content.html', {}, (err,content)=>{
+		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
 }
 
 run()
