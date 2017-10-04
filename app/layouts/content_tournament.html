@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>Venue</th>
+    <th>Start Date</th> 
+    <th>End Date</th>
+    <th>Location</th>
+  </tr>
+  {{#tournament_result}}
+    <tr>
+      <td>{{venue}}</td>
+      <td>{{datetime_start}}</td> 
+      <td>{{datetime_end}}</td>
+      <td>{{location}}</td>
+    </tr>
+   {{/tournament_result}}
+</table>

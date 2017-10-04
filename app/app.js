@@ -4,7 +4,7 @@ const port = 8888;
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator/check');
 const config = {
-	host: "127.0.0.1", //environment variable?
+	host: "db", //environment variable?
 	user: "root",
 	password: "example",
 	port: 3306,
@@ -14,6 +14,7 @@ const config = {
 const mustacheExpress = require('mustache-express')
 const app = express();
 let date = new Date();
+const mysql = require('mysql');
 
 
 function run(){
@@ -32,6 +33,7 @@ function run(){
 	app.get('/', showIndexPage);
 	app.get('/success', goodRegister);
 	app.get('/fail', badRegister);
+	app.get('/tournaments', showTournamentsPage);
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -76,6 +78,14 @@ function showIndexPage(req, res){
 function showArchersPage(req, res){
 	app.render('home.html', {}, (err,content)=>{
 		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
+}
+
+function showTournamentsPage(req, res){
+	executeQuery('SELECT * FROM tournament', (result) =>{
+		app.render('content_tournament.html', {tournament_result:result}, (err,content)=>{
+			res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		})
 	})
 }
 
