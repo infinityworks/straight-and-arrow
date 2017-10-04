@@ -20,6 +20,10 @@ viewlog:
 
 testdata:
 	docker run --rm -i --net=host mariadb mysql -uroot -pexample -h127.0.0.1 < data/useremail.sql
+	docker run --rm -i --net=host mariadb mysql -uroot -pexample -h127.0.0.1 < data/arrowdb_tournament.sql
+
+archerydata:
+	docker run --rm -i --net=host mariadb mysql -uroot -pexample -h127.0.0.1 < data/archery.sql
 
 dbconnect:
 	docker exec -it sqldb sh -c "mysql -uroot -pexample"
