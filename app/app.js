@@ -11,15 +11,20 @@ const config = {
 	// This is needed to direct to the database.
 	database: "arrowdb"
 }
+const mustacheExpress = require('mustache-express')
+let date = new Date()
 
 function run(){
 	const app = express();
 	
 	app.listen(port)
 
-	app.use(express.static(path.join(__dirname, './layouts')));
 	app.use(bodyParser.urlencoded({extended: true}));
+	app.engine('html', mustacheExpress());
+	app.set('view engine', 'mustache');
+	app.set('views', __dirname + '/layouts');
 
+	app.get('/', showIndexPage)
 	app.get('/success', goodRegister)
 	app.get('/fail', badRegister)
 	// app.get('/users', require('./usertest'));
@@ -51,6 +56,12 @@ function createLog(req,res){
 			console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
 	    	res.redirect('/success');
 		}
+}
+
+function showIndexPage(req, res){
+	let content = '/layouts/content.html'
+	res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear()})
+
 }
 
 run()

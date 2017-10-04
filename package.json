@@ -21,9 +21,11 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
-    "mysql": "^2.14.1",
     "express": "^4.16.0",
     "express-handlebars": "^3.0.0",
-    "express-validator": "^4.2.1"
+    "express-mustache": "^1.0.3",
+    "express-validator": "^4.2.1",
+    "mustache-express": "^1.2.5",
+    "mysql": "^2.14.1"
   }
 }
