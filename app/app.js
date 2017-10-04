@@ -42,15 +42,15 @@ function run(){
 
 
 function goodRegister(req,res){
-	app.render('content.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
 	})
 }
 
 
 function badRegister(req,res){
-	app.render('content.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
 	})
 }
 
@@ -68,9 +68,29 @@ function createLog(req,res){
 
 
 function showIndexPage(req, res){
-	app.render('content.html', {}, (err,content)=>{
-		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	app.render('home.html', {}, (err,content)=>{
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
 	})
+}
+
+function showArchersPage(req, res){
+	app.render('home.html', {}, (err,content)=>{
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
+}
+
+function executeQuery(sql, callback) {
+  let connection = mysql.createConnection(config)
+  connection.connect((err) => {
+    if (err) throw err;
+
+    connection.query(sql, (err, result) => {
+      if (err) throw err;
+
+      connection.destroy()
+      callback(result)
+    })
+  })
 }
 
 run()
