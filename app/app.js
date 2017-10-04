@@ -14,11 +14,16 @@ const config = {
 
 function run(){
 	const app = express();
+	
 	app.listen(port)
-	//This app-use function will use all the files in the layout folder.
+
 	app.use(express.static(path.join(__dirname, './layouts')));
+	app.use(bodyParser.urlencoded({extended: true}));
+
 	app.get('/success', goodRegister)
 	app.get('/fail', badRegister)
+	// app.get('/users', require('./usertest'));
+
 	app.post('/capture-email', [
 		check('email').isEmail().withMessage("Please enter a valid email address."),
 		check('fullname').not().isEmpty().withMessage("Please enter a name.")
@@ -50,14 +55,6 @@ function createLog(req,res){
 
 run()
 
-// app.use(bodyParser.urlencoded({extended: true}));
-// //app.use(validator);
-
-// app.get('/users', require('./usertest'));
 
 
 
-// //Creates the server and listens to port 8888.
-// var server = app.listen(port, function () {
-//  	console.log(`Example app listening on port ${port}`);
-// });
