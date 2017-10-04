@@ -1,4 +1,4 @@
 mysql/*
 !mysql/testdata
 *.DS_Store
-
+node_modules
