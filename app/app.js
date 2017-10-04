@@ -1,10 +1,11 @@
 const express = require('express');
 const path = require('path');
+const mysql = require('mysql');
 const port = 8888;
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator/check');
 const config = {
-	host: "127.0.0.1", //environment variable?
+	host: "db", //environment variable?
 	user: "root",
 	password: "example",
 	port: 3306,
@@ -30,8 +31,7 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
-	app.get('/success', goodRegister);
-	app.get('/fail', badRegister);
+	app.get('/archers', showArchersPage)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -74,9 +74,12 @@ function showIndexPage(req, res){
 }
 
 function showArchersPage(req, res){
-	app.render('home.html', {}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	executeQuery('SELECT name, dob, country FROM archer', (result) => {
+		app.render('archers.html', {data: result}, (err,content)=>{
+			res.render('fullpage.html', {title:"Archer Details", year:date.getFullYear(), content: content})
+		})
 	})
+
 }
 
 function executeQuery(sql, callback) {
