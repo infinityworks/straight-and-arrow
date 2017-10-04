@@ -97,6 +97,12 @@ input[type=submit]{
 	float:right;
 }
 
+.submitMessage{
+	margin-top: 25px;
+	padding: 10px 0;
+	text-align: center;
+}
+
 .aspect{
 	position:relative;
 	width:100%;
