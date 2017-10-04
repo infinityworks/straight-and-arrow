@@ -42,24 +42,28 @@ function run(){
 
 
 function goodRegister(req,res){
-	res.send('thanks for submitting your interest');
+	app.render('content.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
+		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
 }
 
 
 function badRegister(req,res){
-	res.send('Sorry, you have provided an invalid email/name');
+	app.render('content.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
+		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
 }
 
 
 function createLog(req,res){
 	const errors = validationResult(req);
-		if (!errors.isEmpty()){
-			console.log(errors.mapped());
-			res.redirect('/fail');
-		} else {
-			console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
-	    	res.redirect('/success');
-		}
+	if (!errors.isEmpty()){
+		console.log(errors.mapped());
+		badRegister(req,res)
+	} else {
+		console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
+    	goodRegister(req,res)
+	}
 }
 
 
