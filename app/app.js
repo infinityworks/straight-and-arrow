@@ -1,28 +1,43 @@
 const express = require('express');
-const app = express();
 const path = require('path');
 const port = 8888;
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator/check');
+const config = {
+	host: "127.0.0.1", //environment variable?
+	user: "root",
+	password: "example",
+	port: 3306,
+	// This is needed to direct to the database.
+	database: "arrowdb"
+}
 
-app.use(bodyParser.urlencoded({extended: true}));
-//app.use(validator);
+function run(){
+	const app = express();
+	app.listen(port)
+	//This app-use function will use all the files in the layout folder.
+	app.use(express.static(path.join(__dirname, './layouts')));
+	app.get('/success', goodRegister)
+	app.get('/fail', badRegister)
+	app.post('/capture-email', [
+		check('email').isEmail().withMessage("Please enter a valid email address."),
+		check('fullname').not().isEmpty().withMessage("Please enter a name.")
+	], createLog)
+}
 
-app.get('/success', function(req,res){
+
+function goodRegister(req,res){
 	res.send('thanks for submitting your interest');
-});
+}
 
-app.get('/fail', function(req,res){
+
+function badRegister(req,res){
 	res.send('Sorry, you have provided an invalid email/name');
-});
+}
 
-app.get('/users', require('./usertest'));
-app.post('/capture-email', [
-	check('email').isEmail().withMessage("Please enter a valid email address."),
-	check('fullname').not().isEmpty().withMessage("Please enter a name.")
-	], function(req,res){
 
-		const errors = validationResult(req);
+function createLog(req,res){
+	const errors = validationResult(req);
 
 		if (!errors.isEmpty()){
 			console.log(errors.mapped());
@@ -31,15 +46,18 @@ app.post('/capture-email', [
 			console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
 	    	res.redirect('/success');
 		}
-	    
-});
+}
 
-//This app-use function will use all the files in the layout folder.
-app.use(express.static(path.join(__dirname, './layouts')));
+run()
+
+// app.use(bodyParser.urlencoded({extended: true}));
+// //app.use(validator);
+
+// app.get('/users', require('./usertest'));
 
 
 
-//Creates the server and listens to port 8888.
-var server = app.listen(port, function () {
- 	console.log(`Example app listening on port ${port}`);
-});
+// //Creates the server and listens to port 8888.
+// var server = app.listen(port, function () {
+//  	console.log(`Example app listening on port ${port}`);
+// });
