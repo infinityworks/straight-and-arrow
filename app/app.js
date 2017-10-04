@@ -12,14 +12,16 @@ const config = {
 	database: "arrowdb"
 }
 const mustacheExpress = require('mustache-express')
+const app = express();
 let date = new Date()
 
 function run(){
-	const app = express();
-	
 	app.listen(port)
 
 	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(express.static(path.join(__dirname, './public')));
+
+
 	app.engine('html', mustacheExpress());
 	app.set('view engine', 'mustache');
 	app.set('views', __dirname + '/layouts');
@@ -59,8 +61,20 @@ function createLog(req,res){
 }
 
 function showIndexPage(req, res){
-	let content = '/layouts/content.html'
-	res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear()})
+
+		app.render('content.html', {}, (err,content)=>{
+			res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		})
+		
+
+	
+	// executeQuery( (result) => {
+	// 	let pageContent = app.render('view-tournaments.html', {data: result})
+	// 	res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: pageContent})
+	// })
+	//let content = app.render('view-tournaments.html', {data: result})
+	
+
 
 }
 
