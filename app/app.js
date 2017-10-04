@@ -13,12 +13,15 @@ const config = {
 }
 const mustacheExpress = require('mustache-express')
 const app = express();
-let date = new Date()
+let date = new Date();
+
 
 function run(){
-	app.listen(port)
+	app.listen(port);
 
 	app.use(bodyParser.urlencoded({extended: true}));
+
+	//Serving static code through public folder.
 	app.use(express.static(path.join(__dirname, './public')));
 
 
@@ -26,9 +29,9 @@ function run(){
 	app.set('view engine', 'mustache');
 	app.set('views', __dirname + '/layouts');
 
-	app.get('/', showIndexPage)
-	app.get('/success', goodRegister)
-	app.get('/fail', badRegister)
+	app.get('/', showIndexPage);
+	app.get('/success', goodRegister);
+	app.get('/fail', badRegister);
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -50,7 +53,6 @@ function badRegister(req,res){
 
 function createLog(req,res){
 	const errors = validationResult(req);
-
 		if (!errors.isEmpty()){
 			console.log(errors.mapped());
 			res.redirect('/fail');
@@ -60,22 +62,11 @@ function createLog(req,res){
 		}
 }
 
+
 function showIndexPage(req, res){
-
-		app.render('content.html', {}, (err,content)=>{
-			res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
-		})
-		
-
-	
-	// executeQuery( (result) => {
-	// 	let pageContent = app.render('view-tournaments.html', {data: result})
-	// 	res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: pageContent})
-	// })
-	//let content = app.render('view-tournaments.html', {data: result})
-	
-
-
+	app.render('content.html', {}, (err,content)=>{
+		res.render('index.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+	})
 }
 
 run()
