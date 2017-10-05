@@ -5,12 +5,11 @@ const port = 8888;
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator/check');
 const config = {
-	host: "db", //environment variable?
-	user: "root",
-	password: "example",
-	port: 3306,
-	// This is needed to direct to the database.
-	database: "arrowdb"
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER_ID,
+	password: process.env.DB_USER_PW,
+	port: process.env.DB_PORT,
+	database: process.env.DB_NAME
 }
 const mustacheExpress = require('mustache-express')
 const app = express();
