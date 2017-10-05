@@ -14,8 +14,13 @@ const config = {
 }
 const mustacheExpress = require('mustache-express')
 const app = express();
-let date = new Date();
+const moment = require('moment')
 
+
+function parseDate(date){
+	let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
+	return formattedDate
+}
 
 function run(){
 	app.listen(port);
@@ -31,6 +36,7 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
+	app.get('/tournaments', showTournamentsPage);
 	app.get('/archer-list', showArchersList)
 	// app.get('/users', require('./usertest'));
 
@@ -43,14 +49,14 @@ function run(){
 
 function goodRegister(req,res){
 	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
 
 function badRegister(req,res){
 	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
@@ -69,7 +75,30 @@ function createLog(req,res){
 
 function showIndexPage(req, res){
 	app.render('home.html', {}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
+	})
+}
+
+
+
+function showTournamentsPage(req, res){
+	executeQuery(`SELECT venue, datetime_start, datetime_end, location 
+		FROM tournament 
+		WHERE datetime_end > now() 
+		ORDER BY datetime_end`, (result) =>{
+		let formattedResults = []
+
+		result.forEach((row)=> {
+
+			row.datetime_start = parseDate(row.datetime_start)
+			row.datetime_end  = parseDate(row.datetime_end)
+
+			formattedResults.push(row)
+		})
+
+		app.render('tournament-list.html', {tournament_result:formattedResults}, (err,content)=>{
+			res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
+		})
 	})
 }
 
@@ -81,7 +110,8 @@ function showArchersList(req, res){
 		FROM archer 
 		ORDER BY name`, (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
-			res.render('fullpage.html', {title:"Archer Details", year:date.getFullYear(), content: content})
+			res.render('fullpage.html', {title:"Archer Details", year:"2017", content: content})
+
 		})
 	})
 }

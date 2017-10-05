@@ -25,6 +25,7 @@
     "express-handlebars": "^3.0.0",
     "express-mustache": "^1.0.3",
     "express-validator": "^4.2.1",
+    "moment": "^2.18.1",
     "mustache-express": "^1.2.5",
     "mysql": "^2.14.1"
   }
