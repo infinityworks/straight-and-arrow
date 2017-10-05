@@ -13,15 +13,12 @@ const config = {
 }
 const mustacheExpress = require('mustache-express')
 const app = express();
-let date = new Date();
 const mysql = require('mysql');
-
 const moment = require('moment')
 
 
-function parsedate(date){
-	let formattedDate = moment(date).format('dddd MMMM Do, YYYY')
-	console.log(formattedDate)
+function parseDate(date){
+	let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
 	return formattedDate
 }
 
@@ -53,14 +50,14 @@ function run(){
 
 function goodRegister(req,res){
 	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
 
 function badRegister(req,res){
 	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
@@ -79,30 +76,33 @@ function createLog(req,res){
 
 function showIndexPage(req, res){
 	app.render('home.html', {}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
 function showArchersPage(req, res){
 	app.render('home.html', {}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 	})
 }
 
 function showTournamentsPage(req, res){
-	executeQuery('SELECT * FROM `tournament` WHERE datetime_end > now() ORDER BY datetime_end', (result) =>{
+	executeQuery(`SELECT venue, datetime_start, datetime_end, location 
+		FROM tournament 
+		WHERE datetime_end > now() 
+		ORDER BY datetime_end`, (result) =>{
 		let formattedResults = []
 
 		result.forEach((row)=> {
 
-			row.datetime_start = parsedate(row.datetime_start)
-			row.datetime_end  = parsedate(row.datetime_end)
+			row.datetime_start = parseDate(row.datetime_start)
+			row.datetime_end  = parseDate(row.datetime_end)
 
 			formattedResults.push(row)
 		})
 
-		app.render('content_tournament.html', {tournament_result:formattedResults}, (err,content)=>{
-			res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+		app.render('tournament-list.html', {tournament_result:formattedResults}, (err,content)=>{
+			res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
 
 		})
 	})
