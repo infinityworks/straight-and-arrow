@@ -16,6 +16,14 @@ const app = express();
 let date = new Date();
 const mysql = require('mysql');
 
+const moment = require('moment')
+
+
+function parsedate(date){
+	let formattedDate = moment(date).format('dddd MMMM Do, YYYY')
+	console.log(formattedDate)
+	return formattedDate
+}
 
 function run(){
 	app.listen(port);
@@ -82,9 +90,20 @@ function showArchersPage(req, res){
 }
 
 function showTournamentsPage(req, res){
-	executeQuery('SELECT * FROM tournament', (result) =>{
-		app.render('content_tournament.html', {tournament_result:result}, (err,content)=>{
+	executeQuery('SELECT * FROM `tournament` WHERE datetime_end > now() ORDER BY datetime_end', (result) =>{
+		let formattedResults = []
+
+		result.forEach((row)=> {
+
+			row.datetime_start = parsedate(row.datetime_start)
+			row.datetime_end  = parsedate(row.datetime_end)
+
+			formattedResults.push(row)
+		})
+
+		app.render('content_tournament.html', {tournament_result:formattedResults}, (err,content)=>{
 			res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+
 		})
 	})
 }
