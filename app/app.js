@@ -1,10 +1,11 @@
 const express = require('express');
 const path = require('path');
+const mysql = require('mysql');
 const port = 8888;
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator/check');
 const config = {
-	host: "127.0.0.1", //environment variable?
+	host: "db", //environment variable?
 	user: "root",
 	password: "example",
 	port: 3306,
@@ -30,8 +31,7 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
-	app.get('/success', goodRegister);
-	app.get('/fail', badRegister);
+	app.get('/archer-list', showArchersList)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -73,24 +73,31 @@ function showIndexPage(req, res){
 	})
 }
 
-function showArchersPage(req, res){
-	app.render('home.html', {}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:date.getFullYear(), content: content})
+function showArchersList(req, res){
+	executeQuery(`SELECT name, country, 
+		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - 
+		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) 
+		AS age 
+		FROM archer 
+		ORDER BY name`, (result) => {
+		app.render('archer-list.html', {data: result}, (err,content)=>{
+			res.render('fullpage.html', {title:"Archer Details", year:date.getFullYear(), content: content})
+		})
 	})
 }
 
 function executeQuery(sql, callback) {
-  let connection = mysql.createConnection(config)
-  connection.connect((err) => {
-    if (err) throw err;
+	let connection = mysql.createConnection(config)
+	connection.connect((err) => {
+    	if (err) throw err;
 
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
+		connection.query(sql, (err, result) => {
+      		if (err) throw err;
 
-      connection.destroy()
-      callback(result)
-    })
-  })
+    		connection.destroy()
+    		callback(result)
+    	})
+	})
 }
 
 run()
