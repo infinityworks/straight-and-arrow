@@ -136,6 +136,7 @@ label{
 
 .btn-success:hover{
 	background-color: dimgrey;
+	border-color:dimgrey;
 }
 
 .video-container { 
