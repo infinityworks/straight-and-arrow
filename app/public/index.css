@@ -34,7 +34,7 @@ body {
 }*/
 
 .footer{
-	padding: 10px 0;
+	padding: 20px 0;
 	text-align: center;
 }
 
@@ -154,4 +154,17 @@ label{
 .table {
 	margin:0 auto;
 	max-width: 90%;
+}
+
+.table tr:nth-child(even) {
+    background-color: #EFEFFD;
+}
+
+.table tr:last-child {
+	border-bottom: 1px solid dimgrey;
+}
+
+.table th {
+    color: white;
+    background-color: dimgrey;
 }
