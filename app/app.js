@@ -74,12 +74,11 @@ function showIndexPage(req, res){
 }
 
 function showArchersPage(req, res){
-	executeQuery('SELECT name, dob, country FROM archer', (result) => {
+	executeQuery(`SELECT name, country, (SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) AS age FROM archer ORDER BY name`, (result) => {
 		app.render('archers.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:date.getFullYear(), content: content})
 		})
 	})
-
 }
 
 function executeQuery(sql, callback) {
