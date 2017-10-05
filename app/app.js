@@ -31,7 +31,7 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
-	app.get('/archers', showArchersPage)
+	app.get('/archer-list', showArchersList)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -73,26 +73,31 @@ function showIndexPage(req, res){
 	})
 }
 
-function showArchersPage(req, res){
-	executeQuery(`SELECT name, country, (SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) AS age FROM archer ORDER BY name`, (result) => {
-		app.render('archers.html', {data: result}, (err,content)=>{
+function showArchersList(req, res){
+	executeQuery(`SELECT name, country, 
+		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - 
+		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) 
+		AS age 
+		FROM archer 
+		ORDER BY name`, (result) => {
+		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:date.getFullYear(), content: content})
 		})
 	})
 }
 
 function executeQuery(sql, callback) {
-  let connection = mysql.createConnection(config)
-  connection.connect((err) => {
-    if (err) throw err;
+	let connection = mysql.createConnection(config)
+	connection.connect((err) => {
+    	if (err) throw err;
 
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
+		connection.query(sql, (err, result) => {
+      		if (err) throw err;
 
-      connection.destroy()
-      callback(result)
-    })
-  })
+    		connection.destroy()
+    		callback(result)
+    	})
+	})
 }
 
 run()
