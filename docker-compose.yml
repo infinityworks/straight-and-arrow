@@ -19,9 +19,11 @@ services:
     links:
      - db
     environment:
-     - USER_ID=root
-     - USER_PW=example
-     - HOST_DB=sqldb
+     - DB_HOST=db
+     - DB_USER_ID=root
+     - DB_USER_PW=example
+     - DB_PORT=3306
+     - DB_NAME=arrowdb
 
 volumes:
     db_data:
