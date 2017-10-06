@@ -36,9 +36,14 @@ function run(){
 
 	app.get('/', showIndexPage);
 	app.get('/tournament', showTournamentsPage);
+
 	app.get('/archer', showArchersList)
 	app.get('/tournament/:id', showArcherTournament)
+
 	// app.get('/users', require('./usertest'));
+	app.get('/admin', showAdminLogin);
+
+
 
 	app.post('/capture-email', [
 		check('email').isEmail().withMessage("Please enter a valid email address."),
@@ -48,16 +53,19 @@ function run(){
 
 
 function goodRegister(req,res){
-	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('fullpage.html', {title:"Thank you", year:"2017", content: content})
+	res.send({
+		"status": "pass",
+		"message": "Thank you for registering"
 	})
 }
 
 
 function badRegister(req,res){
-	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Incorrect details", year:"2017", content: content})
+	res.send({
+		"status": "fail",
+		"message": "Sorry invalid details, try again"
 	})
+
 }
 
 
@@ -138,6 +146,14 @@ function showArcherTournament(req, res){
 		})
 	})
 }
+
+
+function showAdminLogin(req, res){
+	app.render('admin.html', {}, (err,content)=>{
+		res.render('fullpage.html', {title:"Admin Login", year:"2017", content: content})
+	})
+}
+
 
 function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)

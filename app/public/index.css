@@ -37,6 +37,8 @@ body {
 
 }
 
+
+
 .nav .navbar-nav{
 	background-color: red;
 }
@@ -112,7 +114,7 @@ input[type=submit]{
 }
 
 .submitMessage{
-	margin-top: 25px;
+	margin-top: 40px;
 	padding: 10px 0;
 	text-align: center;
 }
