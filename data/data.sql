@@ -61,18 +61,20 @@ CREATE TABLE `tournament` (
   `datetime_start` datetime NOT NULL,
   `datetime_end` datetime DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `arrows` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `tournament` WRITE;
 /*!40000 ALTER TABLE `tournament` DISABLE KEYS */;
 
-INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`)
+INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`, `type`, `arrows`)
 VALUES
-	(1,'IW Board Room','2017-12-12 09:00:00','2017-12-13 17:45:00','Leeds'),
-	(2,'Plaza de Espana','2018-08-01 00:00:00','2018-08-14 00:00:00','Barcelona'),
-	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney'),
-	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds');
+	(1,'IW Board Room','2017-12-12 09:00:00','2017-12-13 17:45:00','Leeds', 'Portsmouth', 60),
+	(2,'Plaza de Espana','2018-08-01 00:00:00','2018-08-14 00:00:00','Barcelona', 'Portsmouth', 60),
+	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney', 'Portsmouth', 60),
+	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds', 'Portsmouth', 60);
 
 /*!40000 ALTER TABLE `tournament` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -86,13 +88,26 @@ DROP TABLE IF EXISTS `tournament_archer`;
 CREATE TABLE `tournament_archer` (
   `tournament_id` int(11) unsigned NOT NULL,
   `archer_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`tournament_id`),
-  KEY `archer_id` (`archer_id`),
+  KEY (`tournament_id`, `archer_id`),
   CONSTRAINT `tournament_archer_ibfk_1` FOREIGN KEY (`tournament_id`) REFERENCES `tournament` (`id`) ON DELETE CASCADE,
   CONSTRAINT `tournament_archer_ibfk_2` FOREIGN KEY (`archer_id`) REFERENCES `archer` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `tournament_archer` WRITE;
+/*!40000 ALTER TABLE `tournament_archer` DISABLE KEYS */;
 
+INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`)
+VALUES
+  (1, 1),
+  (1, 2),
+  (2, 1),
+  (2, 3),
+  (3, 4),
+  (4, 1),
+  (4, 3);
+
+/*!40000 ALTER TABLE `tournament_archer` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

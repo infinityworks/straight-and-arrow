@@ -159,6 +159,7 @@ label{
 .table {
 	margin:0 auto;
 	max-width: 90%;
+	table-layout: fixed;
 }
 
 .table tr:nth-child(even) {
@@ -172,4 +173,8 @@ label{
 .table th {
     color: white;
     background-color: dimgrey;
+}
+
+.table td {
+    word-wrap: break-word;
 }
