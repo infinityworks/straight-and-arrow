@@ -47,16 +47,19 @@ function run(){
 
 
 function goodRegister(req,res){
-	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('fullpage.html', {title:"Thank you", year:"2017", content: content})
+	res.send({
+		"status": "pass",
+		"message": "Thank you for registering"
 	})
 }
 
 
 function badRegister(req,res){
-	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Incorrect details", year:"2017", content: content})
+	res.send({
+		"status": "fail",
+		"message": "Sorry invalid details, try again"
 	})
+
 }
 
 
