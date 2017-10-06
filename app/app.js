@@ -36,7 +36,10 @@ function run(){
 
 	app.get('/', showIndexPage);
 	app.get('/tournament', showTournamentsPage);
-	app.get('/archer', showArchersList);
+
+	app.get('/archer', showArchersList)
+	app.get('/tournament/:id', showArcherTournament)
+
 	// app.get('/users', require('./usertest'));
 	app.get('/admin', showAdminLogin);
 
@@ -87,10 +90,10 @@ function showIndexPage(req, res){
 
 
 function showTournamentsPage(req, res){
-	executeQuery(`SELECT venue, datetime_start, datetime_end, location, type, arrows 
+	executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows 
 		FROM tournament 
 		WHERE datetime_end > now() 
-		ORDER BY datetime_end`, (result) =>{
+		ORDER BY datetime_end`, [], (result) =>{
 		let formattedResults = []
 
 		result.forEach((row)=> {
@@ -113,7 +116,7 @@ function showArchersList(req, res){
 		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) 
 		AS age 
 		FROM archer 
-		ORDER BY name`, (result) => {
+		ORDER BY name`, [], (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:"2017", content: content})
 
@@ -121,24 +124,43 @@ function showArchersList(req, res){
 	})
 }
 
+function showArcherTournament(req, res){
+	executeQuery(`SELECT archer.* 
+		FROM archer 
+		INNER JOIN tournament_archer ta 
+		ON archer.id = ta.archer_id
+		WHERE tournament_id = ? ORDER BY name`, [req.params.id], (archerDetail) => {
+			executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ?`, [req.params.id], (tournamentDetail) =>{
+				let formattedResults = []
 
-function showAdminLogin(req, res){
-	app.render('admin.html', {}, (err,content)=>{
-			res.render('fullpage.html', {title:"Admin Login", year:"2017", content: content})
+				tournamentDetail.forEach((row)=> {
+
+					row.datetime_start = parseDate(row.datetime_start)
+					row.datetime_end  = parseDate(row.datetime_end)
+
+					formattedResults.push(row)
+				})
+				app.render('tournament.html', {data: archerDetail, tournament: formattedResults}, (err,content)=>{
+			    res.render('fullpage.html', {title:"Archers in Tournament", year:"2017", content: content})
+			})
 		})
+	})
 }
 
 
+function showAdminLogin(req, res){
+	app.render('admin.html', {}, (err,content)=>{
+		res.render('fullpage.html', {title:"Admin Login", year:"2017", content: content})
+	})
+}
 
 
-
-
-function executeQuery(sql, callback) {
+function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
 	connection.connect((err) => {
     	if (err) throw err;
 
-		connection.query(sql, (err, result) => {
+		connection.query(sql, params, (err, result) => {
       		if (err) throw err;
 
     		connection.destroy()

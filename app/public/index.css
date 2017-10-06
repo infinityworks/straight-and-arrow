@@ -8,6 +8,16 @@ h1{
 	font-family:"Open sans";
 }
 
+h2{
+	font-size: 14pt;
+	font-size:calc(100% + 0.5vw);
+	text-align: justify;
+	padding-left: 4%;
+	padding-right: 4%;
+	padding-bottom: 4%;
+	font-family:"Open sans";
+}
+
 p{
 	font-size:11pt;
 	font-size:calc(100% + 0.5vw);
@@ -170,6 +180,10 @@ label{
 
 .table tr:last-child {
 	border-bottom: 1px solid dimgrey;
+}
+
+.table tr #clickRow{
+	
 }
 
 .table th {
