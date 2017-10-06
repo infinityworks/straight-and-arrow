@@ -55,7 +55,7 @@ function goodRegister(req,res){
 
 function badRegister(req,res){
 	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Incorrect etails", year:"2017", content: content})
+		res.render('fullpage.html', {title:"Incorrect details", year:"2017", content: content})
 	})
 }
 

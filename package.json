@@ -24,9 +24,12 @@
     "express": "^4.16.0",
     "express-handlebars": "^3.0.0",
     "express-mustache": "^1.0.3",
+    "express-request": "^0.3.0",
     "express-validator": "^4.2.1",
     "moment": "^2.18.1",
     "mustache-express": "^1.2.5",
-    "mysql": "^2.14.1"
+    "mysql": "^2.14.1",
+    "request": "^2.83.0",
+    "requests": "^0.2.2"
   }
 }
