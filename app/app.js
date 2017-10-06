@@ -121,10 +121,20 @@ function showArcherTournament(req, res){
 		FROM archer 
 		INNER JOIN tournament_archer ta 
 		ON archer.id = ta.archer_id
-		WHERE tournament_id = ${req.params.id}`, (result) => {
-		app.render('archer-list.html', {data: result}, (err,content)=>{
-			res.render('fullpage.html', {title:"Archers in Tournament", year:"2017", content: content})
+		WHERE tournament_id = ${req.params.id} ORDER BY name`, (archerDetail) => {
+			executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ${req.params.id}`, (tournamentDetail) =>{
+				let formattedResults = []
 
+				tournamentDetail.forEach((row)=> {
+
+					row.datetime_start = parseDate(row.datetime_start)
+					row.datetime_end  = parseDate(row.datetime_end)
+
+					formattedResults.push(row)
+				})
+				app.render('tournament.html', {data: archerDetail, tournament: formattedResults}, (err,content)=>{
+			    res.render('fullpage.html', {title:"Archers in Tournament", year:"2017", content: content})
+			})
 		})
 	})
 }

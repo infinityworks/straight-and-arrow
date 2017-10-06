@@ -1,0 +1,14 @@
+{{#tournament}}
+<h2> The archers playing in the <strong>{{type}}</strong> tournament at <strong>{{venue}}</strong> on <strong>{{datetime_start}}</strong> are listed below:</h2>
+{{/tournament}}
+
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+  </tr>
+ {{#data}}
+  <tr>
+    <td>{{name}}</td>
+  </tr>
+  {{/data}}
+</table>
