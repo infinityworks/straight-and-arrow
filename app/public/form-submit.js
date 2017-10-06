@@ -18,6 +18,15 @@ $(document).ready(function(){
     // Put the results in a div
     posting.done(function(data) {
       $("#submitMessage").empty().append(data.message);
+      $("#submitMessage").removeClass("hidden");
+      if(data.status === 'pass'){
+        $("#submitMessage").removeClass("alert-danger");
+        $("#submitMessage").addClass("alert-success");
+        $("#registerForm").addClass("hidden");
+      }
+      else{
+        $("#submitMessage").addClass("alert-danger");
+      }
     });
   });
 });
