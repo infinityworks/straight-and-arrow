@@ -35,8 +35,8 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
-	app.get('/tournaments', showTournamentsPage);
-	app.get('/archer-list', showArchersList)
+	app.get('/tournament', showTournamentsPage);
+	app.get('/archer', showArchersList)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -81,7 +81,7 @@ function showIndexPage(req, res){
 
 
 function showTournamentsPage(req, res){
-	executeQuery(`SELECT venue, datetime_start, datetime_end, location 
+	executeQuery(`SELECT venue, datetime_start, datetime_end, location, type, arrows 
 		FROM tournament 
 		WHERE datetime_end > now() 
 		ORDER BY datetime_end`, (result) =>{
