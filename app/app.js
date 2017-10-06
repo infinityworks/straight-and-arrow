@@ -37,6 +37,7 @@ function run(){
 	app.get('/', showIndexPage);
 	app.get('/tournament', showTournamentsPage);
 	app.get('/archer', showArchersList)
+	app.get('/tournament/:id', showArcherTournament)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
@@ -110,6 +111,19 @@ function showArchersList(req, res){
 		ORDER BY name`, (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:"2017", content: content})
+
+		})
+	})
+}
+
+function showArcherTournament(req, res){
+	executeQuery(`SELECT archer.* 
+		FROM archer 
+		INNER JOIN tournament_archer ta 
+		ON archer.id = ta.archer_id
+		WHERE tournament_id = 1`, (result) => {
+		app.render('archer-list.html', {data: result}, (err,content)=>{
+			res.render('fullpage.html', {title:"Archers in Tournament", year:"2017", content: content})
 
 		})
 	})
