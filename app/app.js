@@ -35,8 +35,8 @@ function run(){
 	app.set('views', __dirname + '/layouts');
 
 	app.get('/', showIndexPage);
-	app.get('/tournaments', showTournamentsPage);
-	app.get('/archer-list', showArchersList)
+	app.get('/tournament', showTournamentsPage);
+	app.get('/archer', showArchersList)
 	// app.get('/users', require('./usertest'));
 
 	app.post('/capture-email', [
