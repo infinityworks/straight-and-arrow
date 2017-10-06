@@ -81,7 +81,7 @@ function showIndexPage(req, res){
 
 
 function showTournamentsPage(req, res){
-	executeQuery(`SELECT venue, datetime_start, datetime_end, location, type, arrows 
+	executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows 
 		FROM tournament 
 		WHERE datetime_end > now() 
 		ORDER BY datetime_end`, (result) =>{

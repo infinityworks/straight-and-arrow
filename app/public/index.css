@@ -170,6 +170,10 @@ label{
 	border-bottom: 1px solid dimgrey;
 }
 
+.table tr #clickRow{
+	
+}
+
 .table th {
     color: white;
     background-color: dimgrey;
