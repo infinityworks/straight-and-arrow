@@ -121,7 +121,7 @@ function showArcherTournament(req, res){
 		FROM archer 
 		INNER JOIN tournament_archer ta 
 		ON archer.id = ta.archer_id
-		WHERE tournament_id = 1`, (result) => {
+		WHERE tournament_id = ${req.params.id}`, (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archers in Tournament", year:"2017", content: content})
 
