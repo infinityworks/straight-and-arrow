@@ -85,7 +85,7 @@ function showTournamentsPage(req, res){
 	executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows 
 		FROM tournament 
 		WHERE datetime_end > now() 
-		ORDER BY datetime_end`, (result) =>{
+		ORDER BY datetime_end`, [], (result) =>{
 		let formattedResults = []
 
 		result.forEach((row)=> {
@@ -108,7 +108,7 @@ function showArchersList(req, res){
 		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) 
 		AS age 
 		FROM archer 
-		ORDER BY name`, (result) => {
+		ORDER BY name`, [], (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:"2017", content: content})
 
@@ -121,8 +121,8 @@ function showArcherTournament(req, res){
 		FROM archer 
 		INNER JOIN tournament_archer ta 
 		ON archer.id = ta.archer_id
-		WHERE tournament_id = ${req.params.id} ORDER BY name`, (archerDetail) => {
-			executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ${req.params.id}`, (tournamentDetail) =>{
+		WHERE tournament_id = ? ORDER BY name`, [req.params.id], (archerDetail) => {
+			executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ?`, [req.params.id], (tournamentDetail) =>{
 				let formattedResults = []
 
 				tournamentDetail.forEach((row)=> {
@@ -139,12 +139,12 @@ function showArcherTournament(req, res){
 	})
 }
 
-function executeQuery(sql, callback) {
+function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
 	connection.connect((err) => {
     	if (err) throw err;
 
-		connection.query(sql, (err, result) => {
+		connection.query(sql, params, (err, result) => {
       		if (err) throw err;
 
     		connection.destroy()
