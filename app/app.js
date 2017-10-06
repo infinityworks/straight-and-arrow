@@ -48,14 +48,14 @@ function run(){
 
 function goodRegister(req,res){
 	app.render('home.html', {submitMessage: "Thank you for registering."}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
+		res.render('fullpage.html', {title:"Thank you", year:"2017", content: content})
 	})
 }
 
 
 function badRegister(req,res){
 	app.render('home.html', {submitMessage: "Sorry invalid details, try again"}, (err,content)=>{
-		res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
+		res.render('fullpage.html', {title:"Incorrect details", year:"2017", content: content})
 	})
 }
 
@@ -96,7 +96,7 @@ function showTournamentsPage(req, res){
 		})
 
 		app.render('tournament-list.html', {tournament_result:formattedResults}, (err,content)=>{
-			res.render('fullpage.html', {title:"Welcome to IWAO", year:"2017", content: content})
+			res.render('fullpage.html', {title:"Tournament Details", year:"2017", content: content})
 		})
 	})
 }

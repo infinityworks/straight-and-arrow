@@ -27,6 +27,10 @@ body {
 
 }
 
+.nav .navbar-nav{
+	background-color: red;
+}
+
 /*@media screen and (max-width: 480px) {
     body {
         background-color: lightgreen;
@@ -136,6 +140,7 @@ label{
 
 .btn-success:hover{
 	background-color: dimgrey;
+	border-color:dimgrey;
 }
 
 .video-container { 
