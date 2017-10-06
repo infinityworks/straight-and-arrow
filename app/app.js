@@ -36,8 +36,11 @@ function run(){
 
 	app.get('/', showIndexPage);
 	app.get('/tournament', showTournamentsPage);
-	app.get('/archer', showArchersList)
+	app.get('/archer', showArchersList);
 	// app.get('/users', require('./usertest'));
+	app.get('/admin', showAdminLogin);
+
+
 
 	app.post('/capture-email', [
 		check('email').isEmail().withMessage("Please enter a valid email address."),
@@ -117,6 +120,18 @@ function showArchersList(req, res){
 		})
 	})
 }
+
+
+function showAdminLogin(req, res){
+	app.render('admin.html', {}, (err,content)=>{
+			res.render('fullpage.html', {title:"Admin Login", year:"2017", content: content})
+		})
+}
+
+
+
+
+
 
 function executeQuery(sql, callback) {
 	let connection = mysql.createConnection(config)
