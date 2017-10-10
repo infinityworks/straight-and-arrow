@@ -173,11 +173,6 @@ function showTournamentArcherScore(req, res){
             Count(case arr.score when 9 or 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
 
-            	// let score = [];
-            	// arrowTotal.forEach((row) => {
-            	// 	score.push(row)
-            	// })
-
             	if (archerScore.length == 0){
             		app.render('no-info.html', {}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Information not available", year:"2017", content: content})
