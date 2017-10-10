@@ -159,7 +159,7 @@ function showAdminLogin(req, res){
 
 //WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res){
-	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '1' ELSE '-' END AS spider
+	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '-'ELSE '' END AS spider
 		FROM arrow arr
 		INNER JOIN tournament tour
 		ON arr.tournament = tour.id
@@ -186,8 +186,6 @@ function showTournamentArcherScore(req, res){
 		})
     })
 }
-
-
 
 function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
