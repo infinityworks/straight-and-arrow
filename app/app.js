@@ -43,6 +43,8 @@ function run(){
 	// app.get('/users', require('./usertest'));
 	app.get('/admin', showAdminLogin);
 
+	app.get('/tournament/:tid/:aid', showTournamentArcherScore);
+
 
 
 	app.post('/capture-email', [
@@ -90,9 +92,9 @@ function showIndexPage(req, res){
 
 
 function showTournamentsPage(req, res){
-	executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows 
-		FROM tournament 
-		WHERE datetime_end > now() 
+	executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
+		FROM tournament
+		WHERE datetime_end > now()
 		ORDER BY datetime_end`, [], (result) =>{
 		let formattedResults = []
 
@@ -111,11 +113,11 @@ function showTournamentsPage(req, res){
 }
 
 function showArchersList(req, res){
-	executeQuery(`SELECT name, country, 
-		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - 
-		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d'))) 
-		AS age 
-		FROM archer 
+	executeQuery(`SELECT name, country,
+		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') -
+		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')))
+		AS age
+		FROM archer
 		ORDER BY name`, [], (result) => {
 		app.render('archer-list.html', {data: result}, (err,content)=>{
 			res.render('fullpage.html', {title:"Archer Details", year:"2017", content: content})
@@ -125,9 +127,9 @@ function showArchersList(req, res){
 }
 
 function showArcherTournament(req, res){
-	executeQuery(`SELECT archer.* 
-		FROM archer 
-		INNER JOIN tournament_archer ta 
+	executeQuery(`SELECT archer.*
+		FROM archer
+		INNER JOIN tournament_archer ta
 		ON archer.id = ta.archer_id
 		WHERE tournament_id = ? ORDER BY name`, [req.params.id], (archerDetail) => {
 			executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ?`, [req.params.id], (tournamentDetail) =>{
@@ -155,6 +157,30 @@ function showAdminLogin(req, res){
 }
 
 
+//WHAT WE IS DOING RIGHT NA!
+function showTournamentArcherScore(req, res){
+	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '1' ELSE '-' END AS spider
+		FROM arrow arr
+		INNER JOIN tournament tour
+		ON arr.tournament = tour.id
+		INNER JOIN archer arch
+		ON arr.archer = arch.id
+		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore)=> {
+			executeQuery(`SELECT SUM(arr.score) AS total,
+            SUM(arr.spider) AS spidtot,
+            Count(case arr.score when 0 then null else 1 END) as Hits,
+            Count(case arr.score when 0 then 1 else null END) as Misses,
+            Count(case arr.score when 9 or 10 then 1 else null END) as Golds
+            FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
+				app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
+			    res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
+			})
+		})
+    })
+}
+
+
+
 function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
 	connection.connect((err) => {
@@ -170,7 +196,3 @@ function executeQuery(sql, params, callback) {
 }
 
 run()
-
-
-
-
