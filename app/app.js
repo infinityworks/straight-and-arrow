@@ -43,6 +43,8 @@ function run(){
 	// app.get('/users', require('./usertest'));
 	app.get('/admin', showAdminLogin);
 
+	app.get('/tournament/:tid/:aid', showTournamentArcherScore);
+
 
 
 	app.post('/capture-email', [
@@ -153,6 +155,27 @@ function showAdminLogin(req, res){
 		res.render('fullpage.html', {title:"Admin Login", year:"2017", content: content})
 	})
 }
+
+
+//WHAT WE IS DOING RIGHT NA!
+function showTournamentArcherScore(req, res){
+	executeQuery(`SELECT arr.* 
+		FROM arrow arr
+		INNER JOIN tournament tour 
+		ON arr.tournament = tour.id 
+		INNER JOIN archer arch 
+		ON arr.archer = arch.id
+		WHERE arr.archer = ? ORDER BY arr.arrow`, [req.params.id], (archerScore) => {
+			
+				
+				app.render('archer-score.html', {data: archerScore}, (err,content)=>{
+			    res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
+			})
+		})
+}
+
+
+
 
 
 function executeQuery(sql, params, callback) {
