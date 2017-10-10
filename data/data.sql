@@ -23,6 +23,9 @@
 # Dump of table archer
 # ------------------------------------------------------------
 
+CREATE DATABASE IF NOT EXISTS `arrowdb`;
+USE arrowdb;
+
 DROP TABLE IF EXISTS `archer`;
 
 CREATE TABLE `archer` (
