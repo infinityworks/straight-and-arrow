@@ -166,7 +166,12 @@ function showTournamentArcherScore(req, res){
 		INNER JOIN archer arch
 		ON arr.archer = arch.id
 		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore)=> {
-			executeQuery(`SELECT SUM(arr.score) AS total, SUM(arr.spider) AS spidtot FROM arrow arr WHERE archer = ?`, [req.params.aid], (arrowTotal) =>{
+			executeQuery(`SELECT SUM(arr.score) AS total,
+            SUM(arr.spider) AS spidtot,
+            Count(case arr.score when 0 then null else 1 END) as Hits,
+            Count(case arr.score when 0 then 1 else null END) as Misses,
+            Count(case arr.score when 9 or 10 then 1 else null END) as Golds
+            FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
 				app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
 			    res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
 			})
