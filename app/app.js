@@ -159,7 +159,7 @@ function showAdminLogin(req, res){
 
 //WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res){
-	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN 'Yes'ELSE 'No' END AS spider
+	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '-'ELSE '' END AS spider
 		FROM arrow arr
 		INNER JOIN tournament tour 
 		ON arr.tournament = tour.id 
@@ -173,7 +173,10 @@ function showTournamentArcherScore(req, res){
 		})
 	})
 }
-
+// other useful queries:
+// 			SELECT COUNT(*) FROM arrow WHERE score = 0 AND archer = 3 GROUP BY score - gets the total number of misses for an archer
+// 			SELECT COUNT(*) FROM arrow WHERE spider = 1 AND archer = 3 GROUP BY spider - gets the total number of spiders for an archer
+// 			SELECT COUNT(*) FROM arrow WHERE score >= 8 AND archer = 3 
 
 
 function executeQuery(sql, params, callback) {
