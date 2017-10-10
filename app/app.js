@@ -159,22 +159,19 @@ function showAdminLogin(req, res){
 
 //WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res){
-	executeQuery(`SELECT arr.* 
+	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN 'Yes'ELSE 'No' END AS spider
 		FROM arrow arr
 		INNER JOIN tournament tour 
 		ON arr.tournament = tour.id 
 		INNER JOIN archer arch 
 		ON arr.archer = arch.id
-		WHERE arr.archer = ? ORDER BY arr.arrow`, [req.params.id], (archerScore) => {
-			
-				
+		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore) => {
+
 				app.render('archer-score.html', {data: archerScore}, (err,content)=>{
 			    res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
 			})
 		})
 }
-
-
 
 
 
