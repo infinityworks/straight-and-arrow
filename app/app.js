@@ -18,6 +18,12 @@ const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
 
+const renderer = require('./renderer')(app);
+const logger = require('./logger');
+
+const tournamentData = require('./data/tournament')(executeQuery);
+const tournamentController = require('./controllers/tournament')(logger, renderer, tournamentData);
+
 
 function parseDate(date) {
     let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
@@ -48,7 +54,9 @@ function run() {
     // app.get('/users', require('./usertest'));
     app.get('/admin', showAdminLogin);
 
-    app.get('/tournament/:tid/:aid', showTournamentArcherScore);
+    
+    // I'mma test this endpoint innit
+    app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
 
 
 
@@ -184,63 +192,6 @@ function showAdminLogin(req, res) {
             title: "Admin Login",
             year: "2017",
             content: content
-        })
-    })
-}
-
-
-//WHAT WE IS DOING RIGHT NA!
-function showTournamentArcherScore(req, res) {
-    executeQuery(`SELECT arrow, score, spider
-		FROM arrow arr
-		INNER JOIN tournament tour
-		ON arr.tournament = tour.id
-		INNER JOIN archer arch
-		ON arr.archer = arch.id
-		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore) => {
-        executeQuery(`SELECT SUM(arr.score) AS total,
-            SUM(arr.spider) AS spidtot,
-            Count(case arr.score when 0 then null else 1 END) as Hits,
-            Count(case arr.score when 0 then 1 else null END) as Misses,
-            Count(case arr.score when 9 or 10 then 1 else null END) as Golds
-            FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) => {
-            let tabulatedResults = []
-            let counter = 0
-            let endSelection = []
-
-
-            archerScore.forEach((row) => {
-                counter++
-                endSelection.push(row)
-                if (counter % 6 == 0) {
-                    tabulatedResults.push({
-                        endIndex: endSelection
-                    }) // endCounter:endSelection)
-                    endSelection = []
-                }
-            })
-            //console.log(tabulatedResults[0])
-            if (archerScore.length == 0) {
-                app.render('no-info.html', {}, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Information not available",
-                        year: "2017",
-                        content: content
-                    })
-
-                })
-            } else {
-                app.render('archer-score.html', {
-                    data: tabulatedResults,
-                    scoreSend: arrowTotal
-                }, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Archer Score for Tournament",
-                        year: "2017",
-                        content: content
-                    })
-                })
-            }
         })
     })
 }
