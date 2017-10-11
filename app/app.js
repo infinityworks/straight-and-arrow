@@ -159,7 +159,7 @@ function showAdminLogin(req, res){
 
 //WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res){
-	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '1' ELSE '-' END AS spider
+	executeQuery(`SELECT arrow, score, spider
 		FROM arrow arr
 		INNER JOIN tournament tour
 		ON arr.tournament = tour.id
@@ -173,10 +173,25 @@ function showTournamentArcherScore(req, res){
             Count(case arr.score when 9 or 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
 
-            	// let score = [];
-            	// arrowTotal.forEach((row) => {
-            	// 	score.push(row)
-            	// })
+            	let xmResults = []
+
+            	archerScore.forEach((row)=>{
+            		if (row.score == 0){
+
+        				row.score = 'M'
+
+            		}
+            		else if (row.score == 10 && row.spider == 1){
+
+            			row.score = 'X'
+
+            		}
+   					else{
+
+   						row.score = row.score
+   					}
+            		xmResults.push(row)
+            	})
 
             	if (archerScore.length == 0){
             		app.render('no-info.html', {}, (err,content)=>{
@@ -191,8 +206,6 @@ function showTournamentArcherScore(req, res){
 		})
     })
 }
-
-
 
 function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
