@@ -178,7 +178,7 @@ function showTournamentArcherScore(req, res){
             	// 	score.push(row)
             	// })
 
-            	if (archerScore.length <= 0){
+            	if (archerScore.length == 0){
             		app.render('no-info.html', {}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Information not available", year:"2017", content: content})
             		
