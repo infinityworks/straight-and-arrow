@@ -159,7 +159,7 @@ function showAdminLogin(req, res){
 
 //WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res){
-	executeQuery(`SELECT arrow, score, CASE spider WHEN 1 THEN '1' ELSE '-' END AS spider
+	executeQuery(`SELECT arrow, score, spider 
 		FROM arrow arr
 		INNER JOIN tournament tour
 		ON arr.tournament = tour.id
@@ -172,19 +172,30 @@ function showTournamentArcherScore(req, res){
             Count(case arr.score when 0 then 1 else null END) as Misses,
             Count(case arr.score when 9 or 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
+            	let	tabulatedResults = []
+            	let counter = 0
 
-            	// let score = [];
-            	// arrowTotal.forEach((row) => {
-            	// 	score.push(row)
-            	// })
+            	let endSelection = []
+            	archerScore.forEach((row)=> {
+            		counter++
+            		endSelection.push(row)
+            		if (counter%6==0){
+            			tabulatedResults.push({endIndex:endSelection}) // endCounter:endSelection)
+   
+            			endSelection=[]
+            		}
 
+				})
+				
+            	console.log(tabulatedResults +"aaaa")
+            	console.log(tabulatedResults[0])
             	if (archerScore.length == 0){
             		app.render('no-info.html', {}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Information not available", year:"2017", content: content})
             		
 					})
             	} else {
-            		app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
+            		app.render('archer-score.html', {data: tabulatedResults, scoreSend: arrowTotal}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
 			    	})
             	}	
