@@ -172,40 +172,45 @@ function showTournamentArcherScore(req, res){
             Count(case arr.score when 0 then 1 else null END) as Misses,
             Count(case arr.score when 9 or 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
+            	let	tabulatedResults = []
+            	let counter = 0
+            	let endSelection = []
+            	archerScore.forEach((row)=> {
+            		counter++
+            		endSelection.push(row)
+            		if (counter%6==0){
 
-            	let xmResults = []
+            			endSelection.forEach((row)=>{
 
-            	archerScore.forEach((row)=>{
-            		if (row.score == 0){
-
-        				row.score = 'M'
-
+            				if (row.score == 0){
+            					row.score = 'M'
+            				}
+            				else if (row.score == 10 && row.spider == 1){
+            					row.score = 'X'
+							}
+   							else{
+   								row.score = row.score
+							}
+							endSelection.push(row)
+						})
+						
+					tabulatedResults.push({endSelection}) 
+            		endSelection=[]
             		}
-            		else if (row.score == 10 && row.spider == 1){
-
-            			row.score = 'X'
-
-            		}
-   					else{
-
-   						row.score = row.score
-   					}
-            		xmResults.push(row)
-            	})
-
+			})
             	if (archerScore.length == 0){
             		app.render('no-info.html', {}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Information not available", year:"2017", content: content})
-            		
-					})
+				})
             	} else {
-            		app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
+            		app.render('archer-score.html', {data: tabulatedResults, scoreSend: arrowTotal}, (err,content)=>{
 			    	res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
-			    	})
-            	}	
+			    })
+            }	
 		})
     })
 }
+
 
 function executeQuery(sql, params, callback) {
 	let connection = mysql.createConnection(config)
@@ -222,3 +227,45 @@ function executeQuery(sql, params, callback) {
 }
 
 run()
+
+
+
+
+
+        //     	let xmResults = []
+
+        //     	archerScore.forEach((row)=>{
+        //     		if (row.score == 0){
+
+        // 				row.score = 'M'
+
+        //     		}
+        //     		else if (row.score == 10 && row.spider == 1){
+
+        //     			row.score = 'X'
+
+        //     		}
+   					// else{
+
+   					// 	row.score = row.score
+   					// }
+        //     		xmResults.push(row)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

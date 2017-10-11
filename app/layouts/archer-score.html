@@ -1,20 +1,46 @@
-{{#info}}
-<p>The total score was {{total}}</p>
-{{/info}}
-
 <table class="table table-striped">
+
+{{#data.0}}
   <tr>
-    <th>Arrow</th>
-    <th>Score</th>
-    <th>Spider</th>
-  </tr>
-{{#data}}
-  <tr>
-    <td>{{arrow}}</td>
+{{#endSelection}}
+
+
     <td>{{score}}</td>
-    <td>{{spider}}</td>
+
+
+{{/endSelection}}
   </tr>
-{{/data}}
+
+{{/data.0}}
+
+<td>aaa</td>
+
+{{#data.1}}
+  <tr>
+{{#endSelection}}
+
+    <td>{{score}}</td>
+
+{{/endSelection}}
+  </tr>
+<td>bbb</td>
+{{/data.1}}
+
+
+
+{{#data.3}}
+  <tr>
+{{#endSelection}}
+
+    <td>{{score}}</td>
+
+{{/endSelection}}
+  </tr>
+
+<td>ccc</td>
+{{/data.3}}
+
+
 {{#scoreSend}}
 <tr>
     <td>Total</td>
