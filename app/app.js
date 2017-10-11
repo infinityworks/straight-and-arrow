@@ -172,9 +172,22 @@ function showTournamentArcherScore(req, res){
             Count(case arr.score when 0 then 1 else null END) as Misses,
             Count(case arr.score when 9 or 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) =>{
-				app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
-			    res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
-			})
+
+            	// let score = [];
+            	// arrowTotal.forEach((row) => {
+            	// 	score.push(row)
+            	// })
+
+            	if (archerScore.length == 0){
+            		app.render('no-info.html', {}, (err,content)=>{
+			    	res.render('fullpage.html', {title:"Information not available", year:"2017", content: content})
+            		
+					})
+            	} else {
+            		app.render('archer-score.html', {data: archerScore, scoreSend: arrowTotal}, (err,content)=>{
+			    	res.render('fullpage.html', {title:"Archer Score for Tournament", year:"2017", content: content})
+			    	})
+            	}	
 		})
     })
 }
