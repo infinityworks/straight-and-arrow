@@ -14,6 +14,7 @@ const config = {
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
 }
+
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
@@ -202,7 +203,7 @@ function showTournamentArcherScore(req, res) {
             SUM(arr.spider) AS spidtot,
             Count(case arr.score when 0 then null else 1 END) as Hits,
             Count(case arr.score when 0 then 1 else null END) as Misses,
-            Count(case arr.score when 9 or 10 then 1 else null END) as Golds
+            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) => {
             let tabulatedResults = []
             let counter = 0
@@ -210,16 +211,22 @@ function showTournamentArcherScore(req, res) {
 
 
             archerScore.forEach((row) => {
+            	if (row.score == 0){
+             		row.score = 'M'
+             	}
+             	if (row.spider.lastIndexOf(1) !== -1){
+             	    row.score = 'X'
+ 				}
                 counter++
                 endSelection.push(row)
                 if (counter % 6 == 0) {
                     tabulatedResults.push({
                         endIndex: endSelection
-                    }) // endCounter:endSelection)
+                    }) 
                     endSelection = []
                 }
             })
-            //console.log(tabulatedResults[0])
+            
             if (archerScore.length == 0) {
                 app.render('no-info.html', {}, (err, content) => {
                     res.render('fullpage.html', {
