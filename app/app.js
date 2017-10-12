@@ -14,6 +14,7 @@ const config = {
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
 }
+
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
@@ -210,16 +211,22 @@ function showTournamentArcherScore(req, res) {
 
 
             archerScore.forEach((row) => {
+            	if (row.score == 0){
+             		row.score = 'M'
+             	}
+             	if (row.spider.lastIndexOf(1) !== -1){
+             	    row.score = 'X'
+ 				}
                 counter++
                 endSelection.push(row)
                 if (counter % 6 == 0) {
                     tabulatedResults.push({
                         endIndex: endSelection
-                    }) // endCounter:endSelection)
+                    }) 
                     endSelection = []
                 }
             })
-            //console.log(tabulatedResults[0])
+            
             if (archerScore.length == 0) {
                 app.render('no-info.html', {}, (err, content) => {
                     res.render('fullpage.html', {
