@@ -202,7 +202,7 @@ function showTournamentArcherScore(req, res) {
             SUM(arr.spider) AS spidtot,
             Count(case arr.score when 0 then null else 1 END) as Hits,
             Count(case arr.score when 0 then 1 else null END) as Misses,
-            Count(case arr.score when 9 10 then 1 when 10 then 1 else null END) as Golds
+            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
             FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) => {
             let tabulatedResults = []
             let counter = 0
