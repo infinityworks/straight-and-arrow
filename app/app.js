@@ -49,6 +49,7 @@ function run() {
     // app.get('/users', require('./usertest'));
     app.get('/admin', showAdminLogin);
 
+    app.get('/tournament/:tid/result', showTournamentScore);
     app.get('/tournament/:tid/:aid', showTournamentArcherScore);
 
 
@@ -190,7 +191,6 @@ function showAdminLogin(req, res) {
 }
 
 
-//WHAT WE IS DOING RIGHT NA!
 function showTournamentArcherScore(req, res) {
     executeQuery(`SELECT arrow, score, spider
 		FROM arrow arr
@@ -222,11 +222,11 @@ function showTournamentArcherScore(req, res) {
                 if (counter % 6 == 0) {
                     tabulatedResults.push({
                         endIndex: endSelection
-                    }) 
+                    })
                     endSelection = []
                 }
             })
-            
+
             if (archerScore.length == 0) {
                 app.render('no-info.html', {}, (err, content) => {
                     res.render('fullpage.html', {
@@ -251,6 +251,85 @@ function showTournamentArcherScore(req, res) {
         })
     })
 }
+
+function showTournamentScore(req, res) {
+    executeQuery(`SELECT archer_id FROM tournament_archer WHERE tournament_id = ?`, [req.params.tid], (archerIDs) =>{
+        archerIDs.forEach((archerID)=>{
+            executeQuery(`SELECT arrow, score, spider
+                FROM arrow arr
+                WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, archerID.archer_id], (singleArcherData) => {
+                        executeQuery(`SELECT SUM(arr.score) AS total,
+                            SUM(arr.spider) AS spidtot,
+                            Count(case arr.score when 0 then null else 1 END) as Hits,
+                            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
+                            FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
+                                let tournamentScores = []
+                                let archerScores = []
+                                let counter = 0
+                                let endCounter = 0
+                                singleArcherData.forEach((row) => {
+                                    let endSelection = []
+                                    if (row.score == 0){
+                                        row.score = 'M'
+                                    }
+                                    if (row.spider.lastIndexOf(1) !== -1){
+                                        row.score = 'X'
+                                    }
+                                    counter++
+                                    endSelection.push(row)
+                                    if (counter % 6 == 0) {
+                                        archerScores.push({
+                                            endIndex: endSelection
+                                        })
+                                        endSelection = []
+                                        endCounter++
+                                    }
+                                    if (endCounter % 5 == 0) {
+                                        tournamentScores.push({archerScores})
+                                        archerScores = []
+                                    }
+                                    console.log(tournamentScores[0])
+                                })
+                            })
+                })
+        })
+    })
+}
+
+
+
+
+
+
+//             allTabulatedResults.push({tabulatedResults})
+//             console.log(allTabulatedResults)
+//     })
+//
+//
+//
+//             if (archerScore.length == 0) {
+//                 app.render('no-info.html', {}, (err, content) => {
+//                     res.render('fullpage.html', {
+//                         title: "Information not available",
+//                         year: "2017",
+//                         content: content
+//                     })
+//
+//                 })
+//             } else {
+//                 app.render('archer-score.html', {
+//                     data: allTabulatedResults,
+//                     scoreSend: arrowTotal
+//                 }, (err, content) => {
+//                     res.render('fullpage.html', {
+//                         title: "Archer Score for Tournament",
+//                         year: "2017" + "dbhjelnrngfd",
+//                         content: content
+//                     })
+//                 })
+//             }
+//     })
+// }
 
 
 
