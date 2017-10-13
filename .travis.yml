@@ -1,7 +1,11 @@
 language: node_js
 sudo: required
 services:
-  - docker
+- docker
 after_success:
-  - bin/docker_push.sh
-  - bin/ecs_deploy.sh
+- bin/docker_push.sh
+- bin/ecs_deploy.sh
+notifications:
+  slack:
+    rooms:
+      secure: RWdM7k/wLA8HmCYiNYFfkpXAvWecghb+YOer4DuyLdCDFIhziKNfe4+hTr/+vbenew2APUmvsW+ym11rbkdcTWKJGZlVxvu4R4cVehHi+71NxLjb3xA36W5I8mfYTxWnehbOj6yXpv7UGLLQyBmhSO0tSvQoBO2L7PZbJIg9QMav/wNpR7tEUHeXdS23Z4r6n+RDRtiyMwkprx9OT8hYHwDe3YfIGqVYm9CwS2QNjOdj5YHyf9tVwPJ3V4QSgpTdJX7PfhqR0GIKnIU2i3cgla8Iy9B+nAJsK+8ZHVHOXoTULiKH8gJ4zzTZZ/qmz7Ia1Uya45zqF1nUzFx1NEZ3W+RasFTwV7KUvGuJR6uLe0Cm4ARW/Iva3NlQgB7zNPtuomhbYzF7Bc3ZNNves9odaLPu0pGbcVa0ZBOzZ3r2V+DH/hrcjmaU35TU22zv3TWmFL6LkYFITgTiHTGq5t3l8SBZV28W1PXB1DHRPmXFnMYRqEAcDGayyVVC4XuH69lMSHITGAalVZNo8UvBOAh9g7yy0JK3MJGITIGt+wBRATiBqpVK6sGPtrpYyDML5/DcgfXs+35zsaV5Vd8wl8yQ7Q8VKNJ8RI56YleFR90z5GoleXkNlxfNmt4GzAOwKivy8ktZwTizghzR+/iv0sxzA5NpYJDuk3xTRzif027MSGc=
