@@ -267,22 +267,22 @@ function showTournamentScore(req, res) {
                             FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
                                 stats.push({singleArcherScore})
                                 tournamentScores.push(tabulateResult(singleArcherData))
-                            })
-                })
-        })
-        for (object in tournamentScores){
-            console.log(object, '= ', JSON.stringify(tournamentScores[object]))
-        }
-    })
 
-    app.render('archer-score.html', {
-        data: tournamentScores,
-        scoreSend: stats
-    }, (err, content) => {
-        res.render('fullpage.html', {
-            title: "Archer Score for Tournament",
-            year: "2017",
-            content: content
+                                if (archerIDs.length == tournamentScores.length){
+                                    console.log(tournamentScores)
+                                    app.render('archer-score.html', {
+                                        data: tournamentScores,
+                                        scoreSend: stats
+                                    }, (err, content) => {
+                                        res.render('fullpage.html', {
+                                            title: "Archer Score for Tournament",
+                                            year: "2017",
+                                            content: content
+                                    })
+                                })
+                            }
+                        })
+                })
         })
     })
 }
@@ -306,8 +306,12 @@ function tabulateResult(archerScore){
             tabulatedResults.push({
                 endIndex: endSelection
             })
+            endSelection = []
         }
     })
+    for (object in tabulatedResults){
+        console.log(object, '= ', JSON.stringify(tabulatedResults[object]))
+    }
     return tabulatedResults
 }
 
