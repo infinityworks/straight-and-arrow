@@ -270,7 +270,7 @@ function showTournamentScore(req, res) {
 
                                 if (archerIDs.length == tournamentScores.length){
                                     console.log(tournamentScores)
-                                    app.render('archer-score.html', {
+                                    app.render('tournament-score.html', {
                                         data: tournamentScores,
                                         scoreSend: stats
                                     }, (err, content) => {
