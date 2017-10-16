@@ -1,7 +1,75 @@
+<!-- {{#data}}
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>E&#47T</th>
+
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>E&#47T</th>
+
+    </tr>
+    {{#data.0.0}}
+    <tr>
+        {{#endIndex}}
+            <td>{{score}}</td>
+        {{/endIndex}}
+    {{/data.0.0}}
+    <td bgcolor='dimgrey'></td>
+    {{#data.0.1}}
+        {{#endIndex}}
+            <td>{{score}}</td>
+        {{/endIndex}}
+    {{/data.0.1}}
+    <td bgcolor='dimgrey'></td>
+    </tr>
+
+    {{#data.0.2}}
+    <tr>
+        {{#endIndex}}
+            <td>{{score}}</td>
+        {{/endIndex}}
+    {{/data.0.2}}
+    <td bgcolor='dimgrey'></td>
+    {{#data.0.3}}
+        {{#endIndex}}
+            <td>{{score}}</td>
+        {{/endIndex}}
+    {{/data.0.3}}
+    <td bgcolor='dimgrey'></td>
+    </tr>
+
+    {{#data.0.4}}
+    <tr>
+        {{#endIndex}}
+            <td>{{score}}</td>
+        {{/endIndex}}
+    {{/data.0.4}}
+    <td bgcolor='dimgrey'></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td bgcolor='dimgrey'></td>
+    </tr>
+</table>
+{{/data}} -->
+
+
 {{#data}}
 <table class="table table-striped">
-{{#data.0.0}}
-    <!-- <tr>
+    <tr>
         <th></th>
         <th></th>
         <th></th>
@@ -18,64 +86,61 @@
         <th></th>
         <th>E&#47T</th>
 
-    </tr> -->
+    </tr>
+        {{#0}}
     <tr>
         {{#endIndex}}
+            {{#.}}
             <td>{{score}}</td>
+            {{/.}}
         {{/endIndex}}
+        {{/0}}
+        <td bgcolor='dimgrey'></td>
+        {{#1}}
+        {{#endIndex}}
+            {{#.}}
+            <td>{{score}}</td>
+            {{/.}}
+        {{/endIndex}}
+        {{/1}}
         <td bgcolor='dimgrey'></td>
     </tr>
-        {{/data.0.0}}
-</table>
-
-{{#scoreSend.0}}
-<table class="table table-striped">
-    <th>Total score: {{total}}</th>
-    <th>Total spiders hit: {{spidtot}}</th>
-    <th>Total Hits: {{Hits}}</th>
-    <th>Total Golds: {{Golds}}</th>
-</table>
-{{/scoreSend.0}}
-
-
-
-
-<table class="table table-striped">
-{{#data.1}}
-    <!-- <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>E&#47T</th>
-
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>E&#47T</th>
-
-    </tr> -->
+        {{#2}}
     <tr>
         {{#endIndex}}
+            {{#.}}
             <td>{{score}}</td>
+            {{/.}}
         {{/endIndex}}
-
+        {{/2}}
+        <td bgcolor='dimgrey'></td>
+        {{#3}}
+        {{#endIndex}}
+            {{#.}}
+            <td>{{score}}</td>
+            {{/.}}
+        {{/endIndex}}
+        {{/3}}
         <td bgcolor='dimgrey'></td>
     </tr>
-{{/data.1}}
+        {{#4}}
+    <tr>
+        {{#endIndex}}
+            {{#.}}
+            <td>{{score}}</td>
+            {{/.}}
+        {{/endIndex}}
+        {{/4}}
+        <td bgcolor='dimgrey'></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td bgcolor='dimgrey'></td>
+    </tr>
+
 </table>
+<br><br><br>
 {{/data}}
-
-{{#scoreSend.1}}
-<table class="table table-striped">
-    <th>Total score: {{total}}</th>
-    <th>Total spiders hit: {{spidtot}}</th>
-    <th>Total Hits: {{Hits}}</th>
-    <th>Total Golds: {{Golds}}</th>
-</table>
-{{/scoreSend.1}}
