@@ -5,10 +5,12 @@
 <table class="table table-striped">
   <tr>
     <th>Name</th>
+    <th>Results</th>
   </tr>
  {{#data}}
   <tr>
     <td>{{name}}</td>
+	<td id="{{#tournament}}{{status}}{{/tournament}}"><a href="/tournament/{{#tournament}}{{id}}{{/tournament}}/{{id}}">{{#tournament}}{{status}}{{/tournament}}</a></td>
   </tr>
   {{/data}}
 </table>

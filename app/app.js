@@ -44,7 +44,7 @@ function run() {
     app.get('/tournament', showTournamentsPage);
 
     app.get('/archer', showArchersList)
-    app.get('/tournament/:id', showArcherTournament)
+    app.get('/tournament/:tid', showArcherTournament)
 
     // app.get('/users', require('./usertest'));
     app.get('/admin', showAdminLogin);
@@ -105,8 +105,7 @@ function showIndexPage(req, res) {
 function showTournamentsPage(req, res) {
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
 		FROM tournament
-		
-		ORDER BY datetime_end`, [], (result) => {
+		ORDER BY datetime_start`, [], (result) => {
             let formattedResults = []
             let now = new Date()
 
@@ -165,11 +164,20 @@ function showArcherTournament(req, res) {
 		FROM archer
 		INNER JOIN tournament_archer ta
 		ON archer.id = ta.archer_id
-		WHERE tournament_id = ? ORDER BY name`, [req.params.id], (archerDetail) => {
-        executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ?`, [req.params.id], (tournamentDetail) => {
+		WHERE tournament_id = ? ORDER BY name`, [req.params.tid], (archerDetail) => {
+        executeQuery(`SELECT venue, datetime_start, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
+            let now = new Date()
 
             tournamentDetail.forEach((row) => {
+
+                if (row.datetime_start > now){
+                    row.status = "Upcoming"
+                } else if (row.datetime_start <= now && row.datetime_end > now){
+                    row.status = "Live-Result"
+                } else {
+                   row.status = "Result"
+                }
 
                 row.datetime_start = parseDate(row.datetime_start)
                 row.datetime_end = parseDate(row.datetime_end)
@@ -320,9 +328,6 @@ function tabulateResult(archerScore){
             endSelection = []
         }
     })
-    for (object in tabulatedResults){
-        console.log(object, '= ', JSON.stringify(tabulatedResults[object]))
-    }
     return tabulatedResults
 }
 
