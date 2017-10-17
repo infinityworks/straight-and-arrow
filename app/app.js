@@ -105,28 +105,39 @@ function showIndexPage(req, res) {
 function showTournamentsPage(req, res) {
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
 		FROM tournament
-		WHERE datetime_end > now()
+		
 		ORDER BY datetime_end`, [], (result) => {
             let formattedResults = []
+            let now = new Date()
 
             result.forEach((row) => {
 
-                    row.datetime_start = parseDate(row.datetime_start)
-                    row.datetime_end = parseDate(row.datetime_end)
+                if (row.datetime_start > now){
+                    row.status = "Upcoming"
+                } else if (row.datetime_start <= now && row.datetime_end > now){
+                    row.status = "Live Data"
+                } else {
+                   row.status = "Past"
+                }
 
-                    formattedResults.push(row)
-                })
+            row.datetime_start = parseDate(row.datetime_start)
+            row.datetime_end = parseDate(row.datetime_end)
+
+            formattedResults.push(row)
+
             })
 
-            app.render('tournament-list.html', {
-                tournament_result: formattedResults
-            }, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Tournament Details",
-                    year: "2017",
-                    content: content
-                })
+
+        app.render('tournament-list.html', {
+            tournament_result: formattedResults
+        }, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Tournament Details",
+                year: "2017",
+                content: content
             })
+        })
+    })
 }
 
 function showArchersList(req, res) {
