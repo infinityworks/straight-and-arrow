@@ -108,20 +108,11 @@ function showTournamentsPage(req, res) {
 		WHERE datetime_end > now()
 		ORDER BY datetime_end`, [], (result) => {
             let formattedResults = []
-            let now = parseDate(moment())
 
             result.forEach((row) => {
 
-                row.datetime_start = parseDate(row.datetime_start)
-                row.datetime_end = parseDate(row.datetime_end)
-
-                   if (row.datetime_start > now){
-                        row.push({status:"Upcoming"});
-                    } else if (row.datetime_start >= now && row.datetime_end < now) {
-                        row.push({status:"Live Data"});
-                    } else {
-                        row.push({status:"past"});
-                    }
+                    row.datetime_start = parseDate(row.datetime_start)
+                    row.datetime_end = parseDate(row.datetime_end)
 
                     formattedResults.push(row)
                 })
