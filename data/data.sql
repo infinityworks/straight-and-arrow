@@ -161,7 +161,7 @@ LOCK TABLES `tournament` WRITE;
 
 INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`, `type`, `arrows`)
 VALUES
-	(1,'IW Board Room','2017-12-12 09:00:00','2017-12-13 17:45:00','Leeds','Portsmouth',60),
+	(1,'IW Board Room','2017-10-16 09:00:00','2017-12-13 17:45:00','Leeds','Portsmouth',60),
 	(2,'Plaza de Espana','2018-08-01 00:00:00','2018-08-14 00:00:00','Barcelona','Portsmouth',60),
 	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney','Portsmouth',60),
 	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds','Portsmouth',60);

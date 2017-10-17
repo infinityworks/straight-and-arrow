@@ -165,7 +165,7 @@ function showArcherTournament(req, res) {
 		INNER JOIN tournament_archer ta
 		ON archer.id = ta.archer_id
 		WHERE tournament_id = ? ORDER BY name`, [req.params.tid], (archerDetail) => {
-        executeQuery(`SELECT venue, datetime_start, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
+        executeQuery(`SELECT venue, datetime_start, datetime_end, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
             let now = new Date()
 
