@@ -115,9 +115,9 @@ function showTournamentsPage(req, res) {
                 if (row.datetime_start > now){
                     row.status = "Upcoming"
                 } else if (row.datetime_start <= now && row.datetime_end > now){
-                    row.status = "Live Data"
+                    row.status = "Live-Result"
                 } else {
-                   row.status = "Past"
+                   row.status = "Result"
                 }
 
             row.datetime_start = parseDate(row.datetime_start)
