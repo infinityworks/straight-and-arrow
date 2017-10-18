@@ -20,8 +20,8 @@ const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
 
-const tournamentData = require('./data/tournament-data')(executeQuery);
-const tournamentController = require('./tournament-controller')(executeQuery, app, tournamentData)
+const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
+const tournamentController = require('./tournament-controller')(executeQuery, app, tournamentArcherScore)
 
 
 function parseDate(date) {

@@ -1,7 +1,7 @@
 
 
 
-module.exports = (executeQuery, app, tournamentData) => {
+module.exports = (executeQuery, app, tournamentArcherScore) => {
 
    return { showTournamentArcherScore };
 
@@ -13,7 +13,7 @@ module.exports = (executeQuery, app, tournamentData) => {
         const tournamentId = req.params.tid;
         const archerId = req.params.aid;
 
-        tournamentData.getTournamentArcherScore(tournamentId, archerId, (archerScore, arrowTotal) => {
+        tournamentArcherScore.getTournamentArcherScore(tournamentId, archerId, (archerScore, arrowTotal) => {
 
 
             let tabulatedResults = []
