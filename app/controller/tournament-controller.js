@@ -1,11 +1,6 @@
-
-
-
 module.exports = (executeQuery, app, tournamentArcherScore) => {
 
    return { showTournamentArcherScore };
-
-
 
 
     function showTournamentArcherScore(req, res) {
