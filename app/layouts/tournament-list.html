@@ -1,11 +1,11 @@
 <table class="table table-striped">
   <tr>
-    <th>Tournament</th> 
+    <th>Tournament</th>
     <th>End Date</th>
     <th>Location</th>
     <th>Type</th>
     <th>Number of Arrows</th>
-  </tr>
+    <th>Results</th>
   {{#tournament_result}}
     <tr>
       <td><a href="/tournament/{{id}}">{{venue}} on {{datetime_start}}</a></td>
@@ -13,6 +13,9 @@
       <td>{{location}}</td>
       <td>{{type}}</td>
       <td>{{arrows}}</td>
+      <td id='{{status}}'><a href="/tournament/{{id}}/result">{{status}}</a></td>
     </tr>
    {{/tournament_result}}
 </table>
+
+

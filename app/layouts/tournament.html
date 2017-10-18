@@ -1,14 +1,18 @@
 {{#tournament}}
-<h2> The archers playing in the <strong>{{type}}</strong> tournament at <strong>{{venue}}</strong> on <strong>{{datetime_start}}</strong> are listed below:</h2>
+<h2> Details for the <strong>{{type}}</strong> tournament at <strong>{{venue}}</strong> on <strong>{{datetime_start}}</strong></h2>
+<p id="{{status}}"">Results for the full tournament can be found <a href="/tournament/{{id}}/result">here</a></p>
 {{/tournament}}
 
+<br><br>
 <table class="table table-striped">
   <tr>
     <th>Name</th>
+    <th>Results</th>
   </tr>
  {{#data}}
   <tr>
     <td>{{name}}</td>
+	<td id="{{#tournament}}{{status}}{{/tournament}}"><a href="/tournament/{{#tournament}}{{id}}{{/tournament}}/{{id}}">{{#tournament}}{{status}}{{/tournament}}</a></td>
   </tr>
   {{/data}}
 </table>
