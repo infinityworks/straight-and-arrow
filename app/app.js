@@ -61,6 +61,8 @@ function run() {
         check('email').isEmail().withMessage("Please enter a valid email address."),
         check('fullname').not().isEmpty().withMessage("Please enter a name.")
     ], createLog)
+    app.post('/tournament-input', sendDatabaseEntry)
+
 
 }
 
@@ -92,6 +94,18 @@ function createLog(req, res) {
         goodRegister(req, res)
     }
 }
+
+function sendDatabaseEntry(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.mapped());
+        badRegister(req, res)
+    } else {
+        console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
+        goodRegister(req, res)
+    }
+}
+
 
 
 function showIndexPage(req, res) {
