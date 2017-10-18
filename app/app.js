@@ -123,20 +123,18 @@ function showTournamentsPage(req, res) {
             row.datetime_end = parseDate(row.datetime_end)
 
             formattedResults.push(row)
-
             })
 
-
-        app.render('tournament-list.html', {
-            tournament_result: formattedResults
-        }, (err, content) => {
-            res.render('fullpage.html', {
-                title: "Tournament Details",
-                year: "2017",
-                content: content
+            app.render('tournament-list.html', {
+                tournament_result: formattedResults
+            }, (err, content) => {
+                res.render('fullpage.html', {
+                    title: "Tournament Details",
+                    year: "2017",
+                    content: content
+                })
             })
         })
-    })
 }
 
 function showArchersList(req, res) {
@@ -273,8 +271,11 @@ function showTournamentArcherScore(req, res) {
 
 function showTournamentScore(req, res) {
     let tournamentScores = []
-    let stats = []
-    executeQuery(`SELECT archer_id FROM tournament_archer WHERE tournament_id = ?`, [req.params.tid], (archerIDs) =>{
+    executeQuery(`SELECT archer_id, archer.name
+        FROM tournament_archer
+        INNER JOIN archer ON archer_id = archer.id
+        WHERE tournament_id = ?`,
+        [req.params.tid], (archerIDs) =>{
         archerIDs.forEach((archerID)=>{
             executeQuery(`SELECT arrow, score, spider
                 FROM arrow arr
@@ -284,14 +285,15 @@ function showTournamentScore(req, res) {
                             Count(case arr.score when 0 then null else 1 END) as Hits,
                             Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
                             FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
-                                stats.push({singleArcherScore})
-                                tournamentScores.push(tabulateResult(singleArcherData))
+                                let archer = []
+                                archer.id = archerID
+                                archer.ends = tabulateResult(singleArcherData)
+                                archer.summary = singleArcherScore
+                                tournamentScores.push(archer)
 
                                 if (archerIDs.length == tournamentScores.length){
-                                    console.log(tournamentScores)
                                     app.render('tournament-score.html', {
                                         data: tournamentScores,
-                                        scoreSend: stats
                                     }, (err, content) => {
                                         res.render('fullpage.html', {
                                             title: "Archer Score for Tournament",
@@ -327,7 +329,9 @@ function tabulateResult(archerScore){
             })
             endSelection = []
         }
+
     })
+
     return tabulatedResults
 }
 
