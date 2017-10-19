@@ -15,9 +15,23 @@ const config = {
     database: process.env.DB_NAME
 }
 
+
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
+
+//model
+const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
+const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
+const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
+const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
+const tabulatedResults = require('./data/mTabulateResults');
+
+
+//controller
+const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
+const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
+const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 
 
 function parseDate(date) {
@@ -46,18 +60,20 @@ function run() {
     app.get('/archer', showArchersList)
     app.get('/tournament/:tid', showArcherTournament)
 
+    app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
+    app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
+
     // app.get('/users', require('./usertest'));
-    app.get('/admin', showAdminLogin);
-
-    app.get('/tournament/:tid/result', showTournamentScore);
-    app.get('/tournament/:tid/:aid', showTournamentArcherScore);
-
-
+    app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+    
 
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
         check('fullname').not().isEmpty().withMessage("Please enter a name.")
     ], createLog)
+    app.post('/tournament-input', sendDatabaseEntry)
+
+
 }
 
 
@@ -88,6 +104,18 @@ function createLog(req, res) {
         goodRegister(req, res)
     }
 }
+
+function sendDatabaseEntry(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.mapped());
+        badRegister(req, res)
+    } else {
+        console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
+        goodRegister(req, res)
+    }
+}
+
 
 
 function showIndexPage(req, res) {
@@ -197,143 +225,64 @@ function showArcherTournament(req, res) {
 }
 
 
-function showAdminLogin(req, res) {
-    app.render('admin.html', {}, (err, content) => {
-        res.render('fullpage.html', {
-            title: "Admin Login",
-            year: "2017",
-            content: content
-        })
-    })
-}
+// function showAdminLogin(req, res) {
+//     app.render('admin.html', {}, (err, content) => {
+//         res.render('fullpage.html', {
+//             title: "Admin Login",
+//             year: "2017",
+//             content: content
+//         })
+//     })
+// }
 
 
-function showTournamentArcherScore(req, res) {
-    executeQuery(`SELECT arrow, score, spider
-		FROM arrow arr
-		INNER JOIN tournament tour
-		ON arr.tournament = tour.id
-		INNER JOIN archer arch
-		ON arr.archer = arch.id
-		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore) => {
-        executeQuery(`SELECT SUM(arr.score) AS total,
-            SUM(arr.spider) AS spidtot,
-            Count(case arr.score when 0 then null else 1 END) as Hits,
-            Count(case arr.score when 0 then 1 else null END) as Misses,
-            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
-            FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) => {
-            let tabulatedResults = []
-            let counter = 0
-            let endSelection = []
 
 
-            archerScore.forEach((row) => {
-            	if (row.score == 0){
-             		row.score = 'M'
-             	}
-             	if (row.spider.lastIndexOf(1) !== -1){
-             	    row.score = 'X'
- 				}
-                counter++
-                endSelection.push(row)
-                if (counter % 6 == 0) {
-                    tabulatedResults.push({
-                        endIndex: endSelection
-                    })
-                    endSelection = []
-                }
-            })
-
-            if (archerScore.length == 0) {
-                app.render('no-info.html', {}, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Information not available",
-                        year: "2017",
-                        content: content
-                    })
-
-                })
-            } else {
-                app.render('archer-score.html', {
-                    data: tabulatedResults,
-                    scoreSend: arrowTotal
-                }, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Archer Score for Tournament",
-                        year: "2017",
-                        content: content
-                    })
-                })
-            }
-        })
-    })
-}
-
-function showTournamentScore(req, res) {
-    let tournamentScores = []
-    executeQuery(`SELECT archer_id, archer.name
-        FROM tournament_archer
-        INNER JOIN archer ON archer_id = archer.id
-        WHERE tournament_id = ?`,
-        [req.params.tid], (archerIDs) =>{
-        archerIDs.forEach((archerID)=>{
-            executeQuery(`SELECT arrow, score, spider
-                FROM arrow arr
-                WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, archerID.archer_id], (singleArcherData) => {
-                        executeQuery(`SELECT SUM(arr.score) AS total,
-                            SUM(arr.spider) AS spidtot,
-                            Count(case arr.score when 0 then null else 1 END) as Hits,
-                            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
-                            FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
-                                let archer = []
-                                archer.id = archerID
-                                archer.ends = tabulateResult(singleArcherData)
-                                archer.summary = singleArcherScore
-                                tournamentScores.push(archer)
-
-                                if (archerIDs.length == tournamentScores.length){
-                                    app.render('tournament-score.html', {
-                                        data: tournamentScores,
-                                    }, (err, content) => {
-                                        res.render('fullpage.html', {
-                                            title: "Archer Score for Tournament",
-                                            year: "2017",
-                                            content: content
-                                    })
-                                })
-                            }
-                        })
-                })
-        })
-    })
-}
-
-function tabulateResult(archerScore){
-    let tabulatedResults = []
-    let counter = 0
-    let endSelection = []
 
 
-    archerScore.forEach((row) => {
-        if (row.score == 0){
-            row.score = 'M'
-        }
-        if (row.spider.lastIndexOf(1) !== -1){
-            row.score = 'X'
-        }
-        counter++
-        endSelection.push(row)
-        if (counter % 6 == 0) {
-            tabulatedResults.push({
-                endIndex: endSelection
-            })
-            endSelection = []
-        }
 
-    })
 
-    return tabulatedResults
-}
+
+// function showTournamentScore(req, res) {
+//     let tournamentScores = []
+//     executeQuery(`SELECT archer_id, archer.name
+//         FROM tournament_archer
+//         INNER JOIN archer ON archer_id = archer.id
+//         WHERE tournament_id = ?`,
+//         [req.params.tid], (archerIDs) =>{
+//         archerIDs.forEach((archerID)=>{
+//             executeQuery(`SELECT arrow, score, spider
+//                 FROM arrow arr
+//                 WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, archerID.archer_id], (singleArcherData) => {
+//                         executeQuery(`SELECT SUM(arr.score) AS total,
+//                             SUM(arr.spider) AS spidtot,
+//                             Count(case arr.score when 0 then null else 1 END) as Hits,
+//                             Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
+//                             FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
+//                                 let archer = []
+//                                 archer.id = archerID
+//                                 archer.ends = tabulateResult(singleArcherData)
+//                                 archer.summary = singleArcherScore
+//                                 tournamentScores.push(archer)
+
+//                                 if (archerIDs.length == tournamentScores.length){
+//                                     app.render('tournament-score.html', {
+//                                         data: tournamentScores,
+//                                     }, (err, content) => {
+//                                         res.render('fullpage.html', {
+//                                             title: "Archer Score for Tournament",
+//                                             year: "2017",
+//                                             content: content
+//                                     })
+//                                 })
+//                             }
+//                         })
+//                 })
+//         })
+//     })
+// }
+
+
 
 
 function executeQuery(sql, params, callback) {

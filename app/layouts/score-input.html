@@ -1,0 +1,18 @@
+{{#data}}
+{{#id}}
+<p>Archer: <strong>{{name}}</strong></p>
+{{/id}}
+
+<form action="/tournament-input" method="post">
+  <fieldset>
+    {{#ends}}
+    <legend>End {{endCounter}}</legend>
+    {{#endIndex}}
+    Arrow {{arrow}}:
+    <input type="text" name="{{arrow}}" value="{{score}}"><br>
+    {{/endIndex}}
+    <input type="submit" value="Save End">
+    {{/ends}}
+  </fieldset>
+</form>
+{{/data}}
