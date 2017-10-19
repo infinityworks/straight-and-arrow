@@ -5,25 +5,21 @@
 
 <form action="/tournament-input" method="post">
   <fieldset>
-    
-
-    <legend>End 1</legend>
     {{#ends}}
+    <legend>End {{endCounter}}</legend>
     {{#endIndex}}
     Arrow {{arrow}}:
-    <input type="text" name="1" value="{{score}}"><br>
+    <input type="text" name="{{arrow}}" value="{{score}}"><br>
     {{/endIndex}}
+    <input type="submit" value="Save End">
     {{/ends}}
-    <input type="submit" value="Save">
   </fieldset>
-
-    
 </form>
 {{/data}}
 
 
 
-<!-- 
+<!--
   <fieldset>
     <legend>End 2</legend>
     Arrow 7:

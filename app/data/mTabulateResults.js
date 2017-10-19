@@ -1,10 +1,10 @@
 module.exports = (archerScore) => {
 
-        
+
     let tabulatedResults = []
     let counter = 0
     let endSelection = []
-
+    let endCounter = 1
 
     archerScore.forEach((row) => {
         if (row.score == 0){
@@ -17,8 +17,10 @@ module.exports = (archerScore) => {
         endSelection.push(row)
         if (counter % 6 == 0) {
             tabulatedResults.push({
+                endCounter,
                 endIndex: endSelection
             })
+            endCounter++
             endSelection = []
         }
 

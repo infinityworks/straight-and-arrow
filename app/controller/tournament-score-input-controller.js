@@ -7,9 +7,7 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
         const tournamentID = req.params.tid;
         const archerID = req.params.aid;
         let tournamentScores = []
-
         tournamentArchers.getTournamentArchers(tournamentID, archerID, (archerIDs) => {
-            
             archerIDs.forEach((archerID)=>{
                 tournamentScore.getTournamentScore(tournamentID, archerID.archer_id, (archerData) => {
 
@@ -18,12 +16,11 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                         let archer = []
                         archer.id = archerID
                         archer.ends = tabulatedResults(archerData)
-                        console.log("Archer ends.... ", archer.ends);
                         archer.summary = archerStats
-
                         tournamentScores.push(archer)
+
+
                         if (archerIDs.length == tournamentScores.length){
-                            console.log("This is the end:::: ", tournamentScores[1])
                             app.render('score-input.html', {
                                 data: tournamentScores,
                             }, (err, content) => {
@@ -34,9 +31,9 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                                 })
                             })
                         }
-                    })    
+                    })
                 })
-            })         
-        })    
+            })
+        })
     }
 }
