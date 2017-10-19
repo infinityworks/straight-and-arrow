@@ -17,6 +17,7 @@ const config = {
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
+
 //model
 const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
 const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
@@ -85,7 +86,6 @@ function createLog(req, res) {
 function sendDatabaseEntry(req, res) {
     endInput = {}
     endInput = req.body
-    console.log(req)
     counter = 0
     for (var key in endInput) {
         if (endInput.hasOwnProperty(key)){

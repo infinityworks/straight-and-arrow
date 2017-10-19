@@ -19,7 +19,20 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                         tournamentScores.push(archer)
 
                         if (archerIDs.length == tournamentScores.length){
-                            tournamentScores.sort(sortBy('archer_id'))
+                            tournamentScores.sort(compare)
+
+                            function compare(a, b) {
+                              if (a.id.archer_id < b.id.archer_id ) {
+                                return -1;
+                              }
+                              if (a.id.archer_id > b.id.archer_id ) {
+                                return 1;
+                              }
+                              // a must be equal to b
+                              return 0;
+                            }
+
+                            console.log(tournamentScores)
                             app.render('score-input.html', {
                                 data: tournamentScores,
                             }, (err, content) => {
