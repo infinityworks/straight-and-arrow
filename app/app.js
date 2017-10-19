@@ -26,7 +26,6 @@ const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
-const listResults = require('./data/mListResults');
 
 
 //controller
