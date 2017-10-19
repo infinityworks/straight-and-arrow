@@ -7,20 +7,24 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
 
     function showTournamentScore(req, res) {
 
-        const tournamentId = req.params.tid;
-        const archerId = req.params.aid;
+        const tournamentID = req.params.tid;
+        const archerID = req.params.aid;
         let tournamentScores = []
 
 
-        tournamentArchers.getTournamentArchers(tournamentId, archerId, (archerIDs) => {
+        tournamentArchers.getTournamentArchers(tournamentID, archerID, (archerIDs) => {
             console.log("Archer IDs",  archerIDs);
-                    
-            tournamentScore.getTournamentScore(tournamentId, (archerData) => {
+            
+            archerIDs.forEach((archerID)=>{
+                tournamentScore.getTournamentScore(tournamentID, archerID.archer_id, (archerData) => {
                 console.log("Archer Data",  archerData);
-                tournamentStats.getTournamentStats(tournamentId, (archerStats) => {
+
+                tournamentStats.getTournamentStats(tournamentID, (archerStats) => {
 
                     tournamentScores.push(tabulatedResults(archerData))
                     console.log("Tournament Scores", tournamentScores)
+
+
 
                     //stolen from app.js
                     // let archer = []
@@ -30,15 +34,16 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                     // tournamentScores.push(archer)
 
                     // if (archerIDs.length == tournamentScores.length){
-                    //     app.render('tournament-score.html', {
-                    //         data: tournamentScores,
-                    //     }, (err, content) => {
-                    //         res.render('fullpage.html', {
-                    //             title: "Archer Score for Tournament",
-                    //             year: "2017",
-                    //             content: content
-                    //     })
-                    // })
+                        app.render('tournament-score.html', {
+                            data: tournamentScores,
+                        }, (err, content) => {
+                            res.render('fullpage.html', {
+                                title: "Archer Score for Tournament",
+                                year: "2017",
+                                content: content
+                            })
+                        })
+                    //}
                     //stolen from app js
 
                     
@@ -47,6 +52,8 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                 })    
 
             })
+            })        
+            
         })    
     }
 }
