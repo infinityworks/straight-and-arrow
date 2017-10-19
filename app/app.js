@@ -14,25 +14,19 @@ const config = {
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
 }
-
-
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
-
 //model
 const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
 const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
-
-
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
-
 
 function parseDate(date) {
     let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
@@ -41,41 +35,27 @@ function parseDate(date) {
 
 function run() {
     app.listen(port);
-
     app.use(bodyParser.urlencoded({
         extended: true
     }));
-
-    //Serving static code through public folder.
     app.use(express.static(path.join(__dirname, './public')));
-
-
     app.engine('html', mustacheExpress());
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
-
     app.get('/', showIndexPage);
     app.get('/tournament', showTournamentsPage);
-
     app.get('/archer', showArchersList)
     app.get('/tournament/:tid', showArcherTournament)
-
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
-
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
-    
-
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
         check('fullname').not().isEmpty().withMessage("Please enter a name.")
     ], createLog)
     app.post('/tournament-input', sendDatabaseEntry)
-
-
 }
-
 
 function goodRegister(req, res) {
     res.send({
@@ -84,15 +64,12 @@ function goodRegister(req, res) {
     })
 }
 
-
 function badRegister(req, res) {
     res.send({
         "status": "fail",
         "message": "Sorry invalid details, try again"
     })
-
 }
-
 
 function createLog(req, res) {
     const errors = validationResult(req);
@@ -106,17 +83,25 @@ function createLog(req, res) {
 }
 
 function sendDatabaseEntry(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        console.log(errors.mapped());
-        badRegister(req, res)
-    } else {
-        console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
-        goodRegister(req, res)
+    endInput = {}
+    endInput = req.body
+    console.log(req)
+    counter = 0
+    for (var key in endInput) {
+        if (endInput.hasOwnProperty(key)){
+            console.log
+            executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
+            VALUES (1,1,?,?,1)
+            ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
+            [req.body.archerID,req.body.tournamentID,key,endInput[key]],(result) =>{
+                counter++
+                if (counter == 6){
+                    res.redirect("/admin/"+req.body.tournamentID)
+                }
+            })
+        }
     }
 }
-
-
 
 function showIndexPage(req, res) {
     app.render('home.html', {}, (err, content) => {
@@ -127,8 +112,6 @@ function showIndexPage(req, res) {
         })
     })
 }
-
-
 
 function showTournamentsPage(req, res) {
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
@@ -224,7 +207,6 @@ function showArcherTournament(req, res) {
     })
 }
 
-
 // function showAdminLogin(req, res) {
 //     app.render('admin.html', {}, (err, content) => {
 //         res.render('fullpage.html', {
@@ -234,14 +216,6 @@ function showArcherTournament(req, res) {
 //         })
 //     })
 // }
-
-
-
-
-
-
-
-
 
 // function showTournamentScore(req, res) {
 //     let tournamentScores = []
@@ -281,9 +255,6 @@ function showArcherTournament(req, res) {
 //         })
 //     })
 // }
-
-
-
 
 function executeQuery(sql, params, callback) {
     let connection = mysql.createConnection(config)
