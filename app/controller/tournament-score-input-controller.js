@@ -18,12 +18,12 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                         let archer = []
                         archer.id = archerID
                         archer.ends = tabulatedResults(archerData)
-
+                        console.log("Archer ends.... ", archer.ends);
                         archer.summary = archerStats
 
                         tournamentScores.push(archer)
                         if (archerIDs.length == tournamentScores.length){
-                            console.log("This is the end:::: ", tournamentScores)
+                            console.log("This is the end:::: ", tournamentScores[1])
                             app.render('score-input.html', {
                                 data: tournamentScores,
                             }, (err, content) => {
