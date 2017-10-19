@@ -1,4 +1,7 @@
-<h2> Archer John </h2>
+{{#data}}
+{{#id}}
+<p>Archer: <strong>{{name}}</strong></p>
+{{/id}}
 
 <form action="/tournament-input" method="post">
   <fieldset>
@@ -18,6 +21,7 @@
     <br>
     <input type="submit" value="Save">
   </fieldset>
+
 
   <fieldset>
     <legend>End 2</legend>
@@ -93,3 +97,4 @@
   </fieldset>
 
 </form>
+{{/data}}

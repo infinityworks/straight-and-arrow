@@ -26,11 +26,12 @@ const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
+const listResults = require('./data/mListResults');
 
 
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
-const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app)
+const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 
 
@@ -64,7 +65,7 @@ function run() {
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
 
     // app.get('/users', require('./usertest'));
-    app.get('/admin/1', tournamentScoreInputController.showTournamentScoreInput);
+    app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
     
 
     app.post('/capture-email', [
