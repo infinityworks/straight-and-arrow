@@ -85,16 +85,30 @@ function createLog(req, res) {
 }
 
 function sendDatabaseEntry(req, res) {
+    endSend = []
     endInput = {}
     endInput = req.body
     counter = 0
     for (var key in endInput) {
         if (endInput.hasOwnProperty(key)){
-            console.log
+            keyPair = [key,endInput[key]]
+            endSend.push(keyPair)
+        }
+    }
+    let tournamentIDSend = endSend.splice(31)[0][1]
+    let archerIDSend = endSend.splice(30)[0][1]
+    // console.log("individ toyurid",tournamentIDSend)
+    // console.log("individ arcgrid",archerIDSend)
+    // console.log(endSend)
+
+    for (var arrowI in endSend){
+        if (endSend.hasOwnProperty(arrowI)){
+            console.log("arrow number",endSend[arrowI][0])
+            console.log("score value",endSend[arrowI][1])
             executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
-            VALUES (1,1,?,?,1)
+            VALUES (?,?,?,?,1)
             ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
-            [req.body.archerID,req.body.tournamentID,key,endInput[key]],(result) =>{
+            [archerIDSend,tournamentIDSend,endSend[arrowI][0],endSend[arrowI][1]],(result) =>{
                 counter++
                 if (counter == 6){
                     res.redirect("/admin/"+req.body.tournamentID)
