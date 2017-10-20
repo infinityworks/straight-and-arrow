@@ -119,7 +119,7 @@ function sendDatabaseEntry(req, res) {
             ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
             [archerIDSend, tournamentIDSend, endSend[arrowI][0], endSend[arrowI][1], endSend[arrowI][2]],(result) =>{
                 counter++
-                if (counter == 6){
+                if (counter == 30){
                     res.redirect("/admin/"+req.body.tournamentID)
                 }
             })
