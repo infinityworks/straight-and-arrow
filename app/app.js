@@ -17,7 +17,6 @@ const config = {
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
-
 //model
 const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
 const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
@@ -28,11 +27,6 @@ const tabulatedResults = require('./data/mTabulateResults');
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
-
-function parseDate(date) {
-    let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
-    return formattedDate
-}
 
 function run() {
     app.listen(port);
@@ -58,6 +52,11 @@ function run() {
     app.post('/tournament-input', sendDatabaseEntry)
 }
 
+function parseDate(date) {
+    let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
+    return formattedDate
+}
+
 function goodRegister(req, res) {
     res.send({
         "status": "pass",
@@ -78,7 +77,9 @@ function createLog(req, res) {
         console.log(errors.mapped());
         badRegister(req, res)
     } else {
-        console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
+        console.log(`${req.body['email']} ----
+        ${req.body['fullname']} ----from----
+        ${req.headers['user-agent']}`);
         goodRegister(req, res)
     }
 }
@@ -115,46 +116,42 @@ function showIndexPage(req, res) {
 
 function showTournamentsPage(req, res) {
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
-		FROM tournament
-		ORDER BY datetime_start`, [], (result) => {
-            let formattedResults = []
-            let now = new Date()
-
-            result.forEach((row) => {
-
-                if (row.datetime_start > now){
-                    row.status = "Upcoming"
-                } else if (row.datetime_start <= now && row.datetime_end > now){
-                    row.status = "Live-Result"
-                } else {
-                   row.status = "Result"
-                }
-
+	FROM tournament
+	ORDER BY datetime_start`, [], (result) => {
+        let formattedResults = []
+        let now = new Date()
+        result.forEach((row) => {
+            if (row.datetime_start > now){
+                row.status = "Upcoming"
+            } else if (row.datetime_start <= now && row.datetime_end > now){
+                row.status = "Live-Result"
+            } else {
+               row.status = "Result"
+            }
             row.datetime_start = parseDate(row.datetime_start)
             row.datetime_end = parseDate(row.datetime_end)
-
             formattedResults.push(row)
-            })
+        })
 
-            app.render('tournament-list.html', {
-                tournament_result: formattedResults
-            }, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Tournament Details",
-                    year: "2017",
-                    content: content
-                })
+        app.render('tournament-list.html', {
+            tournament_result: formattedResults
+        }, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Tournament Details",
+                year: "2017",
+                content: content
             })
         })
+    })
 }
 
 function showArchersList(req, res) {
     executeQuery(`SELECT name, country,
-		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') -
-		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')))
-		AS age
-		FROM archer
-		ORDER BY name`, [], (result) => {
+	(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') -
+	(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')))
+	AS age
+	FROM archer
+	ORDER BY name`, [], (result) => {
         app.render('archer-list.html', {
             data: result
         }, (err, content) => {
@@ -163,7 +160,6 @@ function showArchersList(req, res) {
                 year: "2017",
                 content: content
             })
-
         })
     })
 }
@@ -177,9 +173,7 @@ function showArcherTournament(req, res) {
         executeQuery(`SELECT venue, datetime_start, datetime_end, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
             let now = new Date()
-
             tournamentDetail.forEach((row) => {
-
                 if (row.datetime_start > now){
                     row.status = "Upcoming"
                 } else if (row.datetime_start <= now && row.datetime_end > now){
@@ -187,10 +181,8 @@ function showArcherTournament(req, res) {
                 } else {
                    row.status = "Result"
                 }
-
                 row.datetime_start = parseDate(row.datetime_start)
                 row.datetime_end = parseDate(row.datetime_end)
-
                 formattedResults.push(row)
             })
             app.render('tournament.html', {
@@ -260,10 +252,8 @@ function executeQuery(sql, params, callback) {
     let connection = mysql.createConnection(config)
     connection.connect((err) => {
         if (err) throw err;
-
         connection.query(sql, params, (err, result) => {
             if (err) throw err;
-
             connection.destroy()
             callback(result)
         })
