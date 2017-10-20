@@ -102,10 +102,10 @@ function sendDatabaseEntry(req, res) {
     for (var arrowI in endSend){
         if (endSend.hasOwnProperty(arrowI)){
 
-            if (endSend[arrowI][1] == 'X'){
+            if (endSend[arrowI][1] == 'X' || endSend[arrowI][1] == 'x'){
                 endSend[arrowI][1] = 10
                 endSend[arrowI].push(1)
-            } else if (endSend[arrowI][1] == 'M'){
+            } else if (endSend[arrowI][1] == 'M' || endSend[arrowI][1] == 'm'){
                 endSend[arrowI][1] = 0
                 endSend[arrowI].push(0)
             } else {
