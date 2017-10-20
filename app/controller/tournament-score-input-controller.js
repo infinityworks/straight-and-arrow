@@ -32,7 +32,6 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                               return 0;
                             }
 
-                            console.log(tournamentScores)
                             app.render('score-input.html', {
                                 data: tournamentScores,
                             }, (err, content) => {

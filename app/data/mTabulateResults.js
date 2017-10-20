@@ -8,14 +8,16 @@ module.exports = (archerScore) => {
     let endTotal = 0
 
     archerScore.forEach((row) => {
-        // if (row.score == 0){
-        //     row.score = 'M'
-        // }
-        // if (row.spider.lastIndexOf(1) !== -1){
-        //     row.score = 'X'
-        // }
         counter++
         endTotal += row.score
+
+        if (row.score == 0){
+            row.score = 'M'
+        }
+        if (row.spider.lastIndexOf(1) !== -1){
+            row.score = 'X'
+        }
+
         endSelection.push(row)
         if (counter % 6 == 0) {
             tabulatedResults.push({
@@ -29,7 +31,6 @@ module.exports = (archerScore) => {
             endCounter++
             endSelection = []
         }
-
     })
 
     return tabulatedResults

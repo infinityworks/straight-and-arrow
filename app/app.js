@@ -97,18 +97,27 @@ function sendDatabaseEntry(req, res) {
     }
     let tournamentIDSend = endSend.splice(31)[0][1]
     let archerIDSend = endSend.splice(30)[0][1]
-    // console.log("individ toyurid",tournamentIDSend)
-    // console.log("individ arcgrid",archerIDSend)
-    // console.log(endSend)
+
 
     for (var arrowI in endSend){
         if (endSend.hasOwnProperty(arrowI)){
-            console.log("arrow number",endSend[arrowI][0])
-            console.log("score value",endSend[arrowI][1])
+
+            if (endSend[arrowI][1] == 'X'){
+                endSend[arrowI][1] = 10
+                endSend[arrowI].push(1)
+            } else if (endSend[arrowI][1] == 'M'){
+                endSend[arrowI][1] = 0
+                endSend[arrowI].push(0)
+            } else {
+                endSend[arrowI].push(0)
+            }
+
+
+
             executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
-            VALUES (?,?,?,?,1)
+            VALUES (?,?,?,?,?)
             ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
-            [archerIDSend,tournamentIDSend,endSend[arrowI][0],endSend[arrowI][1]],(result) =>{
+            [archerIDSend, tournamentIDSend, endSend[arrowI][0], endSend[arrowI][1], endSend[arrowI][2]],(result) =>{
                 counter++
                 if (counter == 6){
                     res.redirect("/admin/"+req.body.tournamentID)
