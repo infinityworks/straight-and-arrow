@@ -11,8 +11,13 @@
     Arrow {{arrow}}:
     <input type="text" name="{{arrow}}" value="{{score}}"><br>
     {{/endIndex}}
-    <input type="submit" value="Save End">
+    <p>End = {{endTotal}}</p>
     {{/ends}}
+    <input type="submit" value="Submit Archer's Score">
+    {{#id}}
+    <input type="hidden" name="archerID" value="{{archer_id}}"><br>
+    <input type="hidden" name="tournamentID" value="{{tournament_id}}"><br>
+    {{/id}}
   </fieldset>
 </form>
 {{/data}}
