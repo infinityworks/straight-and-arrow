@@ -10,10 +10,10 @@ describe("Hello world", function() {
 
 const tabulator = require("../app/data/mTabulateResults")
 
-describe ("tabulateResults model", ()=>{
+describe("tabulateResults model", function() {
 
 
-   it("returns an array of 5 objects", ()=> {
+   it("returns an array of 5 objects", function() {
 
       result = tabulator(archerScore)
 
