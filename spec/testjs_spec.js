@@ -22,6 +22,21 @@ describe("tabulateResults model", function() {
 });
 
 
+const converter = require("../app/data/convertmx")
+
+describe("convert Ms and Xs module", function() {
+
+	it("should convert to X when score = 10 & spider = 1", function() {
+
+		result = converter.convertMX(fakeRow)
+
+		expect(result).toEqual({ arrow: 7, score: 'X', spider: 1})
+	});
+});
+
+
+
+
 
 
 
@@ -59,8 +74,10 @@ describe("tabulateResults model", function() {
 
 
 
+var fakeRow = { arrow: 7, score: 10, spider: 1}
 
-  var archerScore = [ { arrow: 1, score: 8, spider: 0},
+
+var archerScore = [ { arrow: 1, score: 8, spider: 0},
    { arrow: 2, score: 4, spider: 0},
    { arrow: 3, score: 10, spider: 0},
    { arrow: 4, score: 5, spider: 0},
