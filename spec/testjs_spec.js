@@ -60,7 +60,7 @@ describe("tabulateResults model", function() {
 
 
 
-  let archerScore = [ { arrow: 1, score: 8, spider: 0},
+  var archerScore = [ { arrow: 1, score: 8, spider: 0},
    { arrow: 2, score: 4, spider: 0},
    { arrow: 3, score: 10, spider: 0},
    { arrow: 4, score: 5, spider: 0},
