@@ -1,4 +1,4 @@
-const convert = require('./convertMX')
+const convert = require('./convertmx')
 
 module.exports = (archerScore) => {
 
