@@ -1,3 +1,5 @@
+const convert = require('../util/convertMX')
+
 module.exports = (archerScore) => {
 
 
@@ -10,15 +12,9 @@ module.exports = (archerScore) => {
     archerScore.forEach((row) => {
         counter++
         endTotal += row.score
+        
 
-        if (row.score == 0){
-            row.score = 'M'
-        }
-        if (row.spider.lastIndexOf(1) !== -1){
-            row.score = 'X'
-        }
-
-        endSelection.push(row)
+        endSelection.push(convert.convertMX(row))
         if (counter % 6 == 0) {
             tabulatedResults.push({
                 endCounter, 
