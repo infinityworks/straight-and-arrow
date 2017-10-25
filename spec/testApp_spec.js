@@ -2,7 +2,7 @@ const utility = require('../app/util/utilities');
 const convert = require('../app/data/convertMX')
 
 
-let mockScoreCard = {score:'10', spider:'1'}
+//let mockScoreCard = {score:'10', spider:'1'}
 // let mockScoreCardWithEnd = [{“endCounter”:0,“endIndex”:
 //             [{“arrow”:1,“score”:8,“spider”:
 //             {“type”:“Buffer”,“data”:[0]}},
@@ -24,11 +24,11 @@ describe("Parse Date", function() {
 });
 
 
-describe("Convert the score to X for 10", function() {
-	it("returns the score as an X if spider is 1", function() {
-    	expect(convert.convertMX(mockScoreCard)).toEqual({score: 'X', spider: '1'});
-	});
-});
+// describe("Convert the score to X for 10", function() {
+// 	it("returns the score as an X if spider is 1", function() {
+//     	expect(convert.convertMX(mockScoreCard)).toEqual({score: 'X', spider: '1'});
+// 	});
+// });
 
 // describe("Convert the score to X for 10", function() {
 // 	it("returns the score object, and converts scores with a 10 to an X if spider is a 1", function() {
