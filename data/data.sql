@@ -61,7 +61,7 @@ CREATE TABLE `arrow` (
   `tournament` int(11) unsigned NOT NULL,
   `arrow` int(11) unsigned NOT NULL,
   `score` int(11) NOT NULL,
-  `spider` bit(1) NOT NULL,
+  `spider` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `arrow` (`arrow`,`archer`,`tournament`),
   KEY `archer` (`archer`),

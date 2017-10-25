@@ -15,6 +15,7 @@ module.exports = (archerScore) => {
         
 
         endSelection.push(convert.convertMX(row))
+        
         if (counter % 6 == 0) {
             tabulatedResults.push({
                 endCounter, 

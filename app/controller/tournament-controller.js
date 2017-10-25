@@ -20,7 +20,7 @@ module.exports = (executeQuery, app, tournamentArcherScore) => {
             	if (row.score == 0){
              		row.score = 'M'
              	}
-             	if (row.spider.lastIndexOf(1) !== -1){
+             	if (row.score == 10 && row.spider == 1){
              	    row.score = 'X'
     				}
                 counter++
