@@ -7,11 +7,11 @@ module.exports = (archerScore) => {
     let counter = 0
     let endSelection = []
     let endCounter = 1
-    let endTotal = 0
+    //let endTotal = 0
 
     archerScore.forEach((row) => {
         counter++
-        endTotal += row.score
+       // endTotal += row.score
         
 
         endSelection.push(convert.convertMX(row))
@@ -19,10 +19,10 @@ module.exports = (archerScore) => {
             tabulatedResults.push({
                 endCounter, 
                 endIndex: endSelection,
-                endTotal
+                //endTotal
             })
 
-            endTotal = 0
+            //endTotal = 0
 
             endCounter++
             endSelection = []
