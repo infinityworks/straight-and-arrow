@@ -19,6 +19,7 @@ module.exports = (archerScore) => {
         for (var j=0; j<tabulatedResults[i].length; j++) { //ends
             arrowRow = archerScore.shift()
             if (arrowRow) {
+                convert.convertMX(arrowRow)
                 tabulatedResults[i][j] = arrowRow.score
                 console.log("jfsbjsf:", tabulatedResults)
             }
