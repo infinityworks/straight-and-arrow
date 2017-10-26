@@ -4,20 +4,44 @@
 {{/id}}
 
 <form action="/tournament-input" method="post">
-  <fieldset>
-    {{#ends}}
-    <legend>End {{endCounter}}</legend>
-    {{#endIndex}}
-    Arrow {{arrow}}:
-    <input type="text" name="{{arrow}}" value="{{score}}"><br>
-    {{/endIndex}}
-    
-    {{/ends}}
-    <input type="submit" value="Submit Archer's Score">
-    {{#id}}
-    <input type="hidden" name="archerID" value="{{archer_id}}"><br>
-    <input type="hidden" name="tournamentID" value="{{tournament_id}}"><br>
-    {{/id}}
-  </fieldset>
+    <fieldset>
+        <legend>End 1</legend>
+            {{#ends.0}}
+            <input type="text" value="{{.}}">
+            {{/ends.0}}
+    </fieldset>
+    <fieldset>
+        <legend>End 2</legend>
+            {{#ends.1}}
+            <input type="text" value="{{.}}">
+            {{/ends.1}}
+    </fieldset>
+    <fieldset>
+        <legend>End 3</legend>
+            {{#ends.2}}
+            <input type="text" value="{{.}}">
+            {{/ends.2}}
+    </fieldset>
+    <fieldset>
+        <legend>End 4</legend>
+            {{#ends.3}}
+            <input type="text" value="{{.}}">
+            {{/ends.3}}
+    </fieldset>
+    <fieldset>
+        <legend>End 5</legend>
+            {{#ends.4}}
+            <input type="text" value="{{.}}">
+            {{/ends.4}}
+    </fieldset>
+
+    <fieldset>
+        <input type="submit" value="Submit Archer's Score">
+        {{#id}}
+        <input type="hidden" name="archerID" value="{{archer_id}}"><br>
+        <input type="hidden" name="tournamentID" value="{{tournament_id}}"><br>
+        {{/id}}
+    </fieldset>
+
 </form>
 {{/data}}
