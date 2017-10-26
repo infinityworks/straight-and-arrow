@@ -22,9 +22,11 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
 
                         tournamentScores.push(archer)
                         if (archerIDs.length == tournamentScores.length){
+                            console.log("END:", tournamentScores[0])
+                            console.log("Score:", tournamentScores[0][0])
                             
                             app.render('tournament-score.html', {
-                                data: tournamentScores,
+                                data: tournamentScores
                             }, (err, content) => {
                                 res.render('fullpage.html', {
                                     title: "Archer Score for Tournament",

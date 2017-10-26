@@ -1,7 +1,7 @@
  
 function convertMX(row){
 
-	if (row.score != 10 && row.spider == 1){
+	if (row.score < 10 && row.spider == 1){
     	row.spider = 0
     }
 
