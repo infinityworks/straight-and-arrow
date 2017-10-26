@@ -21,7 +21,9 @@ module.exports = (archerScore) => {
             if (arrowRow) {
                 convert.convertMX(arrowRow)
                 tabulatedResults[i][j] = arrowRow.score
-                console.log("jfsbjsf:", tabulatedResults)
+            }
+            else {
+                tabulatedResults[i][j] = 0
             }
             
         }
