@@ -33,7 +33,7 @@ const tabulatedResults = require('./data/mTabulateResults');
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
-
+const createError = require('./controller/error-Controller');
 
 function run() {
     app.listen(port);
@@ -45,6 +45,7 @@ function run() {
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
     app.get('/', showIndexPage);
+    app.get('/error', createError);
     app.get('/tournament', showTournamentsPage);
     app.get('/archer', showArchersList)
     app.get('/tournament/:tid', showArcherTournament)
