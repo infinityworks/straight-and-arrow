@@ -28,48 +28,46 @@ describe("tabulateResults model", function() {
    });
 
 
-// START THE TESTING HERE
+  it("returns 5 ends of length 6, having passed an input of 30 arrows", function() {
 
-  // it("returns 5 ends of length 6, having passed an input of 30 arrows", function() {
+      result = tabulator(archerScore30)
 
-  //     result = tabulator(archerScore30)
-
-  //     expect(result[0].length).toBe(6);
-  //     expect(result[1].length).toBe(6);
-  //     expect(result[2].length).toBe(6);
-  //     expect(result[3].length).toBe(6);
-  //     expect(result[4].length).toBe(6);
-  //  });
+      expect(result[0].arrows.length).toBe(6);
+      expect(result[1].arrows.length).toBe(6);
+      expect(result[2].arrows.length).toBe(6);
+      expect(result[3].arrows.length).toBe(6);
+      expect(result[4].arrows.length).toBe(6);
+   });
 
 
-   // it("returns an array of 5 objects, having passed an input of 15 arrows", function() {
+   it("returns an array of 5 objects, having passed an input of 15 arrows", function() {
 
-   //    result = tabulator(archerScoreWith15)
+      result = tabulator(archerScoreWith15)
 
-   //    expect(result.length).toBe(5);
-   // });
+      expect(result.length).toBe(5);
+   });
 
-   // it("returns 5 ends of length 6, having passed an input of 15 arrows", function() {
+   it("returns 5 ends of length 6, having passed an input of 15 arrows", function() {
 
-   //    result = tabulator(archerScoreWith15)
+      result = tabulator(archerScoreWith15)
 
-   //    expect(result[0].length).toBe(6);
-   //    expect(result[1].length).toBe(6);
-   //    expect(result[2].length).toBe(6);
-   //    expect(result[3].length).toBe(6);
-   //    expect(result[4].length).toBe(6);
-   // });
+      expect(result[0].arrows.length).toBe(6);
+      expect(result[1].arrows.length).toBe(6);
+      expect(result[2].arrows.length).toBe(6);
+      expect(result[3].arrows.length).toBe(6);
+      expect(result[4].arrows.length).toBe(6);
+   });
 
-   // it("returns an array of 5 objects, having passed a list with one arrow object", function() {
+   it("returns an array of 5 objects, having passed a list with one arrow object", function() {
 
-   //    result = tabulator([fakeRow])
+      result = tabulator([fakeRow])
 
-   //    expect(result[0].length).toBe(6);
-   //    expect(result[1].length).toBe(6);
-   //    expect(result[2].length).toBe(6);
-   //    expect(result[3].length).toBe(6);
-   //    expect(result[4].length).toBe(6);
-   // });
+      expect(result[0].arrows.length).toBe(6);
+      expect(result[1].arrows.length).toBe(6);
+      expect(result[2].arrows.length).toBe(6);
+      expect(result[3].arrows.length).toBe(6);
+      expect(result[4].arrows.length).toBe(6);
+   });
 
 
 
