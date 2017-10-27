@@ -1,29 +1,20 @@
-module.exports = (executeQuery, app, tournamentArcherScore) => {
+module.exports = (executeQuery, app, tournamentScore, tabulatedResults) => {
 
    return { showTournamentArcherScore };
 
     function showTournamentArcherScore(req, res) {
 
-        const tournamentId = req.params.tid;
-        const archerId = req.params.aid;
+        const tournamentID = req.params.tid;
+        const archerID = req.params.aid;
+        let archerScore = []
 
-        tournamentArcherScore.getTournamentArcherScore(tournamentId, archerId, (archerScore, arrowTotal) => {
-            let tabulatedResults = []
-            let counter = 0
-            let endSelection = []
-            archerScore.forEach((row) => {
+        tournamentScore.getTournamentScore(tournamentID, archerID, (archerData) => {
+            let archer = []
+            console.log("indiv archer data", archerData)
+            archer.ends = tabulatedResults(archerData)
+            archerScore.push(archer)
 
-                counter++
-                endSelection.push(convert.convertMX(row))
-                if (counter % 6 == 0) {
-                    tabulatedResults.push({
-                        endIndex: endSelection
-                    })
-                    endSelection = []
-                }
-            })
-
-            if (archerScore.length == 0) {
+            if (archerData.length == 0) {
                 app.render('no-info.html', {}, (err, content) => {
                     res.render('fullpage.html', {
                         title: "Information not available",
@@ -34,8 +25,7 @@ module.exports = (executeQuery, app, tournamentArcherScore) => {
                 })
             } else {
                 app.render('archer-score.html', {
-                    data: tabulatedResults,
-                    scoreSend: arrowTotal
+                    data: archerScore
                 }, (err, content) => {
                     res.render('fullpage.html', {
                         title: "Archer Score for Tournament",
