@@ -1,46 +1,51 @@
 const convert = require('./convertmx')
 
 module.exports = (archerScore) => {
-
-
+console.log("data being passed", archerScore)
+    let scoreCopy = archerScore
     let tabulatedResults = [
-        new Array(6),
-        new Array(6),
-        new Array(6),
-        new Array(6),
-        new Array(6)
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)}
     ]
     // let counter = 0
     // let endSelection = []
     // let endCounter = 1
     //let endTotal = 0
 
-    arrowCounter = 1
+    arrowCounter = 0
 
     for (var i=0; i<tabulatedResults.length; i++) { 
-        for (var j=0; j<tabulatedResults[i].length; j++) { 
-            arrowRow = archerScore.shift()
-            if (arrowRow && arrowRow.arrow != arrowCounter) {
-                tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
-                archerScore.unshift(arrowRow)
+
+        for (var j=0; j<tabulatedResults[i].arrows.length; j++) { 
+
+            arrowRow = scoreCopy[arrowCounter]
+            console.log("the arrow row is", arrowRow)
+            if (arrowRow && arrowRow.arrow != arrowCounter +1) {
+                tabulatedResults[i].arrows[j] = 0
                 arrowCounter++
             }
-            else if (arrowRow && arrowRow.arrow == arrowCounter) {
-                convert.convertMX(arrowRow)
-                tabulatedResults[i][j] = {arrow: arrowRow.arrow, score: arrowRow.score}
+            else if (arrowRow && arrowRow.arrow == arrowCounter +1) {
+                convertedScore = convert.convertMX(arrowRow.score, arrowRow.spider)
+                tabulatedResults[i].arrows[j] = convertedScore
                 arrowCounter++
             }
-            else if(!arrowRow){
-                tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
+            else{
+                tabulatedResults[i].arrows[j] = 0
                 arrowCounter++
             }
             // else {
             //     tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
             //     arrowCounter ++
             // }
-        console.log(tabulatedResults)
+        
         }
     }
+
+
+    
     
     // archerScore.forEach((row) => {
     //     counter++
