@@ -30,7 +30,7 @@ const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
 
 //controller
-const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentScore, tabulatedResults)
+const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 

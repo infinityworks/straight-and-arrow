@@ -3,7 +3,6 @@ const utility = require('../app/util/utilities');
 const tabulator = require("../app/data/mTabulateResults")
 const converter = require("../app/data/convertmx")
 
-
 describe("Hello world", function() {
 	it("returns hello world", function() {
     expect(helloWorld()).toEqual("Hello World!");
@@ -19,17 +18,12 @@ describe("Parse Date", function() {
 
 
 describe("tabulateResults model", function() {
-
   it("returns an array of 5 objects, having passed an input of 30 arrows", function() {
-
       result = tabulator(archerScore30)
-
       expect(result.length).toBe(5);
    });
 
-
   it("returns 5 ends of length 6, having passed an input of 30 arrows", function() {
-
       result = tabulator(archerScore30)
 
       expect(result[0].arrows.length).toBe(6);
@@ -39,16 +33,12 @@ describe("tabulateResults model", function() {
       expect(result[4].arrows.length).toBe(6);
    });
 
-
    it("returns an array of 5 objects, having passed an input of 15 arrows", function() {
-
       result = tabulator(archerScoreWith15)
-
       expect(result.length).toBe(5);
    });
 
    it("returns 5 ends of length 6, having passed an input of 15 arrows", function() {
-
       result = tabulator(archerScoreWith15)
 
       expect(result[0].arrows.length).toBe(6);
@@ -58,8 +48,7 @@ describe("tabulateResults model", function() {
       expect(result[4].arrows.length).toBe(6);
    });
 
-   it("returns an array of 5 objects, having passed a list with one arrow object", function() {
-
+   it("returns an array of 5 objects, having passed a list with one arrow object position 7", function() {
       result = tabulator([fakeRow])
 
       expect(result[0].arrows.length).toBe(6);
@@ -69,69 +58,35 @@ describe("tabulateResults model", function() {
       expect(result[4].arrows.length).toBe(6);
    });
 
-
-
-
-
    it("Correctly converts full archer scorecard", function() {
-
       result = tabulator(archerScore30)
-
       expect(result).toEqual(convertedArcherScore);
    });
-
-
-
-   // it("Correctly converts 15 archer scorecard", function() {
-
-   //    result = tabulator(archerScoreWith15)
-   //    console.log(result)
-
-   //    expect(result).toEqual(convertedArcherScore15);
-   // });
-
-
-
 });
-
-
 
 
 describe("convert Ms and Xs module", function() {
 
    it("should convert to X when score = 10 & spider = 1", function() {
-
       result = converter.convertMX(10, 1)
-
       expect(result).toEqual("X")
    });
 
    it("should convert to M when score = 0 & spider = 0", function() {
-
       result = converter.convertMX(0, 0)
-
       expect(result).toEqual("M")
    });
 
    it("should set spider to 0 if score != 10", function() {
-
       result = converter.convertMX(6, 1)
-
       expect(result).toEqual("6")
    });
 
    it("Keeps score at 10 if spider is 0", function() {
-
       result = converter.convertMX(10, 0)
-
       expect(result).toEqual("10")
    });
 });
-
-
-
-
-
 
 
 //result variables comparison
@@ -141,7 +96,6 @@ let convertedArcherScore =
   {arrows: ["1", "4", "M", "2", "9", "6"] },
   {arrows: ["7", "6", "7", "4", "1", "7"] },
   {arrows: ["X", "1", "2", "4", "1", "2"] } ]
-
 
 let convertedArcherScore15 =
 [ {arrows: ["8", "4", "10", "5", "5", "0"] },
@@ -156,9 +110,8 @@ let fakeRowWithMiss = { arrow: 7, score: 0, spider: 0}
 let fakeRowWithIncorrectSpider = { arrow: 3, score: 6, spider: 1}
 let fakeRowWithNoSpiderAndHighScore = { arrow: 3, score: 10, spider: 0}
 
-
 //mock objects
-let archerScore30 = [ 
+let archerScore30 = [
    { arrow: 1, score: 8, spider: 0},
    { arrow: 2, score: 4, spider: 0},
    { arrow: 3, score: 10, spider: 0},
@@ -190,7 +143,7 @@ let archerScore30 = [
    { arrow: 29, score: 1, spider: 0},
    { arrow: 30, score: 2, spider: 0}]
 
-let archerScoreWith15 = [ 
+let archerScoreWith15 = [
    { arrow: 1, score: 8, spider: 0},
    { arrow: 2, score: 4, spider: 0},
    { arrow: 3, score: 10, spider: 0},
@@ -206,4 +159,3 @@ let archerScoreWith15 = [
    { arrow: 28, score: 4, spider: 0},
    { arrow: 29, score: 1, spider: 0},
    { arrow: 30, score: 2, spider: 0}]
-

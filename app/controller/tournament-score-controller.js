@@ -9,7 +9,7 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
         let tournamentScores = []
 
         tournamentArchers.getTournamentArchers(tournamentID, archerID, (archerIDs) => {
-            
+
             archerIDs.forEach((archerID)=>{
                 tournamentScore.getTournamentScore(tournamentID, archerID.archer_id, (archerData) => {
 
@@ -21,6 +21,7 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                         archer.summary = archerStats
 
                         tournamentScores.push(archer)
+                        console.log("tournmanet archer data", tournamentScores)
                         if (archerIDs.length == tournamentScores.length){
                             app.render('tournament-score.html', {
                                 data: tournamentScores
@@ -32,9 +33,9 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                                 })
                             })
                         }
-                    })    
+                    })
                 })
-            })         
-        })    
+            })
+        })
     }
 }

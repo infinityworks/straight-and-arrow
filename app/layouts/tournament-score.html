@@ -25,11 +25,15 @@
 
     <tr>
         {{#ends.0}}
-            <td>{{score}}</td>
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
         {{/ends.0}}
         <td bgcolor='dimgrey'></td>
         {{#ends.1}}
-            <td>{{score}}</td>
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
         {{/ends.1}}
         <td bgcolor='dimgrey'></td>
     </tr>
@@ -37,11 +41,15 @@
 
     <tr>
         {{#ends.2}}
-            <td>{{score}}</td>
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
         {{/ends.2}}
         <td bgcolor='dimgrey'></td>
         {{#ends.3}}
-            <td>{{score}}</td>
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
         {{/ends.3}}
         <td bgcolor='dimgrey'></td>
     </tr>
@@ -49,7 +57,9 @@
 
     <tr>
         {{#ends.4}}
-            <td>{{score}}</td>
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
         {{/ends.4}}
         <td bgcolor='dimgrey'></td>
         <td></td>
