@@ -15,17 +15,30 @@ module.exports = (archerScore) => {
     // let endCounter = 1
     //let endTotal = 0
 
-    for (var i=0; i<tabulatedResults.length; i++) { //endIndex
-        for (var j=0; j<tabulatedResults[i].length; j++) { //ends
+    arrowCounter = 1
+
+    for (var i=0; i<tabulatedResults.length; i++) { 
+        for (var j=0; j<tabulatedResults[i].length; j++) { 
             arrowRow = archerScore.shift()
-            if (arrowRow) {
+            if (arrowRow && arrowRow.arrow != arrowCounter) {
+                tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
+                archerScore.unshift(arrowRow)
+                arrowCounter++
+            }
+            else if (arrowRow && arrowRow.arrow == arrowCounter) {
                 convert.convertMX(arrowRow)
-                tabulatedResults[i][j] = arrowRow.score
+                tabulatedResults[i][j] = {arrow: arrowRow.arrow, score: arrowRow.score}
+                arrowCounter++
             }
-            else {
-                tabulatedResults[i][j] = 0
+            else if(!arrowRow){
+                tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
+                arrowCounter++
             }
-            
+            // else {
+            //     tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
+            //     arrowCounter ++
+            // }
+        console.log(tabulatedResults)
         }
     }
     
