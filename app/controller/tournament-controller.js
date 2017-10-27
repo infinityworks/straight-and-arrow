@@ -2,29 +2,19 @@ module.exports = (executeQuery, app, tournamentArcherScore) => {
 
    return { showTournamentArcherScore };
 
-
     function showTournamentArcherScore(req, res) {
 
         const tournamentId = req.params.tid;
         const archerId = req.params.aid;
 
         tournamentArcherScore.getTournamentArcherScore(tournamentId, archerId, (archerScore, arrowTotal) => {
-
-
             let tabulatedResults = []
             let counter = 0
             let endSelection = []
-
-
             archerScore.forEach((row) => {
-            	if (row.score == 0){
-             		row.score = 'M'
-             	}
-             	if (row.score == 10 && row.spider == 1){
-             	    row.score = 'X'
-    				}
+
                 counter++
-                endSelection.push(row)
+                endSelection.push(convert.convertMX(row))
                 if (counter % 6 == 0) {
                     tabulatedResults.push({
                         endIndex: endSelection

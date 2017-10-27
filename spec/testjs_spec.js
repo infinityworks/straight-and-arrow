@@ -10,6 +10,7 @@ describe("Hello world", function() {
 	});
 });
 
+
 describe("Parse Date", function() {
    it("returns formatted date", function() {
       expect(utility.parseDate("2017-11-12 10:00:00")).toEqual("Sunday 12th November, 2017");
@@ -17,13 +18,12 @@ describe("Parse Date", function() {
 });
 
 
-
 describe("tabulateResults model", function() {
 
   it("returns an array of 5 objects, having passed an input of 30 arrows", function() {
 
       result = tabulator(archerScore30)
-      //console.log(archerScore30)
+
       expect(result.length).toBe(5);
    });
 
@@ -76,7 +76,6 @@ describe("tabulateResults model", function() {
    it("Correctly converts full archer scorecard", function() {
 
       result = tabulator(archerScore30)
-      console.log(result)
 
       expect(result).toEqual(convertedArcherScore);
    });
@@ -115,7 +114,6 @@ describe("convert Ms and Xs module", function() {
       expect(result).toEqual("10")
    });
 });
-
 
 
 
