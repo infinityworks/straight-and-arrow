@@ -80,6 +80,19 @@ describe("tabulateResults model", function() {
 
       expect(result).toEqual(convertedArcherScore);
    });
+
+
+
+   // it("Correctly converts 15 archer scorecard", function() {
+
+   //    result = tabulator(archerScoreWith15)
+   //    console.log(result)
+
+   //    expect(result).toEqual(convertedArcherScore15);
+   // });
+
+
+
 });
 
 
@@ -132,6 +145,13 @@ let convertedArcherScore =
   {arrows: ["X", "1", "2", "4", "1", "2"] } ]
 
 
+let convertedArcherScore15 =
+[ {arrows: ["8", "4", "10", "5", "5", "0"] },
+  {arrows: ["0", "0", "0", "0", "0", "0"] },
+  {arrows: ["0", "0", "0", "0", "0", "0"] },
+  {arrows: ["0", "0", "7", "4", "1", "7"] },
+  {arrows: ["X", "1", "2", "4", "1", "2"] } ]
+
 //mock rows
 let fakeRow = { arrow: 7, score: 10, spider: 1}
 let fakeRowWithMiss = { arrow: 7, score: 0, spider: 0}
@@ -172,7 +192,8 @@ let archerScore30 = [
    { arrow: 29, score: 1, spider: 0},
    { arrow: 30, score: 2, spider: 0}]
 
-let archerScoreWith15 = [ { arrow: 1, score: 8, spider: 0},
+let archerScoreWith15 = [ 
+   { arrow: 1, score: 8, spider: 0},
    { arrow: 2, score: 4, spider: 0},
    { arrow: 3, score: 10, spider: 0},
    { arrow: 4, score: 5, spider: 0},
