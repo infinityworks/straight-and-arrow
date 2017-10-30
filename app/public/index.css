@@ -196,3 +196,15 @@ label{
 .table td {
     word-wrap: break-word;
 }
+
+.arrow {
+	max-width: 30px;
+}
+
+legend {
+	font-size: 11pt;
+	font-size:calc(100% + 0.5vw);
+	margin-right: 5px;
+	font-weight:normal;
+	font-family:"Open sans";
+}
