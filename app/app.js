@@ -17,16 +17,23 @@ const config = {
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
+
+//utilities
+const utility = require('./util/utilities')
+
+
 //model
 const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
 const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
+
 //controller
-const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore)
+const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
+const createError = require('./controller/error-Controller');
 
 function run() {
     app.listen(port);
@@ -38,6 +45,7 @@ function run() {
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
     app.get('/', showIndexPage);
+    app.get('/error', createError);
     app.get('/tournament', showTournamentsPage);
     app.get('/archer', showArchersList)
     app.get('/tournament/:tid', showArcherTournament)
@@ -52,10 +60,6 @@ function run() {
     app.post('/tournament-input', sendDatabaseEntry)
 }
 
-function parseDate(date) {
-    let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
-    return formattedDate
-}
 
 function goodRegister(req, res) {
     res.send({
@@ -151,8 +155,8 @@ function showTournamentsPage(req, res) {
             } else {
                row.status = "Result"
             }
-            row.datetime_start = parseDate(row.datetime_start)
-            row.datetime_end = parseDate(row.datetime_end)
+            row.datetime_start = utility.parseDate(row.datetime_start)
+            row.datetime_end = utility.parseDate(row.datetime_end)
             formattedResults.push(row)
         })
 
@@ -204,8 +208,8 @@ function showArcherTournament(req, res) {
                 } else {
                    row.status = "Result"
                 }
-                row.datetime_start = parseDate(row.datetime_start)
-                row.datetime_end = parseDate(row.datetime_end)
+                row.datetime_start = utility.parseDate(row.datetime_start)
+                row.datetime_end = utility.parseDate(row.datetime_end)
                 formattedResults.push(row)
             })
             app.render('tournament.html', {
@@ -222,54 +226,7 @@ function showArcherTournament(req, res) {
     })
 }
 
-// function showAdminLogin(req, res) {
-//     app.render('admin.html', {}, (err, content) => {
-//         res.render('fullpage.html', {
-//             title: "Admin Login",
-//             year: "2017",
-//             content: content
-//         })
-//     })
-// }
 
-// function showTournamentScore(req, res) {
-//     let tournamentScores = []
-//     executeQuery(`SELECT archer_id, archer.name
-//         FROM tournament_archer
-//         INNER JOIN archer ON archer_id = archer.id
-//         WHERE tournament_id = ?`,
-//         [req.params.tid], (archerIDs) =>{
-//         archerIDs.forEach((archerID)=>{
-//             executeQuery(`SELECT arrow, score, spider
-//                 FROM arrow arr
-//                 WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, archerID.archer_id], (singleArcherData) => {
-//                         executeQuery(`SELECT SUM(arr.score) AS total,
-//                             SUM(arr.spider) AS spidtot,
-//                             Count(case arr.score when 0 then null else 1 END) as Hits,
-//                             Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
-//                             FROM arrow arr WHERE arr.tournament = ? AND arr.archer = ?`, [req.params.tid, archerID.archer_id], (singleArcherScore) => {
-//                                 let archer = []
-//                                 archer.id = archerID
-//                                 archer.ends = tabulateResult(singleArcherData)
-//                                 archer.summary = singleArcherScore
-//                                 tournamentScores.push(archer)
-
-//                                 if (archerIDs.length == tournamentScores.length){
-//                                     app.render('tournament-score.html', {
-//                                         data: tournamentScores,
-//                                     }, (err, content) => {
-//                                         res.render('fullpage.html', {
-//                                             title: "Archer Score for Tournament",
-//                                             year: "2017",
-//                                             content: content
-//                                     })
-//                                 })
-//                             }
-//                         })
-//                 })
-//         })
-//     })
-// }
 
 function executeQuery(sql, params, callback) {
     let connection = mysql.createConnection(config)

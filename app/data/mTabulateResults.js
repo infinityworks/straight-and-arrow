@@ -1,37 +1,38 @@
+const convert = require('./convertmx')
+
 module.exports = (archerScore) => {
+    let scoreCopy = archerScore
+    let tabulatedResults = [
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)}
+    ]
 
+    arrowCounter = 0
 
-    let tabulatedResults = []
-    let counter = 0
-    let endSelection = []
-    let endCounter = 1
-    let endTotal = 0
+    for (var i=0; i<tabulatedResults.length; i++) {
 
-    archerScore.forEach((row) => {
-        counter++
-        endTotal += row.score
+        for (var j=0; j<tabulatedResults[i].arrows.length; j++) {
 
-        if (row.score == 0){
-            row.score = 'M'
+            arrowRow = scoreCopy[arrowCounter]
+            if (arrowRow && arrowRow.arrow != arrowCounter +1) {
+                tabulatedResults[i].arrows[j] = 0
+                arrowCounter++
+            }
+            else if (arrowRow && arrowRow.arrow == arrowCounter +1) {
+                convertedScore = convert.convertMX(arrowRow.score, arrowRow.spider)
+                tabulatedResults[i].arrows[j] = convertedScore
+                arrowCounter++
+            }
+            else{
+                tabulatedResults[i].arrows[j] = 0
+                arrowCounter++
+            }
+
         }
-        if (row.spider.lastIndexOf(1) !== -1){
-            row.score = 'X'
-        }
-
-        endSelection.push(row)
-        if (counter % 6 == 0) {
-            tabulatedResults.push({
-                endCounter, 
-                endIndex: endSelection,
-                endTotal
-            })
-
-            endTotal = 0
-
-            endCounter++
-            endSelection = []
-        }
-    })
+    }
 
     return tabulatedResults
 }

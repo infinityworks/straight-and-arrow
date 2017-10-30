@@ -1,3 +1,7 @@
+{{#data}}
+{{#id}}
+<p>Archer: <strong>{{name}}</strong></p>
+{{/id}}
 <table class="table table-striped">
     <tr>
         <th></th>
@@ -17,44 +21,55 @@
         <th>E&#47T</th>
 
     </tr>
-    {{#data.0}}
+
     <tr>
-        {{#endIndex}}
-            <td>{{score}}</td>
-        {{/endIndex}}
-    {{/data.0}}
+        {{#ends.0}}
+
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
+        {{/ends.0}}
+
         <td bgcolor='dimgrey'></td>
-    {{#data.1}}
-        {{#endIndex}}
-            <td>{{score}}</td>
-        {{/endIndex}}
-    {{/data.1}}
+
+        {{#ends.1}}
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
+        {{/ends.1}}
+
         <td bgcolor='dimgrey'></td>
     </tr>
 
 
-    {{#data.2}}
+
     <tr>
-        {{#endIndex}}
-            <td>{{score}}</td>
-        {{/endIndex}}
-    {{/data.2}}
+        {{#ends.2}}
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
+        {{/ends.2}}
+
         <td bgcolor='dimgrey'></td>
-    {{#data.3}}
-        {{#endIndex}}
-            <td>{{score}}</td>
-        {{/endIndex}}
-    {{/data.3}}
+
+        {{#ends.3}}
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
+        {{/ends.3}}
+
         <td bgcolor='dimgrey'></td>
     </tr>
 
 
-    {{#data.4}}
+
     <tr>
-        {{#endIndex}}
-            <td>{{score}}</td>
-        {{/endIndex}}
-    {{/data.4}}
+        {{#ends.4}}
+        {{#arrows}}
+            <td>{{.}}</td>
+        {{/arrows}}
+        {{/ends.4}}
+
         <td bgcolor='dimgrey'></td>
         <td></td>
         <td></td>
@@ -65,12 +80,13 @@
         <td bgcolor='dimgrey'></td>
     </tr>
 
-{{#scoreSend}}
 </table>
+{{#summary}}
 <table class="table table-striped">
     <th>Total score: {{total}}</th>
     <th>Total spiders hit: {{spidtot}}</th>
     <th>Total Hits: {{Hits}}</th>
     <th>Total Golds: {{Golds}}</th>
+{{/summary}}
 </table>
-{{/scoreSend}}
+{{/data}}
