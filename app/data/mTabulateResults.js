@@ -1,34 +1,70 @@
 const convert = require('./convertmx')
 
 module.exports = (archerScore) => {
-
-
-    let tabulatedResults = []
-    let counter = 0
-    let endSelection = []
-    let endCounter = 1
+    let scoreCopy = archerScore
+    let tabulatedResults = [
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)},
+        {arrows:new Array(6)}
+    ]
+    // let counter = 0
+    // let endSelection = []
+    // let endCounter = 1
     //let endTotal = 0
 
-    archerScore.forEach((row) => {
-        counter++
-       // endTotal += row.score
-        
+    arrowCounter = 0
 
-        endSelection.push(convert.convertMX(row))
-        
-        if (counter % 6 == 0) {
-            tabulatedResults.push({
-                endCounter, 
-                endIndex: endSelection,
-                //endTotal
-            })
+    for (var i=0; i<tabulatedResults.length; i++) {
 
-            //endTotal = 0
+        for (var j=0; j<tabulatedResults[i].arrows.length; j++) {
 
-            endCounter++
-            endSelection = []
+            arrowRow = scoreCopy[arrowCounter]
+            if (arrowRow && arrowRow.arrow != arrowCounter +1) {
+                tabulatedResults[i].arrows[j] = 0
+                arrowCounter++
+            }
+            else if (arrowRow && arrowRow.arrow == arrowCounter +1) {
+                convertedScore = convert.convertMX(arrowRow.score, arrowRow.spider)
+                tabulatedResults[i].arrows[j] = convertedScore
+                arrowCounter++
+            }
+            else{
+                tabulatedResults[i].arrows[j] = 0
+                arrowCounter++
+            }
+            // else {
+            //     tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
+            //     arrowCounter ++
+            // }
+
         }
-    })
+    }
+
+
+
+
+    // archerScore.forEach((row) => {
+    //     counter++
+    //    // endTotal += row.score
+
+
+    //     endSelection.push(convert.convertMX(row))
+
+    //     if (counter % 6 == 0) {
+    //         tabulatedResults.push({
+    //             endCounter,
+    //             endIndex: endSelection,
+    //             //endTotal
+    //         })
+
+    //         //endTotal = 0
+
+    //         endCounter++
+    //         endSelection = []
+    //     }
+    // })
 
     return tabulatedResults
 }

@@ -33,7 +33,7 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                             }
 
                             app.render('score-input.html', {
-                                data: tournamentScores,
+                                data: tournamentScores
                             }, (err, content) => {
                                 res.render('fullpage.html', {
                                     title: "Archer Score for Tournament",
