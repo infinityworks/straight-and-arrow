@@ -28,7 +28,6 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                               if (a.id.archer_id > b.id.archer_id ) {
                                 return 1;
                               }
-                              // a must be equal to b
                               return 0;
                             }
 
