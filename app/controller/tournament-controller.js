@@ -14,7 +14,6 @@ module.exports = (executeQuery, app, tournamentScore, tabulatedResults, tourname
                 archer.ends = tabulatedResults(archerData)
                 archer.summary = arrowTotal
                 archerScore.push(archer)
-                console.log("indiv archer data", archerScore)
 
                 if (archerData.length == 0) {
                     app.render('no-info.html', {}, (err, content) => {

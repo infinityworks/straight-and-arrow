@@ -21,7 +21,6 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                         archer.summary = archerStats
 
                         tournamentScores.push(archer)
-                        console.log("tournmanet archer data", tournamentScores)
                         if (archerIDs.length == tournamentScores.length){
                             app.render('tournament-score.html', {
                                 data: tournamentScores
