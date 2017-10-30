@@ -9,10 +9,6 @@ module.exports = (archerScore) => {
         {arrows:new Array(6)},
         {arrows:new Array(6)}
     ]
-    // let counter = 0
-    // let endSelection = []
-    // let endCounter = 1
-    //let endTotal = 0
 
     arrowCounter = 0
 
@@ -34,37 +30,9 @@ module.exports = (archerScore) => {
                 tabulatedResults[i].arrows[j] = 0
                 arrowCounter++
             }
-            // else {
-            //     tabulatedResults[i][j] = {arrow: arrowCounter, score: 0}
-            //     arrowCounter ++
-            // }
 
         }
     }
-
-
-
-
-    // archerScore.forEach((row) => {
-    //     counter++
-    //    // endTotal += row.score
-
-
-    //     endSelection.push(convert.convertMX(row))
-
-    //     if (counter % 6 == 0) {
-    //         tabulatedResults.push({
-    //             endCounter,
-    //             endIndex: endSelection,
-    //             //endTotal
-    //         })
-
-    //         //endTotal = 0
-
-    //         endCounter++
-    //         endSelection = []
-    //     }
-    // })
 
     return tabulatedResults
 }
