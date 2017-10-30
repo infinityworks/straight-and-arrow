@@ -17,8 +17,9 @@ module.exports = (executeQuery) => {
 		    Count(case arr.score when 0 then 1 else null END) as Misses,
 		    Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
 		    FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [tournamentId, archerId], (arrowTotal) => {
-
-		    	callback(archerScore, arrowTotal)
+		    	executeQuery(`SELECT name FROM archer where id = ?`, [archerId], (archerName) => {
+		    		callback(archerScore, arrowTotal, archerName)
+		    	})
 	        });
 	    });
 	}

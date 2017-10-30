@@ -8,9 +8,9 @@ module.exports = (executeQuery, app, tournamentScore, tabulatedResults, tourname
         const archerID = req.params.aid;
         let archerScore = []
 
-        tournamentScore.getTournamentArcherScore(tournamentID, archerID, (archerData, arrowTotal) => {
+        tournamentScore.getTournamentArcherScore(tournamentID, archerID, (archerData, arrowTotal, archerName) => {
                 let archer = []
-                archer.id = archerID
+                archer.id = archerName
                 archer.ends = tabulatedResults(archerData)
                 archer.summary = arrowTotal
                 archerScore.push(archer)
