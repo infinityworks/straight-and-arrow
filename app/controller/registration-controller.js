@@ -22,7 +22,10 @@ module.exports = (executeQuery, app) => {
    
         regInput = req.body
         console.log(regInput)
-        //DO CHECKS ON INPUT
+        // //DO CHECKS ON INPUT, returns TRUE or FALSE
+        // checkEmailFieldsMatch(email,cemail){
+
+        // }
 
 
 
@@ -35,8 +38,16 @@ module.exports = (executeQuery, app) => {
                 //         res.redirect("/admin/"+req.body.tournamentID)
                 //     }
                 // })
-            
+        // else
+        //     return to page with sad message            
         
     }   
     
+
+
+
+
+
+
+
 }
