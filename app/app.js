@@ -31,6 +31,7 @@ const tabulatedResults = require('./data/mTabulateResults');
 
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
+const registrationController = require('./controller/registration-controller')(executeQuery, app)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const createError = require('./controller/error-Controller');
@@ -47,17 +48,21 @@ function run() {
     app.get('/', showIndexPage);
     app.get('/error', createError);
     app.get('/tournament', showTournamentsPage);
-    app.get('/archer', showArchersList)
-    app.get('/tournament/:tid', showArcherTournament)
+    app.get('/archer', showArchersList);
+    app.get('/registration', registrationController.showRegistration);
+    app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
         check('fullname').not().isEmpty().withMessage("Please enter a name.")
     ], createLog)
     app.post('/tournament-input', sendDatabaseEntry)
+    app.post('/registration',registrationController.sendRegistration)
+
 }
 
 
