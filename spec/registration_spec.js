@@ -41,6 +41,12 @@ describe("Check when passwords length is between 8 and 20", function() {
 	});
 });
 
+describe("Check when passwords length is between 8 and 20", function() {
+	it("returns false", function() {
+    expect(rc.checkPasswordLength("hellohello")).toEqual(true);
+	});
+});
+
 
 
 
