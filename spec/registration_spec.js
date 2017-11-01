@@ -17,11 +17,32 @@ describe("Check strings which do match", function() {
 	});
 });
 
-describe("Check when passwords do not match", function() {
-	it("reveals an incorrect password notification", function() {
-    expect(rc.sendRegistration(wrongPasswordExample)).toEqual(false);
+// describe("Check when passwords do not match", function() {
+// 	it("reveals an incorrect password notification", function() {
+//     expect(rc.sendRegistration(wrongPasswordExample)).toEqual(false);
+// 	});
+// });
+
+describe("Check when passwords length is less than 8", function() {
+	it("returns false", function() {
+    expect(rc.checkPasswordLength("hello")).toEqual(false);
 	});
 });
+
+describe("Check when passwords length is more than 20", function() {
+	it("returns false", function() {
+    expect(rc.checkPasswordLength("hellohellohellohellohellohello")).toEqual(false);
+	});
+});
+
+describe("Check when passwords length is between 8 and 20", function() {
+	it("returns false", function() {
+    expect(rc.checkPasswordLength("hellohello")).toEqual(true);
+	});
+});
+
+
+
 
 let wrongPasswordExample =
 { name: 'Dan',

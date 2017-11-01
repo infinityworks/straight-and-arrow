@@ -15,5 +15,7 @@ function checkCredentialsMatch(stringA, stringB) {
     }
 }
 
+
 exports.parseDate = parseDate
 exports.checkCredentialsMatch = checkCredentialsMatch
+

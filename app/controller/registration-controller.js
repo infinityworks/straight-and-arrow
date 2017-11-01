@@ -1,6 +1,8 @@
 module.exports = (executeQuery, app, utility) => {
 
-    return { showRegistration, sendRegistration, checkEmailsMatch, checkEmailUnique, checkPasswordsMatch, checkPasswordPolicy };
+    return { showRegistration, sendRegistration, checkEmailsMatch, 
+        checkEmailsUnique, checkPasswordsMatch, checkPasswordPolicy , 
+        checkPasswordLength };
 
     function showRegistration(req, res) {
 
@@ -36,7 +38,7 @@ module.exports = (executeQuery, app, utility) => {
     }
 
     function checkEmailsUnique(){
-        
+        return true
     }
 
     function checkPasswordPolicy(pass){
@@ -44,11 +46,11 @@ module.exports = (executeQuery, app, utility) => {
     }
 
     function checkPasswordLength(password){
-        if (password.length <8 || >20){
-            console.log(“Password isn’t the correct length”);
+        if (password.length <8 || password.length >20){
+            return false
         }
         else {
-            return password
+            return true
         }
     }
 
