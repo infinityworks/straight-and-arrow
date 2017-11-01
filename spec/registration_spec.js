@@ -1,7 +1,6 @@
 const registrationController = require('../app/controller/registration-controller');
 const utility = require('../app/util/utilities');
 
-//IF PASS =/= CPASS (Funtion to return false)
 
 describe("Check strings which do not match", function() {
 	it("returns false", function() {
@@ -17,9 +16,35 @@ describe("Check strings which do match", function() {
 	});
 });
 
+describe("Check when passwords do not match", function() {
+	it("reveals an incorrect password notification", function() {
+    expect(registrationController.registration(wrongPasswordExample)).toEqual(false);
+	});
+});
 
+// describe("Check passwords which do match", function() {
+// 	it("returns false", function() {
+//     expect(registrationController.checkPasswordsMatch(
+//     	"pass", "pass")).toEqual(true);
+// 	});
+// });
 
-//IF PASS 4 CHARS
+//Name
+//DOB
+//Email
+//CEmail
+//Password
+//CPassword
+
+let wrongPasswordExample =
+{ name: 'Dan',
+  dob: '01011900',
+  email: 'dan@dan.com',
+  cemail: 'dan@dan.com',
+  password: 'password',
+  cpassword: 'wrongpassword' }
+
+// IF PASS 4 CHARS
 
 // describe("4 character password", function() {
 // 	it("raises exception because too short", function() {

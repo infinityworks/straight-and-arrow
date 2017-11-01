@@ -1,4 +1,4 @@
-module.exports = (executeQuery, app) => {
+module.exports = (executeQuery, app, utility) => {
 
     return { showRegistration, sendRegistration };
 
@@ -21,29 +21,22 @@ module.exports = (executeQuery, app) => {
     function sendRegistration(req, res) {
    
         regInput = req.body
-        console.log(regInput)
-        // //DO CHECKS ON INPUT, returns TRUE or FALSE
-        // checkEmailFieldsMatch(email,cemail){
-
-        // }
-
-
-
-                // executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
-                // VALUES (?,?,?,?,?)
-                // ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
-                // [archerIDSend, tournamentIDSend, endSend[arrowI][0], endSend[arrowI][1], endSend[arrowI][2]],(result) =>{
-                //     counter++
-                //     if (counter == 30){
-                //         res.redirect("/admin/"+req.body.tournamentID)
-                //     }
-                // })
-        // else
-        //     return to page with sad message            
+        console.log(regInput)         
         
     }   
-    
 
+
+    function checkPasswordsMatch(pass, cpass) {
+        utility.checkCredentialsMatch(pass, cpass)
+    }
+
+    function checkEmailsMatch(pass, cpass) {
+        utility.checkCredentialsMatch(pass, cpass)
+    }
+
+    function registration(playerInformation) {
+    let name = playerInformation.name // body...
+}
 
 
 
