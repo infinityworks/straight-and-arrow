@@ -1,4 +1,5 @@
 const registrationController = require('../app/controller/registration-controller');
+const rc = registrationController(1,2,3)
 const utility = require('../app/util/utilities');
 
 
@@ -18,23 +19,9 @@ describe("Check strings which do match", function() {
 
 describe("Check when passwords do not match", function() {
 	it("reveals an incorrect password notification", function() {
-    expect(registrationController.registration(wrongPasswordExample)).toEqual(false);
+    expect(rc.sendRegistration(wrongPasswordExample)).toEqual(false);
 	});
 });
-
-// describe("Check passwords which do match", function() {
-// 	it("returns false", function() {
-//     expect(registrationController.checkPasswordsMatch(
-//     	"pass", "pass")).toEqual(true);
-// 	});
-// });
-
-//Name
-//DOB
-//Email
-//CEmail
-//Password
-//CPassword
 
 let wrongPasswordExample =
 { name: 'Dan',
@@ -81,5 +68,3 @@ let wrongPasswordExample =
 //IF PASS STARTS WITH SPACES
 
 //IF PASS ENDS WITH SPACES
-
-

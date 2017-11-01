@@ -1,9 +1,9 @@
 module.exports = (executeQuery, app, utility) => {
 
-    return { showRegistration, sendRegistration };
+    return { showRegistration, sendRegistration, checkEmailsMatch, checkEmailUnique, checkPasswordsMatch, checkPasswordPolicy };
 
     function showRegistration(req, res) {
-    
+
 
         app.render('registration.html', {
 
@@ -14,33 +14,42 @@ module.exports = (executeQuery, app, utility) => {
                 content: content
             })
         })
-
-        
     }
 
     function sendRegistration(req, res) {
-   
+
         regInput = req.body
-        console.log(regInput)         
-        
-    }   
+        console.log(regInput)
+        checkPasswordsMatch()
+        checkEmailsMatch()
+        checkEmailUnique()
+        checkPasswordPolicy()
+    }
 
 
     function checkPasswordsMatch(pass, cpass) {
         utility.checkCredentialsMatch(pass, cpass)
     }
 
-    function checkEmailsMatch(pass, cpass) {
-        utility.checkCredentialsMatch(pass, cpass)
+    function checkEmailsMatch(email, cemail) {
+        utility.checkCredentialsMatch(email, cemail)
     }
 
-    function registration(playerInformation) {
-    let name = playerInformation.name // body...
-}
+    function checkEmailsUnique(){
+        
+    }
 
+    function checkPasswordPolicy(pass){
+        checkPasswordLength()
+    }
 
-
-
-
+    function checkPasswordLength(password){
+        if (password.length <8 || >20){
+            console.log(“Password isn’t the correct length”);
+        }
+        else {
+            return password
+        }
+    }
 
 }
