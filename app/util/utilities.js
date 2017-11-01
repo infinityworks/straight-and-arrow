@@ -5,4 +5,16 @@ function parseDate(date) {
     return formattedDate
 }
 
+
+function checkCredentialsMatch(stringA, stringB) {
+    if (stringB !== stringA){
+    	console.log("Something boggle")
+    	return false
+    }
+    else {
+    	return true
+    }
+}
+
 exports.parseDate = parseDate
+exports.checkCredentialsMatch = checkCredentialsMatch

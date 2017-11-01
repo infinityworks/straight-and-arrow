@@ -1,4 +1,23 @@
 const registrationController = require('../app/controller/registration-controller');
+const utility = require('../app/util/utilities');
+
+//IF PASS =/= CPASS (Funtion to return false)
+
+describe("Check strings which do not match", function() {
+	it("returns false", function() {
+    expect(utility.checkCredentialsMatch(
+    	"pass", "fail")).toEqual(false);
+	});
+});
+
+describe("Check strings which do match", function() {
+	it("returns false", function() {
+    expect(utility.checkCredentialsMatch(
+    	"pass", "pass")).toEqual(true);
+	});
+});
+
+
 
 //IF PASS 4 CHARS
 
@@ -8,6 +27,8 @@ const registrationController = require('../app/controller/registration-controlle
 //     	entryWithShortPassword)).toEqual(exception);
 // 	});
 // });
+
+
 
 
 //IF PASS IS 5 CHARS
