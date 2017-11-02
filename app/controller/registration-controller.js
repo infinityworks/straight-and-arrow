@@ -21,7 +21,7 @@ module.exports = (executeQuery, app, utility) => {
     function sendRegistration(req, res) {
 
         regInput = req.body
-        console.log(regInput)
+        // console.log(regInput)
         checkPasswordsMatch()
         checkEmailsMatch()
         checkEmailUnique()
@@ -30,11 +30,11 @@ module.exports = (executeQuery, app, utility) => {
 
 
     function checkPasswordsMatch(pass, cpass) {
-        utility.checkCredentialsMatch(pass, cpass)
+        return utility.checkCredentialsMatch(pass, cpass)
     }
 
     function checkEmailsMatch(email, cemail) {
-        utility.checkCredentialsMatch(email, cemail)
+        return utility.checkCredentialsMatch(email, cemail)
     }
 
     function checkEmailsUnique(){
