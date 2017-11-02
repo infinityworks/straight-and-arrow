@@ -66,7 +66,7 @@ $("#playerRegistrationForm").validate({
            },
            password: {
                required: "Please provide a password",
-               minlength: "Your password must be at least 5 characters long"
+               minlength: "Your password must be between 8 and 20 characters"
            },
            cpassword: {
                required: "Please provide a password",
