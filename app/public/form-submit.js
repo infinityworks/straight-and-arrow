@@ -31,31 +31,59 @@ $(document).ready(function(){
   });
 
 
-  $("#playerRegistrationForm").submit(function(event) {
-   
-    event.preventDefault();
-
-    if(status = 'passwordsNotMatch'){
-      $("#passwordsDifferent").removeClass("hidden");
-      $("#passwordsDifferent").addClass("alert-danger");
-    }
-
-    else if(status = 'emailsNotMatch'){
-      $("#emailsDifferent").removeClass("hidden");
-      $("#emailsDifferent").addClass("alert-danger");
-    }
-
-    else if(status = 'emailTaken'){
-      $("#emailExists").removeClass("hidden");
-      $("#emailExists").addClass("alert-danger");
-    }
-
-    else if(status = 'invalidPassword'){
-      $("#passwordInvalid").removeClass("hidden");
-      $("#passwordInvalid").addClass("alert-danger");
-    }
-
-  })
+$("#playerRegistrationForm").validate({
+       rules: {
+           name: {
+               required: true,
+               minlength: 2
+           },
+           dob: {
+               required: true
+           },
+           email: {
+               required: true,
+               email: true
+           },
+           cemail: {
+               required: true,
+               email:true,
+               equalTo: "#email"
+           },
+           password: {
+               required: true,
+               minlength: 5
+           },
+           cpassword: {
+               required: true,
+               minlength: 5,
+               equalTo: "#password"
+           },
+       },
+       messages: {
+           name: {
+               required: "Please enter a name",
+               minlength: "Your username must consist of at least 2 characters"
+           },
+           password: {
+               required: "Please provide a password",
+               minlength: "Your password must be at least 5 characters long"
+           },
+           cpassword: {
+               required: "Please provide a password",
+               minlength: "Your password must be at least 5 characters long",
+               equalTo: "Please enter the same password as above"
+           },
+           email: {
+               required: "Please provide an email",
+               minlength: "must be a valid email",
+           },
+           cemail: {
+               required: "Please provide an email",
+               minlength: "must be a valid email",
+               equalTo: "Please enter the same email as above"
+           },
+       }
+   });
 
 
 });
