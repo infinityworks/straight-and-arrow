@@ -22,16 +22,16 @@ module.exports = (executeQuery, app, utility) => {
 
         regInput = req.body
 
-        if (!checkPasswordsMatch(regInput.password, regInput.cpassword)){
+        if (checkPasswordsMatch(regInput.password, regInput.cpassword) == false){
             res.send({"status": "passwordsNotMatch"})
         }
-        else if (!checkEmailsMatch(regInput.email, regInput.cemail)){
+        else if (checkEmailsMatch(regInput.email, regInput.cemail) == false){
             res.send({"status": "emailsNotMatch"})
         }
-        else if (!checkEmailUnique(regInput.email)){
+        else if (checkEmailUnique(regInput.email) == false){
             res.send({"status": "emailTaken"})
         }
-        else if (!checkPasswordPolicy(regInput.password)) {
+        else if (checkPasswordPolicy(regInput.password) == false ) {
             res.send({"status": "invalidPassword"})
         }
         else {
