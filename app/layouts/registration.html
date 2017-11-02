@@ -14,14 +14,14 @@
 			<label for="email">Email:</label>
 			<input type="email" name="email" id="email" placeholder="example@email.com" required>
 
-			<div id="emailExists" class="hidden submitMessage alert">Email already used</div>
+			<div id="emailExists" class="hidden">Email already used</div>
 
 		</div>
 		<div class="entry">
 			<label for="cemail">Confirm Email:</label>
 			<input type="email" name="cemail" id="cemail" required>
 
-			<div id="emailsDifferent" class="hidden submitMessage alert">Emails do not match</div>
+			<div id="emailsDifferent" class="hidden">Emails do not match</div>
 
 		</div>
 
@@ -32,7 +32,7 @@
 			<label for="password">Password:</label>
 			<input type="password" name="password" id="password" required>
 
-			<div id="passwordInvalid" class="hidden submitMessage alert">Invalid password</div>
+			<div id="passwordInvalid" class="hidden">Invalid password</div>
 
 		</div>
 
@@ -40,7 +40,7 @@
 			<label for="cpassword">Confirm Password:</label>
 			<input type="password" name="cpassword" id="cpassword" required>
 
-			<div id="passwordsDifferent" class="hidden submitMessage alert">Passwords do not match</div>
+			<div id="passwordsDifferent" class="hidden">Passwords do not match</div>
 
 		</div>
 
@@ -49,8 +49,5 @@
 			<input type="submit" value="Submit" class="btn btn-success">
 		</div>
 	</form>
-<!-- 	<div id="submitMessage" class="hidden submitMessage alert">
-		{{submitMessage}}
-	</div> -->
 
 </div>

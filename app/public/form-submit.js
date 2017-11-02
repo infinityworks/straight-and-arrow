@@ -29,4 +29,33 @@ $(document).ready(function(){
       }
     });
   });
+
+
+  $("#playerRegistrationForm").submit(function(event) {
+   
+    event.preventDefault();
+
+    if(status = 'passwordsNotMatch'){
+      $("#passwordsDifferent").removeClass("hidden");
+      $("#passwordsDifferent").addClass("alert-danger");
+    }
+
+    else if(status = 'emailsNotMatch'){
+      $("#emailsDifferent").removeClass("hidden");
+      $("#emailsDifferent").addClass("alert-danger");
+    }
+
+    else if(status = 'emailTaken'){
+      $("#emailExists").removeClass("hidden");
+      $("#emailExists").addClass("alert-danger");
+    }
+
+    else if(status = 'invalidPassword'){
+      $("#passwordInvalid").removeClass("hidden");
+      $("#passwordInvalid").addClass("alert-danger");
+    }
+
+  })
+
+
 });
