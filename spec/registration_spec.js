@@ -1,6 +1,6 @@
 const registrationController = require('../app/controller/registration-controller');
-const rc = registrationController(1,2,3)
 const utility = require('../app/util/utilities');
+const rc = registrationController(1,2, utility)
 
 
 describe("Check strings which do not match", function() {
@@ -17,11 +17,30 @@ describe("Check strings which do match", function() {
 	});
 });
 
-// describe("Check when passwords do not match", function() {
-// 	it("reveals an incorrect password notification", function() {
-//     expect(rc.sendRegistration(wrongPasswordExample)).toEqual(false);
-// 	});
-// });
+
+describe("Check when passwords do not match", function() {
+	it("reveals an incorrect password notification", function() {
+    expect(rc.checkPasswordsMatch("pass", "fail")).toEqual(false);
+	});
+});
+
+describe("Check when passwords do match", function() {
+  it("doesn't error", function() {
+    expect(rc.checkPasswordsMatch("danifyouwant", "danifyouwant")).toEqual(true);
+  });
+});
+
+describe("Check when emails do not match", function() {
+  it("reveals an incorrect email notification", function() {
+    expect(rc.checkEmailsMatch("danifyouwant@dan.com", "danifyoudont@dan.com")).toEqual(false);
+  });
+});
+
+describe("Check when passwords do match", function() {
+  it("doesn't error", function() {
+    expect(rc.checkEmailsMatch("danifyouwant@dan.com", "danifyouwant@dan.com")).toEqual(true);
+  });
+});
 
 describe("Check when passwords length is less than 8", function() {
 	it("returns false", function() {
@@ -47,7 +66,13 @@ describe("Check when passwords length is between 8 and 20", function() {
 	});
 });
 
-
+// FUTURE INTERGRATION TEST
+// describe("Checks success page is rendered when form filled in correctly", function() {
+//   it("will redirect user to successful registration page", function() {
+      //   result = rc.sendRegistration(correctPasswordExample)
+      //    expect(result.something).toInclude("this phrase")
+//   }
+// })
 
 
 let wrongPasswordExample =
@@ -57,6 +82,14 @@ let wrongPasswordExample =
   cemail: 'dan@dan.com',
   password: 'password',
   cpassword: 'wrongpassword' }
+
+  let correctPasswordExample =
+{ name: 'Dan',
+  dob: '01011900',
+  email: 'dan@dan.com',
+  cemail: 'dan@dan.com',
+  password: 'password',
+  cpassword: 'password' }
 
 // IF PASS 4 CHARS
 
