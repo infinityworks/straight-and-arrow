@@ -19,7 +19,7 @@ viewlog:
 	docker logs -f straightandarrow_web_1
 
 testdata:
-	docker run --rm -i --net=host mariadb mysql -uroot -pexample -h127.0.0.1 < data/data.sql
+	docker run --rm -i --net=host mariadb mysql -uroot -pexample -h127.0.0.1 < data/schemas/sql/testdata.sql
 
 dbconnect:
 	docker exec -it sqldb sh -c "mysql -uroot -pexample"
