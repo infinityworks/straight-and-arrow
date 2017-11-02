@@ -1,9 +1,11 @@
-module.exports = (executeQuery, app) => {
+module.exports = (executeQuery, app, utility) => {
 
-    return { showRegistration, sendRegistration };
+    return { showRegistration, sendRegistration, checkEmailsMatch, 
+        checkEmailsUnique, checkPasswordsMatch, checkPasswordPolicy , 
+        checkPasswordLength };
 
     function showRegistration(req, res) {
-    
+
 
         app.render('registration.html', {
 
@@ -14,40 +16,42 @@ module.exports = (executeQuery, app) => {
                 content: content
             })
         })
-
-        
     }
 
     function sendRegistration(req, res) {
-   
+
         regInput = req.body
         console.log(regInput)
-        // //DO CHECKS ON INPUT, returns TRUE or FALSE
-        // checkEmailFieldsMatch(email,cemail){
-
-        // }
-
-
-
-                // executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
-                // VALUES (?,?,?,?,?)
-                // ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
-                // [archerIDSend, tournamentIDSend, endSend[arrowI][0], endSend[arrowI][1], endSend[arrowI][2]],(result) =>{
-                //     counter++
-                //     if (counter == 30){
-                //         res.redirect("/admin/"+req.body.tournamentID)
-                //     }
-                // })
-        // else
-        //     return to page with sad message            
-        
-    }   
-    
+        checkPasswordsMatch()
+        checkEmailsMatch()
+        checkEmailUnique()
+        checkPasswordPolicy()
+    }
 
 
+    function checkPasswordsMatch(pass, cpass) {
+        utility.checkCredentialsMatch(pass, cpass)
+    }
 
+    function checkEmailsMatch(email, cemail) {
+        utility.checkCredentialsMatch(email, cemail)
+    }
 
+    function checkEmailsUnique(){
+        return true
+    }
 
+    function checkPasswordPolicy(pass){
+        checkPasswordLength()
+    }
 
+    function checkPasswordLength(password){
+        if (password.length <8 || password.length >20){
+            return false
+        }
+        else {
+            return true
+        }
+    }
 
 }

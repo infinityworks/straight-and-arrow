@@ -9,7 +9,6 @@ services:
      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
-
   web:
     build: .
     ports:
@@ -24,6 +23,12 @@ services:
      - DB_USER_PW=example
      - DB_PORT=3306
      - DB_NAME=arrowdb
-
+  dbmigration:
+    image: dhoer/flyway
+    command: -url=jdbc:mysql://db -schemas=arrowdb -locations=filesystem:/flyway/sql/data -user=root -password=example migrate
+    volumes:
+      - .:/flyway/sql
+    depends_on:
+      - db
 volumes:
     db_data:
