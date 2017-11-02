@@ -1,7 +1,7 @@
 module.exports = (executeQuery, app, utility) => {
 
     return { showRegistration, sendRegistration, checkEmailsMatch, 
-        checkEmailsUnique, checkPasswordsMatch, checkPasswordPolicy , 
+        checkEmailUnique, checkPasswordsMatch, checkPasswordPolicy , 
         checkPasswordLength };
 
     function showRegistration(req, res) {
@@ -20,21 +20,27 @@ module.exports = (executeQuery, app, utility) => {
 
     function sendRegistration(req, res) {
 
-        // regInput = req.body
-        // checkPasswordsMatch()
-        // checkEmailsMatch()
-        // checkEmailUnique()
-        // checkPasswordPolicy()
+        regInput = req.body
 
-        app.render('registrationSuccess.html', {
-        }, (err, content) => {
-            res.render('fullpage.html', {
-                title: "Archer Score for Tournament",
-                year: "2017",
-                content: content
-            })
-        })
+        if (checkPasswordsMatch(regInput.password, regInput.cpassword)) {
+          if (checkEmailsMatch(regInput.email, regInput.cemail)) {
+            if (checkEmailUnique(regInput.email)) {
+                if (checkPasswordPolicy(regInput.password)) {
 
+                    app.render('registrationSuccess.html', {
+                    }, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Archer Score for Tournament",
+                            year: "2017",
+                            content: content
+                        })
+                    })
+
+                } 
+
+            }
+          }
+        }
 
     }
 
@@ -47,8 +53,10 @@ module.exports = (executeQuery, app, utility) => {
         return utility.checkCredentialsMatch(email, cemail)
     }
 
-    function checkEmailsUnique(){
+    function checkEmailUnique(email){
         return true
+        // select count(*) from table where email = email
+        // if 0 it's unique, if 1 not unique
     }
 
     function checkPasswordPolicy(pass){
