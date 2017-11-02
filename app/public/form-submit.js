@@ -29,4 +29,61 @@ $(document).ready(function(){
       }
     });
   });
+
+
+$("#playerRegistrationForm").validate({
+       rules: {
+           name: {
+               required: true,
+               minlength: 2
+           },
+           dob: {
+               required: true
+           },
+           email: {
+               required: true,
+               email: true
+           },
+           cemail: {
+               required: true,
+               email:true,
+               equalTo: "#email"
+           },
+           password: {
+               required: true,
+               minlength: 5
+           },
+           cpassword: {
+               required: true,
+               minlength: 5,
+               equalTo: "#password"
+           },
+       },
+       messages: {
+           name: {
+               required: "Please enter a name",
+               minlength: "Your username must consist of at least 2 characters"
+           },
+           password: {
+               required: "Please provide a password",
+               minlength: "Your password must be between 8 and 20 characters"
+           },
+           cpassword: {
+               required: "Please provide a password",
+               minlength: "Your password must be between 8 and 20 characters",
+               equalTo: "Please enter the same password as above"
+           },
+           email: {
+               required: "Please provide an email",
+               minlength: "must be a valid email",
+           },
+           cemail: {
+               required: "Please provide an email",
+               minlength: "must be a valid email",
+               equalTo: "Please enter the same email as above"
+           },
+       }
+   });
+
+
 });

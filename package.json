@@ -26,6 +26,7 @@
     "express-mustache": "^1.0.3",
     "express-request": "^0.3.0",
     "express-validator": "^4.2.1",
+    "jquery-validation": "^1.17.0",
     "moment": "^2.18.1",
     "mustache-express": "^1.2.5",
     "mysql": "^2.14.1",

@@ -11,46 +11,39 @@ module.exports = (executeQuery, app, utility) => {
 
         }, (err, content) => {
             res.render('fullpage.html', {
-                title: "Archer Score for Tournament",
+                title: "Registration",
                 year: "2017",
                 content: content
             })
         })
     }
 
-    function sendRegistration(req, res) {
+function sendRegistration(req, res) {
 
-        regInput = req.body
+       if(checkEmailUnique(req.body.email) == false){
+           console.log("need to do the database count thing here")
+       } else{
 
-        if (checkPasswordsMatch(regInput.password, regInput.cpassword)) 
-        {
-          if (checkEmailsMatch(regInput.email, regInput.cemail)) 
-          {
-            if (checkEmailUnique(regInput.email)) 
-            {
-                if (checkPasswordPolicy(regInput.password)) 
-                {
+            // //password hashing should go here
+            // hashword = regInput.password
 
-                    app.render('registrationSuccess.html', {
-                    }, (err, content) => {
-                        res.render('fullpage.html', {
-                            title: "Archer Score for Tournament",
-                            year: "2017",
-                            content: content
-                        })
-                    })
+            // executeQuery(`INSERT INTO player (name, dob, email, password)
+            //             VALUES (?,?,?,?)`,
+            //             [regInput.name, regInput.dob, regInput.email, hashword],(result) =>{
 
-                } 
+           app.render('registrationSuccess.html', {
 
-            }
-          }
-        } 
-        else 
-        {
+           }, (err, content) => {
+               res.render('fullpage.html', {
+                   title: "Registration Success",
+                   year: "2017",
+                   content: content
+               })
+           })
+       // })
+   }
+}
 
-        }
-
-    }
 
 
     function checkPasswordsMatch(pass, cpass) {
