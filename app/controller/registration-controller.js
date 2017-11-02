@@ -20,12 +20,22 @@ module.exports = (executeQuery, app, utility) => {
 
     function sendRegistration(req, res) {
 
-        regInput = req.body
-        // console.log(regInput)
-        checkPasswordsMatch()
-        checkEmailsMatch()
-        checkEmailUnique()
-        checkPasswordPolicy()
+        // regInput = req.body
+        // checkPasswordsMatch()
+        // checkEmailsMatch()
+        // checkEmailUnique()
+        // checkPasswordPolicy()
+
+        app.render('registrationSuccess.html', {
+        }, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Archer Score for Tournament",
+                year: "2017",
+                content: content
+            })
+        })
+
+
     }
 
 
@@ -42,7 +52,7 @@ module.exports = (executeQuery, app, utility) => {
     }
 
     function checkPasswordPolicy(pass){
-        checkPasswordLength()
+        return checkPasswordLength(pass)
     }
 
     function checkPasswordLength(password){

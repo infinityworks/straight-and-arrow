@@ -30,13 +30,6 @@ describe("Check when passwords do match", function() {
   });
 });
 
-
-
-
-
-
-
-
 describe("Check when emails do not match", function() {
   it("reveals an incorrect email notification", function() {
     expect(rc.checkEmailsMatch("danifyouwant@dan.com", "danifyoudont@dan.com")).toEqual(false);
@@ -48,15 +41,6 @@ describe("Check when passwords do match", function() {
     expect(rc.checkEmailsMatch("danifyouwant@dan.com", "danifyouwant@dan.com")).toEqual(true);
   });
 });
-
-
-
-
-
-
-
-
-
 
 describe("Check when passwords length is less than 8", function() {
 	it("returns false", function() {
@@ -82,7 +66,13 @@ describe("Check when passwords length is between 8 and 20", function() {
 	});
 });
 
-
+// FUTURE INTERGRATION TEST
+// describe("Checks success page is rendered when form filled in correctly", function() {
+//   it("will redirect user to successful registration page", function() {
+      //   result = rc.sendRegistration(correctPasswordExample)
+      //    expect(result.something).toInclude("this phrase")
+//   }
+// })
 
 
 let wrongPasswordExample =

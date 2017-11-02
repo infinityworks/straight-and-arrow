@@ -55,6 +55,7 @@ function run() {
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+    app.get('/registrationSuccess')
 
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
