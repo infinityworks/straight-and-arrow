@@ -7,6 +7,30 @@ VALUES
 	(3,'Rowan Gill','1901-01-01','Jamaica'),
 	(4,'Ivor Cheung','1959-02-03','Belgium');
 
+INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`, `type`, `arrows`)
+VALUES
+	(1,'IW Board Room','2017-10-16 09:00:00','2017-12-13 17:45:00','Leeds','Portsmouth',60),
+	(2,'Plaza de Espana','2018-08-01 00:00:00','2018-08-14 00:00:00','Barcelona','Portsmouth',60),
+	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney','Portsmouth',60),
+	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds','Portsmouth',60);
+
+INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`)
+VALUES
+	(1,1),
+	(1,2),
+	(2,1),
+	(2,3),
+	(3,4),
+	(4,1),
+	(4,3);
+
+INSERT INTO `user` (`id`, `name`, `email`)
+VALUES
+	(1,'JJ Beef','jj@beefdomain.com'),
+	(2,'Ben Biscuit von Cheese Brunton','bbvcb@bruntmeister.com'),
+	(3,'Donald Trump, POTUS','president@whitehouse.org'),
+	(4,'R Cake','admin@cake.com');
+
 INSERT INTO `arrow` (`id`, `archer`, `tournament`, `arrow`, `score`, `spider`)
 VALUES
 	(81,1,4,1,8,0),
@@ -99,27 +123,3 @@ VALUES
 	(168,4,3,28,8,0),
 	(169,4,3,29,5,0),
 	(170,4,3,30,1,0);
-
-INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`, `type`, `arrows`)
-VALUES
-	(1,'IW Board Room','2017-10-16 09:00:00','2017-12-13 17:45:00','Leeds','Portsmouth',60),
-	(2,'Plaza de Espana','2018-08-01 00:00:00','2018-08-14 00:00:00','Barcelona','Portsmouth',60),
-	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney','Portsmouth',60),
-	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds','Portsmouth',60);
-
-INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`)
-VALUES
-	(1,1),
-	(1,2),
-	(2,1),
-	(2,3),
-	(3,4),
-	(4,1),
-	(4,3);
-
-INSERT INTO `user` (`id`, `name`, `email`)
-VALUES
-	(1,'JJ Beef','jj@beefdomain.com'),
-	(2,'Ben Biscuit von Cheese Brunton','bbvcb@bruntmeister.com'),
-	(3,'Donald Trump, POTUS','president@whitehouse.org'),
-	(4,'R Cake','admin@cake.com');

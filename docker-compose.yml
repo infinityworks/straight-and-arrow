@@ -25,7 +25,7 @@ services:
      - DB_NAME=arrowdb
   dbmigration:
     image: dhoer/flyway
-    command: -url=jdbc:mysql://db -schemas=live_data -user=root -password=example migrate
+    command: -url=jdbc:mysql://db -schemas=arrowdb -locations=filesystem:/flyway/sql/data -user=root -password=example migrate
     volumes:
       - .:/flyway/sql
     depends_on:
