@@ -22,10 +22,14 @@ module.exports = (executeQuery, app, utility) => {
 
         regInput = req.body
 
-        if (checkPasswordsMatch(regInput.password, regInput.cpassword)) {
-          if (checkEmailsMatch(regInput.email, regInput.cemail)) {
-            if (checkEmailUnique(regInput.email)) {
-                if (checkPasswordPolicy(regInput.password)) {
+        if (checkPasswordsMatch(regInput.password, regInput.cpassword)) 
+        {
+          if (checkEmailsMatch(regInput.email, regInput.cemail)) 
+          {
+            if (checkEmailUnique(regInput.email)) 
+            {
+                if (checkPasswordPolicy(regInput.password)) 
+                {
 
                     app.render('registrationSuccess.html', {
                     }, (err, content) => {
@@ -40,6 +44,10 @@ module.exports = (executeQuery, app, utility) => {
 
             }
           }
+        } 
+        else 
+        {
+
         }
 
     }
@@ -71,5 +79,7 @@ module.exports = (executeQuery, app, utility) => {
             return true
         }
     }
+
+    // add DOB check?
 
 }
