@@ -1,4 +1,4 @@
-module.exports = (executeQuery, app, utility) => {
+module.exports = (executeQuery, app, utility, bcrypt) => {
 
     return {
         showRegistration,
@@ -23,11 +23,12 @@ module.exports = (executeQuery, app, utility) => {
 
     function sendRegistration(req, res) {
         regInput = req.body
+        const saltRounds = 10;
+        
         passwordsMatch = checkPasswordsMatch(regInput.password, regInput.cpassword)
         emailsMatch = checkEmailsMatch(regInput.email, regInput.cemail)
         emailUnique = checkEmailUnique(regInput.email)
         passwordPolicy = checkPasswordPolicy(regInput.password)
-        hashword = regInput.password
 
         if (!passwordsMatch || !emailsMatch || !passwordPolicy) {
             throw 403;
@@ -41,8 +42,10 @@ module.exports = (executeQuery, app, utility) => {
                 })
             })
         }
-        executeQuery(`INSERT INTO player (name, dob, email, password)
-        VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hashword], (result) => {
+
+        bcrypt.hash(regInput.password, null, null, function(err, hash) {
+          executeQuery(`INSERT INTO player (name, dob, email, password)
+          VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
             app.render('registrationSuccess.html', {}, (err, content) => {
                 res.render('fullpage.html', {
                     title: "Archer Score for Tournament",
@@ -50,7 +53,10 @@ module.exports = (executeQuery, app, utility) => {
                     content: content
                 })
             })
-        })
+          })
+        });
+
+        
     }
 
 
