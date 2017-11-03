@@ -1,14 +1,17 @@
-module.exports = (executeQuery, app, utility) => {
+module.exports = (executeQuery, app, utility, bcrypt) => {
 
-    return { showRegistration, sendRegistration, checkEmailsMatch, 
-        checkEmailUnique, checkPasswordsMatch, checkPasswordPolicy , 
-        checkPasswordLength };
+    return {
+        showRegistration,
+        sendRegistration,
+        checkEmailsMatch,
+        checkEmailUnique,
+        checkPasswordsMatch,
+        checkPasswordPolicy,
+        checkPasswordLength
+    };
 
     function showRegistration(req, res) {
-
-
         app.render('registration.html', {
-
         }, (err, content) => {
             res.render('fullpage.html', {
                 title: "Registration",
@@ -18,31 +21,45 @@ module.exports = (executeQuery, app, utility) => {
         })
     }
 
-function sendRegistration(req, res) {
+    function sendRegistration(req, res) {
+        regInput = req.body
+        const saltRounds = 10;
+        
+        passwordsMatch = checkPasswordsMatch(regInput.password, regInput.cpassword)
+        emailsMatch = checkEmailsMatch(regInput.email, regInput.cemail)
+        passwordPolicy = checkPasswordPolicy(regInput.password)
 
-       if(checkEmailUnique(req.body.email) == false){
-           console.log("need to do the database count thing here")
-       } else{
+        if (!passwordsMatch || !emailsMatch || !passwordPolicy) {
+            throw 403;
+        }
+        
+        checkEmailUnique(regInput.email, (emailUnique) => {
 
-            // //password hashing should go here
-            // hashword = regInput.password
-
-            // executeQuery(`INSERT INTO player (name, dob, email, password)
-            //             VALUES (?,?,?,?)`,
-            //             [regInput.name, regInput.dob, regInput.email, hashword],(result) =>{
-
-           app.render('registrationSuccess.html', {
-
-           }, (err, content) => {
-               res.render('fullpage.html', {
-                   title: "Registration Success",
-                   year: "2017",
-                   content: content
-               })
-           })
-       // })
-   }
-}
+            if (!emailUnique) {
+                console.log("email unique", emailUnique)
+                app.render('emailNotUnique.html', {}, (err, content) => {
+                    res.render('fullpage.html', {
+                        title: "Archer Score for Tournament",
+                        year: "2017",
+                        content: content
+                    })
+                })
+                return
+            }
+            bcrypt.hash(regInput.password, null, null, function(err, hash) {
+                    executeQuery(`INSERT INTO player (name, dob, email, password)
+                    VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
+                        app.render('registrationSuccess.html', {}, (err, content) => {
+                            res.render('fullpage.html', {
+                                title: "Archer Score for Tournament",
+                                year: "2017",
+                                content: content
+                            })
+                        })
+                    })
+                });
+        })
+    }
 
 
 
@@ -54,25 +71,24 @@ function sendRegistration(req, res) {
         return utility.checkCredentialsMatch(email, cemail)
     }
 
-    function checkEmailUnique(email){
-        return true
-        // select count(*) from table where email = email
-        // if 0 it's unique, if 1 not unique
+    function checkEmailUnique(email, callback) {
+
+        executeQuery(`SELECT count(*) as count from player where email = ?`, [email], (number) => {
+    
+            callback(number[0].count == 0)
+        })
+
     }
 
-    function checkPasswordPolicy(pass){
+    function checkPasswordPolicy(pass) {
         return checkPasswordLength(pass)
     }
 
-    function checkPasswordLength(password){
-        if (password.length <8 || password.length >20){
+    function checkPasswordLength(password) {
+        if (password.length < 8 || password.length > 20) {
             return false
-        }
-        else {
+        } else {
             return true
         }
     }
-
-    // add DOB check?
-
 }
