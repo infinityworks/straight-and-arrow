@@ -27,38 +27,38 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         
         passwordsMatch = checkPasswordsMatch(regInput.password, regInput.cpassword)
         emailsMatch = checkEmailsMatch(regInput.email, regInput.cemail)
-        emailUnique = checkEmailUnique(regInput.email)
         passwordPolicy = checkPasswordPolicy(regInput.password)
 
         if (!passwordsMatch || !emailsMatch || !passwordPolicy) {
             throw 403;
         }
-        if (!emailUnique) {
-            console.log("emailUnique ", emailUnique)
-            app.render('emailNotUnique.html', {}, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Archer Score for Tournament",
-                    year: "2017",
-                    content: content
-                })
-            })
-        }
+        
+        checkEmailUnique(regInput.email, (emailUnique) => {
 
-        bcrypt.hash(regInput.password, null, null, function(err, hash) {
-            console.log("bcrypt " )
-            executeQuery(`INSERT INTO player (name, dob, email, password)
-            VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
-                app.render('registrationSuccess.html', {}, (err, content) => {
+            if (!emailUnique) {
+                console.log("email unique", emailUnique)
+                app.render('emailNotUnique.html', {}, (err, content) => {
                     res.render('fullpage.html', {
                         title: "Archer Score for Tournament",
                         year: "2017",
                         content: content
                     })
                 })
-            })
-        });
-
-        
+                return
+            }
+            bcrypt.hash(regInput.password, null, null, function(err, hash) {
+                    executeQuery(`INSERT INTO player (name, dob, email, password)
+                    VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
+                        app.render('registrationSuccess.html', {}, (err, content) => {
+                            res.render('fullpage.html', {
+                                title: "Archer Score for Tournament",
+                                year: "2017",
+                                content: content
+                            })
+                        })
+                    })
+                });
+        })
     }
 
 
@@ -71,16 +71,13 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         return utility.checkCredentialsMatch(email, cemail)
     }
 
-    function checkEmailUnique(email) {
-        executeQuery(`SELECT count(*) FROM player where email =?`, [email],(result)=>{
-            if(result=0){
-                return true
-            }
-            return false
+    function checkEmailUnique(email, callback) {
+
+        executeQuery(`SELECT count(*) as count from player where email = ?`, [email], (number) => {
+    
+            callback(number[0].count == 0)
         })
-        
-        // select count(*) from table where email = email
-        // if 0 it's unique, if 1 not unique
+
     }
 
     function checkPasswordPolicy(pass) {
