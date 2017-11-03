@@ -34,6 +34,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
             throw 403;
         }
         if (!emailUnique) {
+            console.log("emailUnique ", emailUnique)
             app.render('emailNotUnique.html', {}, (err, content) => {
                 res.render('fullpage.html', {
                     title: "Archer Score for Tournament",
@@ -44,16 +45,17 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         }
 
         bcrypt.hash(regInput.password, null, null, function(err, hash) {
-          executeQuery(`INSERT INTO player (name, dob, email, password)
-          VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
-            app.render('registrationSuccess.html', {}, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Archer Score for Tournament",
-                    year: "2017",
-                    content: content
+            console.log("bcrypt " )
+            executeQuery(`INSERT INTO player (name, dob, email, password)
+            VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
+                app.render('registrationSuccess.html', {}, (err, content) => {
+                    res.render('fullpage.html', {
+                        title: "Archer Score for Tournament",
+                        year: "2017",
+                        content: content
+                    })
                 })
             })
-          })
         });
 
         
@@ -70,7 +72,13 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     }
 
     function checkEmailUnique(email) {
-        return true
+        executeQuery(`SELECT count(*) FROM player where email =?`, [email],(result)=>{
+            if(result=0){
+                return true
+            }
+            return false
+        })
+        
         // select count(*) from table where email = email
         // if 0 it's unique, if 1 not unique
     }
