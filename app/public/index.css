@@ -210,7 +210,16 @@ legend {
 }
 
 #playerRegistrationForm label.error, #commentForm input.submit {
-        margin-left: 253px;
+/*        margin-left: 253px;*/
+        display:block;
+        position:relative;
+        color: #b94a48 ;
+        background-color: #f2dede ;
+        border-color: #eed3d7 ;
+}
+
+#loginForm label.error, input.submit {
+/*        margin-left: 253px;*/
         display:block;
         position:relative;
         color: #b94a48 ;

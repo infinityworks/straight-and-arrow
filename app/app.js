@@ -36,6 +36,7 @@ const registrationController = require('./controller/registration-controller')(e
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const createError = require('./controller/error-Controller');
+const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
 
 function run() {
     app.listen(port);
@@ -51,6 +52,7 @@ function run() {
     app.get('/tournament', showTournamentsPage);
     app.get('/archer', showArchersList);
     app.get('/registration', registrationController.showRegistration);
+    app.get('/login', loginController.showLoginPage);   
     app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
@@ -63,6 +65,7 @@ function run() {
     ], createLog)
     app.post('/tournament-input', sendDatabaseEntry)
     app.post('/registration',registrationController.sendRegistration)
+    app.post('/login',loginController.submitUserCredentials)
 
 }
 
