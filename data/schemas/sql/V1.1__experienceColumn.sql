@@ -1,0 +1,4 @@
+-- CRUD - CREATE READ UPDATE DELETE
+USE arrowdb;
+ALTER TABLE archer
+ADD experience varchar(255) NOT NULL DEFAULT "UNKNOWN";
