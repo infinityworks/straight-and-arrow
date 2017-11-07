@@ -228,14 +228,10 @@ legend {
 }
 
 .predictionBox{
-
+	height: 100%;
 }
 
 select.predators{
     margin:10px;
 }
 
-.predEntry{
-    margin-left: 5px;
-    position:relative;
-}
