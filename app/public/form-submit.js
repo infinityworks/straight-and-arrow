@@ -37,9 +37,6 @@ $("#playerRegistrationForm").validate({
                required: true,
                minlength: 2
            },
-           dob: {
-               required: true
-           },
            email: {
                required: true,
                email: true
@@ -85,5 +82,25 @@ $("#playerRegistrationForm").validate({
        }
    });
 
+$("#loginForm").validate({
+       rules: {
+           email: {
+               required: true,
+               email: true
+           },
+           password: {
+               required: true,
+           }
+       },
+       messages: {
+           email: {
+               required: "Please provide an email",
+           },
+           password: {
+               required: "Please provide a password",
+           }
+
+       }
+   });
 
 });
