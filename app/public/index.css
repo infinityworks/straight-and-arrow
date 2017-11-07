@@ -28,8 +28,8 @@ p{
 	font-family:"Open sans";
 }
 
-body { 
-  background: url("archerybg.jpg") no-repeat center center fixed; 
+body {
+  background: url("archerybg.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -72,7 +72,7 @@ iframe{
 input[type=email]{
 	width: 150px;
 	border: 1px solid black;
-	
+
 }
 
 input[type=text]{
@@ -118,7 +118,7 @@ input[type=submit]{
 	padding: 10px 20px;
 	text-align: center;
 	font-size: 16pt;
-	
+
 }
 
 .aspect{
@@ -157,13 +157,13 @@ label{
 	border-color:dimgrey;
 }
 
-.video-container { 
-   position: relative; /* keeps the aspect ratio */ 
-   padding-bottom: 56.25%; /* fine tunes the video positioning */ 
+.video-container {
+   position: relative; /* keeps the aspect ratio */
+   padding-bottom: 56.25%; /* fine tunes the video positioning */
    padding-top: 60px; overflow: hidden;
    margin-right: 8%;
    margin-left: 8%;
-  
+
 }
 
 .video-container iframe,
@@ -185,7 +185,7 @@ label{
 }
 
 .table tr #clickRow{
-	
+
 }
 
 .table th {
@@ -225,4 +225,17 @@ legend {
         color: #b94a48 ;
         background-color: #f2dede ;
         border-color: #eed3d7 ;
+}
+
+.predictionBox{
+
+}
+
+select.predators{
+    margin:10px;
+}
+
+.predEntry{
+    margin-left: 5px;
+    position:relative;
 }
