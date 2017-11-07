@@ -17,6 +17,31 @@ module.exports = (executeQuery, app, bcrypt) => {
     }
 
     function submitUserCredentials(req, res) {
+
+        email = req.body.email
+        password = req.body.password
+
+        executeQuery(`SELECT password FROM player WHERE email = ?`, [email], (result) => {
+            if(result.length == 0){
+                res.send({status: "email doesn't exist"})
+            }
+            else {
+                bcrypt.compare(password, result.password, (match) => {
+                    if(match) {
+                        res.redirect("/tournament")
+                    }
+                    else {
+                        res.send({status: "wrong password"})
+                    }
+                })
+            }
+
+
+
+        })
+
+
+
         
     }
 
