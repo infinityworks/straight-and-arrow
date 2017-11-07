@@ -6,6 +6,7 @@ module.exports = (executeQuery, app, bcrypt) => {
     };
 
     function showLoginPage(req, res) {
+        req.session.userId = 'pegleg-butt'
         app.render('login.html', {
         }, (err, content) => {
             res.render('fullpage.html', {
@@ -40,7 +41,7 @@ module.exports = (executeQuery, app, bcrypt) => {
 
 
 
-        
+
     }
 
 
