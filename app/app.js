@@ -64,6 +64,7 @@ function run() {
     app.get('/archer', showArchersList);
     app.get('/registration', registrationController.showRegistration);
     app.get('/login', loginController.showLoginPage);
+    app.get('/logout', logout);
     app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
@@ -80,6 +81,17 @@ function run() {
 
 }
 
+function logout(req, res){
+    req.session.destroy(function(err){
+        app.render('home.html', {}, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Welcome to IWAO",
+                year: "2017",
+                content: content
+            })
+        })
+    })
+}
 
 function goodRegister(req, res) {
     res.send({
