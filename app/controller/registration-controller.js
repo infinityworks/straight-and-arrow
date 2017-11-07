@@ -47,8 +47,8 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
                 return
             }
             bcrypt.hash(regInput.password, null, null, function(err, hash) {
-                    executeQuery(`INSERT INTO player (name, dob, email, password)
-                    VALUES (?,?,?,?)`, [regInput.name, regInput.dob, regInput.email, hash], (result) => {
+                    executeQuery(`INSERT INTO player (name, email, password)
+                    VALUES (?,?,?)`, [regInput.name, regInput.email, hash], (result) => {
                         app.render('registrationSuccess.html', {}, (err, content) => {
                             res.render('fullpage.html', {
                                 title: "Archer Score for Tournament",
