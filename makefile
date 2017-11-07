@@ -33,3 +33,9 @@ reboot:
 	docker exec -t straightandarrow_web_1 sh -c "forever restartall"
 
 .PHONY: testdata
+
+dev-migration:
+	docker run -v"$(shell pwd)":/flyway/sql dhoer/flyway -url=jdbc:mysql://database-arrow.c1jzxrxaov0u.eu-west-1.rds.amazonaws.com -schemas=arrowdb_schema -user=admin -password=foxboxhouse migrate
+
+live-migration:
+	docker run -v"$(shell pwd)":/flyway/sql dhoer/flyway -url=jdbc:mysql://livedatabase-arrow.c1jzxrxaov0u.eu-west-1.rds.amazonaws.com -schemas=arrowdb_schema -user=admin -password=foxboxhouse migrate
