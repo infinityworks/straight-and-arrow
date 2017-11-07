@@ -26,7 +26,7 @@ module.exports = (executeQuery, app, bcrypt) => {
                 res.send({status: "email doesn't exist"})
             }
             else {
-                bcrypt.compare(password, result.password, (match) => {
+                bcrypt.compare(password, result.password, (err, match) => {
                     if(match) {
                         res.redirect("/tournament")
                     }
@@ -35,8 +35,6 @@ module.exports = (executeQuery, app, bcrypt) => {
                     }
                 })
             }
-
-
 
         })
 

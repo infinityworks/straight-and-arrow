@@ -36,7 +36,6 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         checkEmailUnique(regInput.email, (emailUnique) => {
 
             if (!emailUnique) {
-                console.log("email unique", emailUnique)
                 app.render('emailNotUnique.html', {}, (err, content) => {
                     res.render('fullpage.html', {
                         title: "Archer Score for Tournament",
