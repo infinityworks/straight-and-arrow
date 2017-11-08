@@ -14,7 +14,7 @@ module.exports = (executeQuery, app, tournamentArchers) => {
 
             app.render('prediction.html', {archerIDs}, (err, content) => {
                 res.render('fullpage.html', {
-                    title: "Prediction Page",
+                    title: "Predictions",
                     year: "2017",
                     content: content
                 })

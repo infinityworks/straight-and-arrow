@@ -26,7 +26,7 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                                 data: tournamentScores
                             }, (err, content) => {
                                 res.render('fullpage.html', {
-                                    title: "Archer Score for Tournament",
+                                    title: "Archer Scores for Tournament",
                                     year: "2017",
                                     content: content
                                 })
