@@ -1,5 +1,7 @@
 # straight-and-arrow
 
+[![Build Status](https://travis-ci.org/infinityworks/straight-and-arrow.svg?branch=master)](https://travis-ci.org/infinityworks/straight-and-arrow)
+
 Coming to you soon courtesy of the amazing 2017 graduate intake is the most incredible, exciting and ground-breaking free-to-play archery game you will ever have the privilege of using in your lifetime. 
 
 # To build and bring up the containers 
