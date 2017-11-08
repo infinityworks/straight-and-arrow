@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const cookieParser = require('cookie-parser')
 const port = 8888;
 const bodyParser = require('body-parser');
 const {
@@ -41,10 +44,18 @@ const predictionController = require('./controller/prediction-controller')(execu
 
 function run() {
     app.listen(port);
+    var sessionStore = new MySQLStore(config);
     app.use(bodyParser.urlencoded({
         extended: true
     }));
     app.use(express.static(path.join(__dirname, './public')));
+    app.use(cookieParser())
+    app.use(session({
+        name: 'rowans_first_cookie',
+        secret: 'super_secret_cookie_business',
+        cookie: { maxAge: null, expires: false },
+        store: new MySQLStore(config)
+    }));
     app.engine('html', mustacheExpress());
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
@@ -53,7 +64,8 @@ function run() {
     app.get('/tournament', showTournamentsPage);
     app.get('/archer', showArchersList);
     app.get('/registration', registrationController.showRegistration);
-    app.get('/login', loginController.showLoginPage);   
+    app.get('/login', loginController.showLoginPage);
+    app.get('/logout', logout);
     app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
@@ -71,6 +83,17 @@ function run() {
 
 }
 
+function logout(req, res){
+    req.session.destroy(function(err){
+        app.render('home.html', {}, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Welcome to IWAO",
+                year: "2017",
+                content: content
+            })
+        })
+    })
+}
 
 function goodRegister(req, res) {
     res.send({

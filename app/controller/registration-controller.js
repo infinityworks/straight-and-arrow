@@ -11,6 +11,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     };
 
     function showRegistration(req, res) {
+        console.log(req.session.userId)
         app.render('registration.html', {
         }, (err, content) => {
             res.render('fullpage.html', {
@@ -24,7 +25,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     function sendRegistration(req, res) {
         regInput = req.body
         const saltRounds = 10;
-        
+
         passwordsMatch = checkPasswordsMatch(regInput.password, regInput.cpassword)
         emailsMatch = checkEmailsMatch(regInput.email, regInput.cemail)
         passwordPolicy = checkPasswordPolicy(regInput.password)
@@ -32,7 +33,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         if (!passwordsMatch || !emailsMatch || !passwordPolicy) {
             throw 403;
         }
-        
+
         checkEmailUnique(regInput.email, (emailUnique) => {
 
             if (!emailUnique) {
@@ -73,7 +74,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     function checkEmailUnique(email, callback) {
 
         executeQuery(`SELECT count(*) as count from player where email = ?`, [email], (number) => {
-    
+
             callback(number[0].count == 0)
         })
 
