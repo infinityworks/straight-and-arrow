@@ -12,6 +12,6 @@ CREATE TABLE `prediction` (
   KEY `tournament` (`tournament`),
   KEY `player` (`player`),
   CONSTRAINT `pred_ibfk_1` FOREIGN KEY (`player`) REFERENCES `player` (`id`),
-  CONSTRAINT `pred_ibfk_2` FOREIGN KEY (`tournament`) REFERENCES `tournament` (`id`)
+  CONSTRAINT `pred_ibfk_2` FOREIGN KEY (`tournament`) REFERENCES `tournament` (`id`),
   CONSTRAINT `pred_ibfk_3` FOREIGN KEY (`archer`) REFERENCES `archer` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

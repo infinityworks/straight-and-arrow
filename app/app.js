@@ -32,6 +32,7 @@ const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
+const predictions = require('./data/mGetPredictions')(executeQuery);
 
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
@@ -40,7 +41,7 @@ const tournamentScoreInputController = require('./controller/tournament-score-in
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const createError = require('./controller/error-Controller');
 const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
-const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers);
+const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers, predictions);
 
 function run() {
     app.listen(port);
