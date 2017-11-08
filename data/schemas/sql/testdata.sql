@@ -128,12 +128,15 @@ VALUES
 
 INSERT INTO `player` (`name`, `email`, `password`)
 VALUES
-	(`one`, `one@one.one`, `$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S`),
-	(`works`, `works@works.works`, `$2a$10$srs00gQUBcBD4P9oONTPCuZAaY4b/6Y1D63bAORbFKSPv6u4Fkyjy`);
+	('one', 'one@one.one', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S'),
+	('works', 'works@works.works', '$2a$10$srs00gQUBcBD4P9oONTPCuZAaY4b/6Y1D63bAORbFKSPv6u4Fkyjy');
 
 INSERT INTO `prediction` (`pred_no`, `player`, `tournament`, `archer`, `pred_score`)
 VALUES
 	(1, 1, 1, 1, 200),
 	(2, 1, 1, 2, 201),
-	(3, 1, 1, 3, 202);
+	(3, 1, 1, 3, 202),
+	(1, 2, 1, 2, 180),
+	(2, 2, 1, 4, 276),
+	(3, 2, 1, 1, 95);
 
