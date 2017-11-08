@@ -37,6 +37,7 @@ const tournamentScoreInputController = require('./controller/tournament-score-in
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const createError = require('./controller/error-Controller');
 const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
+const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers);
 
 function run() {
     app.listen(port);
@@ -58,6 +59,7 @@ function run() {
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+    app.get('/prediction/:tid', predictionController.showPredictionPage);
 
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),

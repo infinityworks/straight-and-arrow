@@ -1,0 +1,33 @@
+<p>Prediction page</p>
+
+<div class="predictionBox">
+    <form>
+        <select class="predators">
+            {{#archerIDs}}
+            <option value={{archer_id}}>{{name}}</option>
+            {{/archerIDs}}
+            <input type="text" name="prediction1" id="prediction1" required>
+        </select>
+        <br><br>
+        <select class="predators">
+            {{#archerIDs}}
+            <option value={{archer_id}}>{{name}}</option>
+            {{/archerIDs}}
+            <input type="text" name="prediction2" id="prediction2" required>
+        </select>
+        <br><br>
+        <select class="predators">
+            {{#archerIDs}}
+            <option value={{archer_id}}>{{name}}</option>
+            {{/archerIDs}}
+            <input type="text" name="prediction3" id="prediction3" required>
+        </select>
+        <div class="entry">
+            <input type="submit" value="Submit" class="btn btn-success">
+        </div>
+    </form>
+</div>
+
+<br>
+
+    
