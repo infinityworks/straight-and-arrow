@@ -228,7 +228,7 @@ legend {
 }
 
 .predictionBox{
-	height: 100%;
+	width:85%;
 }
 
 select.predators{
