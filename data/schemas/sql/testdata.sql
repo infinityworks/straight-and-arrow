@@ -14,17 +14,17 @@ VALUES
 	(3,'Sydney Opera House','2019-09-08 00:00:00','2019-09-09 00:00:00','Sydney','Portsmouth',60),
 	(4,'IW Event Space','2016-01-01 00:00:00','2016-01-01 00:00:00','Leeds','Portsmouth',60);
 
-INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`)
+INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`, `predictabool`)
 VALUES
-	(1,1),
-	(1,2),
-	(1,3),
-	(1,4),
-	(2,1),
-	(2,3),
-	(3,4),
-	(4,1),
-	(4,3);
+	(1,1,0),
+	(1,2,1),
+	(1,3,1),
+	(1,4,1),
+	(2,1,0),
+	(2,3,0),
+	(3,4,0),
+	(4,1,0),
+	(4,3,0);
 
 INSERT INTO `user` (`id`, `name`, `email`)
 VALUES
