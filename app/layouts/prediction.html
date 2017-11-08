@@ -4,7 +4,7 @@
     <form>
         {{#predictionsObject}}
         {{#archerPrediction}}
-        <p>{{name}}</p>
+        <label for="{{id}}">{{name}}:</label>
         <input type="text" name="{{id}}" value="{{pred_score}}" required>
         <br><br>
         {{/archerPrediction}}
