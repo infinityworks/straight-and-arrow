@@ -9,7 +9,7 @@ module.exports = (executeQuery, app, bcrypt) => {
         app.render('login.html', {
         }, (err, content) => {
             res.render('fullpage.html', {
-                title: "Registration",
+                title: "Login",
                 year: "2017",
                 content: content
             })

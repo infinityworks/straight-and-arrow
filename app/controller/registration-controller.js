@@ -38,7 +38,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
             if (!emailUnique) {
                 app.render('emailNotUnique.html', {}, (err, content) => {
                     res.render('fullpage.html', {
-                        title: "Archer Score for Tournament",
+                        title: "Registration Error",
                         year: "2017",
                         content: content
                     })
@@ -50,7 +50,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
                     VALUES (?,?,?)`, [regInput.name, regInput.email, hash], (result) => {
                         app.render('registrationSuccess.html', {}, (err, content) => {
                             res.render('fullpage.html', {
-                                title: "Archer Score for Tournament",
+                                title: "Registration Success",
                                 year: "2017",
                                 content: content
                             })
