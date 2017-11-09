@@ -11,7 +11,6 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         const tournamentID = req.params.tid
         const playerID = req.session.playerID
 
-        console.log(playerID)
         predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
             
             playerPrediction.forEach((prediction) => {
@@ -31,6 +30,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
     function sendPredictions(req, res){
 
+        if(req.session.email === undefined || req.session.email === ''){
+            return res.redirect('/login');
+        }
     }
-
 }
