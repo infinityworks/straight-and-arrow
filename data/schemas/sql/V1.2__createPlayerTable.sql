@@ -1,5 +1,5 @@
 USE arrowdb;
-CREATE TABLE `player` (
+CREATE TABLE IF NOT EXISTS `player` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `dob` varchar(255) NOT NULL,
