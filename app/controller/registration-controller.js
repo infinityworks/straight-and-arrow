@@ -11,7 +11,6 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     };
 
     function showRegistration(req, res) {
-        console.log(req.session.userId)
         app.render('registration.html', {
         }, (err, content) => {
             res.render('fullpage.html', {
