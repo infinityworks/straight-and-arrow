@@ -3,17 +3,16 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
    return { showPredictionPage, sendPredictions };
 
     function showPredictionPage(req, res) {
-
-        if(req.body.email === undefined || req.body.email === ''){
+        if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
 
         let predictionsObject = []
         const tournamentID = req.params.tid
-        const sessionID = 1
+        const playerID = req.session.playerID
 
-        
-        predictions.getPredictions(sessionID, tournamentID, (playerPrediction) =>{
+        console.log(playerID)
+        predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
             
             playerPrediction.forEach((prediction) => {
 
@@ -28,7 +27,6 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                 })
             })
         })
-        
     }
 
     function sendPredictions(req, res){
