@@ -3,22 +3,20 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
    return { showPredictionPage, sendPredictions };
 
     function showPredictionPage(req, res) {
+        if(req.session.email === undefined || req.session.email === ''){
+            return res.redirect('/login');
+        }
 
         let predictionsObject = []
-        console.log("the empty predob", predictionsObject)
         const tournamentID = req.params.tid
-        const sessionID = 1
+        const playerID = req.session.playerID
 
-        
-        predictions.getPredictions(sessionID, tournamentID, (playerPrediction) =>{
+        predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
             
             playerPrediction.forEach((prediction) => {
 
                 predictionsObject.push({archerPrediction:prediction})
             })
-            console.log("original data", playerPrediction)
-            console.log("new data", predictionsObject)
-
 
             app.render('prediction.html', {predictionsObject}, (err, content) => {
                 res.render('fullpage.html', {
@@ -28,11 +26,12 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                 })
             })
         })
-        
     }
 
     function sendPredictions(req, res){
 
+        if(req.session.email === undefined || req.session.email === ''){
+            return res.redirect('/login');
+        }
     }
-
 }

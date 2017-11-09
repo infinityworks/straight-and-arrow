@@ -1,5 +1,5 @@
 USE arrowdb;
-CREATE TABLE `prediction` (
+CREATE TABLE IF NOT EXISTS `prediction` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `pred_no` int(1) unsigned NOT NULL,
   `player` int(11) unsigned NOT NULL,
