@@ -81,6 +81,7 @@ function run() {
     app.post('/tournament-input', sendDatabaseEntry)
     app.post('/registration',registrationController.sendRegistration)
     app.post('/login',loginController.submitUserCredentials)
+    app.post('/prediction-input', predictionController.sendPrediction)
 
 }
 

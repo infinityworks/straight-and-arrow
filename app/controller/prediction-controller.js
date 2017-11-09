@@ -1,6 +1,6 @@
 module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
-   return { showPredictionPage, sendPredictions };
+   return { showPredictionPage, sendPrediction };
 
     function showPredictionPage(req, res) {
         if(req.session.email === undefined || req.session.email === ''){
@@ -28,10 +28,36 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         })
     }
 
-    function sendPredictions(req, res){
+    function sendPrediction(req, res){
 
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
+
+        const playerID = req.session.playerID
+        scoreInput = req.body
+        predictionList = []
+
+        for (var key in scoreInput) {
+        if (scoreInput.hasOwnProperty(key)){
+            keyPair = [key,scoreInput[key]]
+            predictionList.push(keyPair)
+        }
+
+        predictionList.forEach((prediction)=> {
+            executeQuery(`INSERT INTO prediction (player, tournament, archer, pred_score) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE pred_score=VALUES(pred_score)`, 
+                [playerID, tournamentID, prediction[0], prediction[1]], (result) => {
+                    res.redirect('/prediction/'+tournamentID)
+                })
+        })
     }
+        
+
+
+    }
+
+
+
+
+
 }
