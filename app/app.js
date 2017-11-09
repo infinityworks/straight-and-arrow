@@ -247,9 +247,25 @@ function showArcherTournament(req, res) {
                 row.datetime_end = utility.parseDate(row.datetime_end)
                 formattedResults.push(row)
             })
+
+            predictionWriter = predictionWriteFunction(req.session.email,req.params.tid)
+
+            function predictionWriteFunction (emailfromcookie, tournid){
+                if(!(emailfromcookie === undefined || emailfromcookie === '')
+                    //and (1==1) //replace with check for predictabool
+                    ){
+                    predictionWrita = [
+                    {sentence: "You can enter your predictions for this tournament "},
+                    {hyperl: tournid},{linktext: "here."}]
+                    return predictionWrita
+                }
+                return
+            }
+
             app.render('tournament.html', {
                 data: archerDetail,
-                tournament: formattedResults
+                tournament: formattedResults,
+                predictionSentence: predictionWriter
             }, (err, content) => {
                 res.render('fullpage.html', {
                     title: "Archers in Tournament",
