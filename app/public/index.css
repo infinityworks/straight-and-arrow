@@ -28,6 +28,10 @@ p{
 	font-family:"Open sans";
 }
 
+pessage{
+    font-size:18pt;
+}
+
 body {
   background: url("archerybg.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -52,6 +56,14 @@ body {
 .footer{
 	padding: 20px 0;
 	text-align: center;
+}
+
+.predInfo{
+    width:70%;
+    font-size: 13pt;
+    margin:0 auto;
+    text-align: justify;
+
 }
 
 img{
@@ -80,6 +92,12 @@ input[type=text]{
 	border: 1px solid black;
 }
 
+input#predpred{
+    margin-right:15%;
+    float: right;
+    width: 50px;
+}
+
 input[type=email]:focus{
 	background-color: AliceBlue;
 }
@@ -106,7 +124,12 @@ input[type=submit]{
 
 .entry{
 	display: block;
-	margin: auto;
+	margin:0 auto;
+}
+
+.entry2{
+	float:right;
+    margin-right: 8px;
 }
 
 .entry input{
@@ -229,9 +252,10 @@ legend {
 
 .predictionBox{
 	width:85%;
+    margin:0 auto;
 }
 
-select.predators{
+.predators{
     margin:10px;
+    width:400px;
 }
-
