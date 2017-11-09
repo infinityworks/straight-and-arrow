@@ -1,5 +1,17 @@
 use arrowdb;
 
+TRUNCATE TABLE `user`;
+TRUNCATE TABLE `tournament_archer`;
+TRUNCATE TABLE `prediction`;
+TRUNCATE TABLE `arrow`;
+
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE TABLE archer;
+TRUNCATE TABLE tournament;
+TRUNCATE TABLE player;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
 INSERT INTO `archer` (`id`, `name`, `dob`, `country`)
 VALUES
 	(1,'Rebecca Denyer','2010-10-21','UK'),
