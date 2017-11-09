@@ -2,32 +2,18 @@
 
 <div class="predictionBox">
     <form>
-        <select class="predators">
-            {{#archerIDs}}
-            <option value={{archer_id}}>{{name}}</option>
-            {{/archerIDs}}
-            <input type="text" name="prediction1" id="prediction1" required>
-        </select>
+        {{#predictionsObject}}
+        {{#archerPrediction}}
+        <label for="{{id}}">{{name}}:</label>
+        <input type="text" name="{{id}}" value="{{pred_score}}" required>
         <br><br>
-        <select class="predators">
-            {{#archerIDs}}
-            <option value={{archer_id}}>{{name}}</option>
-            {{/archerIDs}}
-            <input type="text" name="prediction2" id="prediction2" required>
-        </select>
-        <br><br>
-        <select class="predators">
-            {{#archerIDs}}
-            <option value={{archer_id}}>{{name}}</option>
-            {{/archerIDs}}
-            <input type="text" name="prediction3" id="prediction3" required>
-        </select>
+        {{/archerPrediction}}
+        {{/predictionsObject}}
         <div class="entry">
             <input type="submit" value="Submit" class="btn btn-success">
         </div>
     </form>
 </div>
 
-<br>
 
-    
+<br>
