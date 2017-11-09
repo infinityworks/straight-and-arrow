@@ -38,15 +38,6 @@ module.exports = (executeQuery, app, bcrypt) => {
                     }
                 })
             }
-
         })
-
-
-
-
     }
-
-
-
-
 }

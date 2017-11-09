@@ -4,8 +4,11 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
     function showPredictionPage(req, res) {
 
+        if(req.body.email === undefined || req.body.email === ''){
+            return res.redirect('/login');
+        }
+
         let predictionsObject = []
-        console.log("the empty predob", predictionsObject)
         const tournamentID = req.params.tid
         const sessionID = 1
 
@@ -16,9 +19,6 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
                 predictionsObject.push({archerPrediction:prediction})
             })
-            console.log("original data", playerPrediction)
-            console.log("new data", predictionsObject)
-
 
             app.render('prediction.html', {predictionsObject}, (err, content) => {
                 res.render('fullpage.html', {
