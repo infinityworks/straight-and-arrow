@@ -23,7 +23,13 @@ module.exports = (executeQuery, app, bcrypt) => {
 
         executeQuery(`SELECT id, name, password FROM player WHERE email = ?`, [email], (result) => {
             if(result.length == 0){
-                res.send({status: "email doesn't exist"})
+                app.render('loginFailure.html', {}, (err, content) => {
+                    res.render('fullpage.html', {
+                        title: "Login",
+                        year: "2017",
+                        content: content
+                    })
+                })
             }
             else {
                 bcrypt.compare(password, result[0].password, (err, match) => {
@@ -34,7 +40,13 @@ module.exports = (executeQuery, app, bcrypt) => {
                         res.redirect("/tournament")
                     }
                     else {
-                        res.send({status: "wrong password"})
+                        app.render('loginFailure.html', {}, (err, content) => {
+                            res.render('fullpage.html', {
+                                title: "Login",
+                                year: "2017",
+                                content: content
+                            })
+                        })
                     }
                 })
             }
