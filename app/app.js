@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const cookieParser = require('cookie-parser')
 const port = 8888;
 const bodyParser = require('body-parser');
 const {
@@ -29,6 +32,7 @@ const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
 const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
+const predictions = require('./data/mGetPredictions')(executeQuery);
 
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
@@ -37,13 +41,22 @@ const tournamentScoreInputController = require('./controller/tournament-score-in
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const createError = require('./controller/error-Controller');
 const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
+const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers, predictions);
 
 function run() {
     app.listen(port);
+    var sessionStore = new MySQLStore(config);
     app.use(bodyParser.urlencoded({
         extended: true
     }));
     app.use(express.static(path.join(__dirname, './public')));
+    app.use(cookieParser())
+    app.use(session({
+        name: 'rowans_first_cookie',
+        secret: 'super_secret_cookie_business',
+        cookie: { maxAge: null, expires: false },
+        store: new MySQLStore(config)
+    }));
     app.engine('html', mustacheExpress());
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
@@ -52,12 +65,14 @@ function run() {
     app.get('/tournament', showTournamentsPage);
     app.get('/archer', showArchersList);
     app.get('/registration', registrationController.showRegistration);
-    app.get('/login', loginController.showLoginPage);   
+    app.get('/login', loginController.showLoginPage);
+    app.get('/logout', logout);
     app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+    app.get('/prediction/:tid', predictionController.showPredictionPage);
 
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
@@ -66,9 +81,21 @@ function run() {
     app.post('/tournament-input', sendDatabaseEntry)
     app.post('/registration',registrationController.sendRegistration)
     app.post('/login',loginController.submitUserCredentials)
+    app.post('/prediction-input', predictionController.sendPrediction)
 
 }
 
+function logout(req, res){
+    req.session.destroy(function(err){
+        app.render('home.html', {}, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Welcome to IWAO",
+                year: "2017",
+                content: content
+            })
+        })
+    })
+}
 
 function goodRegister(req, res) {
     res.send({
@@ -151,6 +178,8 @@ function showIndexPage(req, res) {
 }
 
 function showTournamentsPage(req, res) {
+    const playerID = req.session.playerID
+
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
 	FROM tournament
 	ORDER BY datetime_start`, [], (result) => {
@@ -158,11 +187,17 @@ function showTournamentsPage(req, res) {
         let now = new Date()
         result.forEach((row) => {
             if (row.datetime_start > now){
-                row.status = "Upcoming"
+                if(req.session.email === undefined || req.session.email === ''){
+                    row.status = "Upcoming"
+                } else {
+                   row.status = "Make-Prediction"
+                   row.link = `/prediction/`+row.id 
+                }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
             } else {
                row.status = "Result"
+               row.link = `/tournament/`+row.id+`/result`
             }
             row.datetime_start = utility.parseDate(row.datetime_start)
             row.datetime_end = utility.parseDate(row.datetime_end)

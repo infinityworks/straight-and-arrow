@@ -24,7 +24,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     function sendRegistration(req, res) {
         regInput = req.body
         const saltRounds = 10;
-        
+
         passwordsMatch = checkPasswordsMatch(regInput.password, regInput.cpassword)
         emailsMatch = checkEmailsMatch(regInput.email, regInput.cemail)
         passwordPolicy = checkPasswordPolicy(regInput.password)
@@ -32,13 +32,13 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
         if (!passwordsMatch || !emailsMatch || !passwordPolicy) {
             throw 403;
         }
-        
+
         checkEmailUnique(regInput.email, (emailUnique) => {
 
             if (!emailUnique) {
                 app.render('emailNotUnique.html', {}, (err, content) => {
                     res.render('fullpage.html', {
-                        title: "Archer Score for Tournament",
+                        title: "Registration Error",
                         year: "2017",
                         content: content
                     })
@@ -50,7 +50,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
                     VALUES (?,?,?)`, [regInput.name, regInput.email, hash], (result) => {
                         app.render('registrationSuccess.html', {}, (err, content) => {
                             res.render('fullpage.html', {
-                                title: "Archer Score for Tournament",
+                                title: "Registration Success",
                                 year: "2017",
                                 content: content
                             })
@@ -73,7 +73,7 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
     function checkEmailUnique(email, callback) {
 
         executeQuery(`SELECT count(*) as count from player where email = ?`, [email], (number) => {
-    
+
             callback(number[0].count == 0)
         })
 
