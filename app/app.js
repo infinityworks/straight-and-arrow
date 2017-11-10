@@ -177,6 +177,8 @@ function showIndexPage(req, res) {
 }
 
 function showTournamentsPage(req, res) {
+    const playerID = req.session.playerID
+
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
 	FROM tournament
 	ORDER BY datetime_start`, [], (result) => {
@@ -184,11 +186,17 @@ function showTournamentsPage(req, res) {
         let now = new Date()
         result.forEach((row) => {
             if (row.datetime_start > now){
-                row.status = "Upcoming"
+                if(req.session.email === undefined || req.session.email === ''){
+                    row.status = "Upcoming"
+                } else {
+                   row.status = "Make-Prediction"
+                   row.link = `/prediction/`+row.id 
+                }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
             } else {
                row.status = "Result"
+               row.link = `/tournament/`+row.id+`/result`
             }
             row.datetime_start = utility.parseDate(row.datetime_start)
             row.datetime_end = utility.parseDate(row.datetime_end)
