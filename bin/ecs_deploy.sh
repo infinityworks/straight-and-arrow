@@ -10,7 +10,7 @@ if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
     echo "Deploying $TRAVIS_BUILD_NUMBER on webserver-dev"
     ./bin/ecs-deploy -c $CLUSTER -n 'service-dev' -i $REMOTE_IMAGE_URL:latest
-else if [ "$TRAVIS_BRANCH" == "master" ]; then
+elif [ "$TRAVIS_BRANCH" == "master" ]; then
     pip install --user awscli
     export PATH=$PATH:$HOME/.local/bin
     eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
