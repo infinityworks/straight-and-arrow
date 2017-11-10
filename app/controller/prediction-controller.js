@@ -66,7 +66,13 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                             [playerID, tournamentID, prediction[0], prediction[1]], (result) => {
                                 counter2++
                                 if(counter2 == 3){
-                                    res.redirect('/prediction/'+tournamentID)
+                                    app.render('predictionSuccess.html', {}, (err, content) => {
+                                        res.render('fullpage.html', {
+                                                    title: "Predictions",
+                                                    year: "2017",
+                                                    content: content
+                                        })
+                                    })
                                 }
                         })
                     })
