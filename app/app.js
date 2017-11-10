@@ -248,15 +248,13 @@ function showArcherTournament(req, res) {
                 formattedResults.push(row)
             })
 
-            predictionWriter = predictionWriteFunction(req.session.email,req.params.tid)
+            predictionWriter = predictionWriteFunction(req.session.email)
 
-            function predictionWriteFunction (emailfromcookie, tournid){
-                if(!(emailfromcookie === undefined || emailfromcookie === '')
-                    //and (1==1) //replace with check for predictabool
-                    ){
+            function predictionWriteFunction (emailfromcookie){
+                if(!(emailfromcookie === undefined || emailfromcookie === '')){
                     predictionWrita = [
                     {sentence: "You can enter your predictions for this tournament "},
-                    {hyperl: tournid},{linktext: "here."}]
+                    {linktext: "here."}]
                     return predictionWrita
                 }
                 return
