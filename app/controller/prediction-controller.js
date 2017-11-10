@@ -6,18 +6,13 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
-
         let predictionsObject = []
         const tournamentID = req.params.tid
         const playerID = req.session.playerID
-
         predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
-            
             playerPrediction.forEach((prediction) => {
-
                 predictionsObject.push({archerPrediction:prediction})
             })
-
             app.render('prediction.html', {predictionsObject}, (err, content) => {
                 res.render('fullpage.html', {
                     title: "Predictions",
@@ -29,39 +24,25 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
     }
 
     function sendPrediction(req, res){
-
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
-
-        console.log("req.body is this:", req.body)
-
         const playerID = req.session.playerID
         scoreInput = req.body
         predictionList = []
         counter = 0
         counter2 = 0
-
-        console.log("scoreInput", scoreInput)
-
         for (var key in scoreInput) {
-
             if (scoreInput.hasOwnProperty(key)){
                 keyPair = [key,scoreInput[key]]
                 counter++
                 predictionList.push(keyPair)
             } 
-        
-
             if(counter == 4){
-
                 const tournamentIDList = predictionList.splice(3)
                 const tournamentID = tournamentIDList[0][1][1]
-
                 if(predictionList.length == 3){
-
                     predictionList.forEach((prediction)=> {
-
                         executeQuery(`INSERT INTO prediction (player, tournament, archer, pred_score) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE pred_score=VALUES(pred_score)`, 
                             [playerID, tournamentID, prediction[0], prediction[1]], (result) => {
                                 counter2++
