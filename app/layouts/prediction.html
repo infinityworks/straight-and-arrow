@@ -10,22 +10,12 @@
             <label for="{{id}}">{{name}}:</label>
             <input type="text" name="{{id}}" value="{{pred_score}}" id="predpred" required>
             <br><br>
+            <input type="text" name="tournament_id" value="{{tournament_id}}" class="hidden" required>
             {{/archerPrediction}}
             {{/predictionsObject}}
             <div class="entry2">
                 <input type="submit" value="Submit" class="btn btn-success">
             </div>
         </div>
-        {{#predictionsObject}}
-        {{#archerPrediction}}
-        <div class="hidden">
-        <input name="tid" value={{tournament_id}}>
-        {{/archerPrediction}}
-        {{/predictionsObject}}
-        </div>
-
     </form>
 </div>
-
-
-<br>
