@@ -248,7 +248,6 @@ function showArcherTournament(req, res) {
             tournamentDetail.forEach((row) => {
                 if (row.datetime_start > now){
                     row.status = "Upcoming"
-                    predictionWriter = predictionWriteFunction(req.session.email)
                 } else if (row.datetime_start <= now && row.datetime_end > now){
                     row.status = "Live-Result"
                 } else {
@@ -269,16 +268,24 @@ function showArcherTournament(req, res) {
                 return
             }
 
-            app.render('tournament.html', {
-                data: archerDetail,
-                tournament: formattedResults,
-                predictionSentence: predictionWriter
-            }, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Archers in Tournament",
-                    year: "2017",
-                    content: content
-                })
+            executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [tournamentDetail[0].id],
+                (predictaboolians)=> {
+                    let predictRows = predictaboolians[0].pbs
+                        if(predictRows == 3){
+                            predictionWriter = predictionWriteFunction(req.session.email)
+                        }
+
+                    app.render('tournament.html', {
+                        data: archerDetail,
+                        tournament: formattedResults,
+                        predictionSentence: predictionWriter
+                    }, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Archers in Tournament",
+                            year: "2017",
+                            content: content
+                        })
+                    })
             })
         })
     })
