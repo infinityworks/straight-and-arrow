@@ -244,9 +244,11 @@ function showArcherTournament(req, res) {
         executeQuery(`SELECT venue, datetime_start, datetime_end, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
             let now = new Date()
+            let predictionWriter = ''
             tournamentDetail.forEach((row) => {
                 if (row.datetime_start > now){
                     row.status = "Upcoming"
+                    predictionWriter = predictionWriteFunction(req.session.email)
                 } else if (row.datetime_start <= now && row.datetime_end > now){
                     row.status = "Live-Result"
                 } else {
@@ -256,9 +258,21 @@ function showArcherTournament(req, res) {
                 row.datetime_end = utility.parseDate(row.datetime_end)
                 formattedResults.push(row)
             })
+
+            function predictionWriteFunction (emailfromcookie){
+                if(!(emailfromcookie === undefined || emailfromcookie === '')){
+                    predictionWrita = [
+                    {sentence: "You can enter your predictions for this tournament "},
+                    {linktext: "here."}]
+                    return predictionWrita
+                }
+                return
+            }
+
             app.render('tournament.html', {
                 data: archerDetail,
-                tournament: formattedResults
+                tournament: formattedResults,
+                predictionSentence: predictionWriter
             }, (err, content) => {
                 res.render('fullpage.html', {
                     title: "Archers in Tournament",
