@@ -3,22 +3,19 @@
     archer can score in any tournament of 30 arrows is 300.</div>
     <br>
 <div class="predictionBox">
-    <form>
+    <form action='/prediction-input' method='post' id='predictionForm'>
         <div class ="predators">
             {{#predictionsObject}}
             {{#archerPrediction}}
             <label for="{{id}}">{{name}}:</label>
             <input type="text" name="{{id}}" value="{{pred_score}}" id="predpred" required>
             <br><br>
+            <input type="text" name="tournament_id" value="{{tournament_id}}" class="hidden" required>
             {{/archerPrediction}}
             {{/predictionsObject}}
             <div class="entry2">
                 <input type="submit" value="Submit" class="btn btn-success">
             </div>
         </div>
-
     </form>
 </div>
-
-
-<br>
