@@ -190,8 +190,16 @@ function showTournamentsPage(req, res) {
                 if(req.session.email === undefined || req.session.email === ''){
                     row.status = "Upcoming"
                 } else {
-                   row.status = "Make-Prediction"
-                   row.link = `/prediction/`+row.id 
+                    executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [row.id],
+                        (predictaboolians)=> {
+                        let predictRows = predictaboolians[0].pbs
+                        if(predictRows == 3){
+                            row.status = "Make-Prediction"
+                            row.link = `/prediction/`+row.id
+                        } else {
+                            row.status = "Upcoming"
+                        }
+                    })
                 }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
