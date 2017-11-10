@@ -10,8 +10,13 @@ if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
     echo "Deploying $TRAVIS_BUILD_NUMBER on webserver-dev"
     ./bin/ecs-deploy -c $CLUSTER -n 'service-dev' -i $REMOTE_IMAGE_URL:latest
-  else
-    echo "Skipping deploy because it's not an allowed branch"
+else if [ "$TRAVIS_BRANCH" == "master" ]; then
+    pip install --user awscli
+    export PATH=$PATH:$HOME/.local/bin
+    eval $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+
+    echo "Deploying $TRAVIS_BUILD_NUMBER on webserver-prod"
+    ./bin/ecs-deploy -c $CLUSTER -n 'service-prod' -i $REMOTE_IMAGE_URL:latest
   fi
 else
   echo "Skipping deploy because it's a PR"
