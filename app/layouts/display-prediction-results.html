@@ -7,10 +7,12 @@
     <th>Score</th>
   </tr>
   {{#playerScore}}
+  {{#diff}}
   <tr>
     <td>1</td>
     <td>{{name}}</td>
     <td>{{rankingScore}}</td>
   </tr>
+  {{/diff}}
   {{/playerScore}}
 </table>

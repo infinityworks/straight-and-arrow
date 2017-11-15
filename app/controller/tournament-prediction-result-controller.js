@@ -27,14 +27,14 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
                     console.log("playerScore", playerScore)
                 }
                 for (var key in playerScore){
-                    mustachePlayerScore.push(playerScore[key])
+                    mustachePlayerScore.push({diff:playerScore[key]})
                 }
 
 
                 console.log(mustachePlayerScore)
-                app.render('display-prediction-results.html', {
-                    playerScore
-                }, (err, content) => {
+                app.render('display-prediction-results.html',
+                    {playerScore: mustachePlayerScore}
+                , (err, content) => {
                     res.render('fullpage.html', {
                         title: "Archer Scores for Tournament",
                         year: "2017",
