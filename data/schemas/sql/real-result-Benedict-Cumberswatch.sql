@@ -14,7 +14,8 @@ VALUES
 
 INSERT INTO `tournament` (`id`, `venue`, `datetime_start`, `datetime_end`, `location`, `type`, `arrows`)
 VALUES
-	(1,'The Benedict Cumberswatch, O2 Arena','2017-11-14 18:00:00','2017-11-14 20:00:00','London','Royal Half Portsmouth',30);
+	(1,'The Benedict Cumberswatch, O2 Arena','2017-11-14 18:00:00','2017-11-14 20:00:00','London','Royal Half Portsmouth',30),
+	(2, 'The Inaugural Infinity Works Arhcery Tournament, Apsley House', '2017-11-24 18:00:00', '2017-11-24 23:59:59', 'Leeds', 'Royal Half Portsmouth',30);
 
 
 INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`, `predictabool`)
@@ -26,7 +27,15 @@ VALUES
 	(1,5,1),
 	(1,6,0),
 	(1,7,0),
-	(1,8,0);
+	(1,8,0),
+	(2,1,0),
+	(2,2,0),
+	(2,3,1),
+	(2,4,1),
+	(2,5,1),
+	(2,6,0),
+	(2,7,0),
+	(2,8,0);
 
 
 INSERT INTO `arrow` (`id`, `archer`, `tournament`, `arrow`, `score`, `spider`)
@@ -298,5 +307,3 @@ VALUES
 	(5, 1, 3, 100),
 	(5, 1, 4, 246),
 	(5, 1, 5, 131);
-
-
