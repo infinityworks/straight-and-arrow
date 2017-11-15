@@ -91,7 +91,8 @@ function logout(req, res){
             res.render('fullpage.html', {
                 title: "Welcome to IWAO",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(false)
             })
         })
     })
@@ -168,11 +169,13 @@ function sendDatabaseEntry(req, res) {
 }
 
 function showIndexPage(req, res) {
+    console.log(req.session);
     app.render('home.html', {}, (err, content) => {
         res.render('fullpage.html', {
             title: "Welcome to IWAO",
             year: "2017",
-            content: content
+            content: content,
+            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
         })
     })
 }
@@ -218,7 +221,8 @@ function showTournamentsPage(req, res) {
             res.render('fullpage.html', {
                 title: "Tournament Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     })
@@ -237,7 +241,8 @@ function showArchersList(req, res) {
             res.render('fullpage.html', {
                 title: "Archer Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     })
@@ -291,7 +296,8 @@ function showArcherTournament(req, res) {
                         res.render('fullpage.html', {
                             title: "Archers in Tournament",
                             year: "2017",
-                            content: content
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                         })
                     })
             })

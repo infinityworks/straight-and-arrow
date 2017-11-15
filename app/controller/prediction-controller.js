@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
    return { showPredictionPage, sendPrediction };
@@ -23,7 +25,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                         res.render('fullpage.html', {
                             title: "Predictions",
                             year: "2017",
-                            content: content
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                         })
                     })
                 })
@@ -33,7 +36,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                     res.render('fullpage.html', {
                         title: "Information not available",
                         year: "2017",
-                        content: content
+                        content: content,
+                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                     })
                 })
             }
@@ -68,7 +72,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                                         res.render('fullpage.html', {
                                                     title: "Predictions",
                                                     year: "2017",
-                                                    content: content
+                                                    content: content,
+                                                    loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                                         })
                                     })
                                 }
