@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, utility, bcrypt) => {
 
     return {
