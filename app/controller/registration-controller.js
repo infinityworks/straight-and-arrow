@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, utility, bcrypt) => {
 
     return {
@@ -16,7 +18,8 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
             res.render('fullpage.html', {
                 title: "Registration",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     }
@@ -40,7 +43,8 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
                     res.render('fullpage.html', {
                         title: "Registration Error",
                         year: "2017",
-                        content: content
+                        content: content,
+                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                     })
                 })
                 return
@@ -52,7 +56,8 @@ module.exports = (executeQuery, app, utility, bcrypt) => {
                             res.render('fullpage.html', {
                                 title: "Registration Success",
                                 year: "2017",
-                                content: content
+                                content: content,
+                                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                             })
                         })
                     })

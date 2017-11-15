@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, tournamentArchers, predictions) => {
 
    return { showPredictionPage, sendPrediction };
@@ -9,17 +11,36 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         let predictionsObject = []
         const tournamentID = req.params.tid
         const playerID = req.session.playerID
-        predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
-            playerPrediction.forEach((prediction) => {
-                predictionsObject.push({archerPrediction:prediction})
-            })
-            app.render('prediction.html', {predictionsObject}, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Predictions",
-                    year: "2017",
-                    content: content
+
+        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tournamentID], (start)=> {
+            let startObject = start[0]
+            let startDateTime = startObject.datetime_start
+            let now = new Date()
+            if(startDateTime > now){
+                predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
+                    playerPrediction.forEach((prediction) => {
+                        predictionsObject.push({archerPrediction:prediction})
+                    })
+                    app.render('prediction.html', {predictionsObject}, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Predictions",
+                            year: "2017",
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
+                        })
+                    })
                 })
-            })
+            }
+            else {
+                app.render('no-info.html', {}, (err, content) => {
+                    res.render('fullpage.html', {
+                        title: "Information not available",
+                        year: "2017",
+                        content: content,
+                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
+                    })
+                })
+            }
         })
     }
 
@@ -27,6 +48,19 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
+        const tid = req.body.tournament_id[0]
+        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tid], (start)=> {
+            let startObject = start[0]
+            let startDateTime = startObject.datetime_start
+            let now = new Date()
+
+            if(startDateTime < now){
+                // someone is submitting the prediction form after the tourney has started
+                // this is naughty naughty and is not allowed therefore tell em to get to f*ck
+                throw 403
+            }
+        })
+
         const playerID = req.session.playerID
         scoreInput = req.body
         predictionList = []
@@ -51,7 +85,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
                                         res.render('fullpage.html', {
                                                     title: "Predictions",
                                                     year: "2017",
-                                                    content: content
+                                                    content: content,
+                                                    loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                                         })
                                     })
                                 }

@@ -91,7 +91,8 @@ function logout(req, res){
             res.render('fullpage.html', {
                 title: "Welcome to IWAO",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(false)
             })
         })
     })
@@ -168,11 +169,13 @@ function sendDatabaseEntry(req, res) {
 }
 
 function showIndexPage(req, res) {
+    console.log(req.session);
     app.render('home.html', {}, (err, content) => {
         res.render('fullpage.html', {
             title: "Welcome to IWAO",
             year: "2017",
-            content: content
+            content: content,
+            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
         })
     })
 }
@@ -190,8 +193,8 @@ function showTournamentsPage(req, res) {
                 if(req.session.email === undefined || req.session.email === ''){
                     row.status = "Upcoming"
                 } else {
-                   row.status = "Make-Prediction"
-                   row.link = `/prediction/`+row.id 
+                    row.status = "Make-Prediction"
+                    row.link = `/prediction/`+row.id
                 }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
@@ -210,7 +213,8 @@ function showTournamentsPage(req, res) {
             res.render('fullpage.html', {
                 title: "Tournament Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     })
@@ -229,7 +233,8 @@ function showArchersList(req, res) {
             res.render('fullpage.html', {
                 title: "Archer Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     })
@@ -244,6 +249,7 @@ function showArcherTournament(req, res) {
         executeQuery(`SELECT venue, datetime_start, datetime_end, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
             let now = new Date()
+            let predictionWriter = ''
             tournamentDetail.forEach((row) => {
                 if (row.datetime_start > now){
                     row.status = "Upcoming"
@@ -256,15 +262,36 @@ function showArcherTournament(req, res) {
                 row.datetime_end = utility.parseDate(row.datetime_end)
                 formattedResults.push(row)
             })
-            app.render('tournament.html', {
-                data: archerDetail,
-                tournament: formattedResults
-            }, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Archers in Tournament",
-                    year: "2017",
-                    content: content
-                })
+
+            function predictionWriteFunction (emailfromcookie){
+                if(!(emailfromcookie === undefined || emailfromcookie === '')){
+                    predictionWrita = [
+                    {sentence: "You can enter your predictions for this tournament "},
+                    {linktext: "here."}]
+                    return predictionWrita
+                }
+                return
+            }
+
+            executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [tournamentDetail[0].id],
+                (predictaboolians)=> {
+                    let predictRows = predictaboolians[0].pbs
+                        if(predictRows == 3){
+                            predictionWriter = predictionWriteFunction(req.session.email)
+                        }
+
+                    app.render('tournament.html', {
+                        data: archerDetail,
+                        tournament: formattedResults,
+                        predictionSentence: predictionWriter
+                    }, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Archers in Tournament",
+                            year: "2017",
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
+                        })
+                    })
             })
         })
     })

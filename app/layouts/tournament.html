@@ -1,9 +1,14 @@
 {{#tournament}}
 <h2> Details for the <strong>{{type}}</strong> tournament at <strong>{{venue}}</strong> on <strong>{{datetime_start}}</strong></h2>
-<p id="{{status}}"">Results for the full tournament can be found <a href="/tournament/{{id}}/result">here</a></p>
+<p id={{status}}>Results for the full tournament can be found <a href="/tournament/{{id}}/result">here.</a></p>
 {{/tournament}}
 
-<br><br>
+{{#predictionSentence}}
+<p> {{sentence}} <a href="/prediction/{{#tournament}}{{id}}{{/tournament}}">{{linktext}}</a></p> 
+{{/predictionSentence}}
+
+
+<br>
 <table class="table table-striped">
   <tr>
     <th>Name</th>
@@ -16,3 +21,4 @@
   </tr>
   {{/data}}
 </table>
+

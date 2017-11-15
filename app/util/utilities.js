@@ -7,15 +7,21 @@ function parseDate(date) {
 
 
 function checkCredentialsMatch(stringA, stringB) {
-    if (stringB !== stringA){
-    	return false
-    }
-    else {
-    	return true
-    }
+    return stringB === stringA;
 }
 
 
 exports.parseDate = parseDate
 exports.checkCredentialsMatch = checkCredentialsMatch
 
+exports.loginOptions = (loggedIn) => {
+    if(loggedIn){
+        return [ { name: 'Logout', link: '/logout' } ];
+    }
+
+    return [
+        { name: 'Register', link: '/registration' },
+        { name: 'Login', link: '/login' }
+    ];
+
+};

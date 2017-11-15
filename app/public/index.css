@@ -169,12 +169,6 @@ label{
 	margin: auto;
 }
 
-.btn-success{
-	background-color: #373434;
-	border-color:black;
-	font-family:"Open sans";
-}
-
 .btn-success:hover{
 	background-color: dimgrey;
 	border-color:dimgrey;
@@ -218,6 +212,10 @@ label{
 
 .table td {
     word-wrap: break-word;
+}
+
+.navbar-toggle {
+	margin-left: 15px;
 }
 
 .arrow {

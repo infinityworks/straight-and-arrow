@@ -1,3 +1,5 @@
+const utility = require('../util/utilities')
+
 module.exports = (executeQuery, app, tournamentScore, tabulatedResults, tournamentStats) => {
 
    return { showTournamentArcherScore };
@@ -20,7 +22,8 @@ module.exports = (executeQuery, app, tournamentScore, tabulatedResults, tourname
                         res.render('fullpage.html', {
                             title: "Information not available",
                             year: "2017",
-                            content: content
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                         })
 
                     })
@@ -31,7 +34,8 @@ module.exports = (executeQuery, app, tournamentScore, tabulatedResults, tourname
                         res.render('fullpage.html', {
                             title: "Archer Score for Tournament",
                             year: "2017",
-                            content: content
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                         })
                     })
                 }
