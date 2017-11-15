@@ -20,7 +20,7 @@ exports.loginOptions = (loggedIn) => {
     }
 
     return [
-        { name: 'Registration', link: '/registration' },
+        { name: 'Register', link: '/registration' },
         { name: 'Login', link: '/login' }
     ];
 
