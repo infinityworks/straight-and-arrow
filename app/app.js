@@ -196,12 +196,6 @@ function showTournamentsPage(req, res) {
                     row.status = "Make-Prediction"
                     row.link = `/prediction/`+row.id
                 }
-                    // executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [row.id],
-                    //     (predictaboolians)=> {
-                    //     let predictRows = predictaboolians[0].pbs
-                        
-                    // })
-                
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
             } else {
