@@ -196,3 +196,7 @@ label{
 .table td {
     word-wrap: break-word;
 }
+
+.navbar-toggle {
+	margin-left: 15px;
+}
