@@ -2,6 +2,7 @@
 {{#id}}
 <p>Archer: <strong>{{name}}</strong></p>
 {{/id}}
+
 <table class="table table-striped">
     <tr>
         <th></th>
@@ -19,28 +20,23 @@
         <th></th>
         <th></th>
         <th>E&#47T</th>
-
     </tr>
+
 
     <tr>
         {{#ends.0}}
-
         {{#arrows}}
             <td>{{.}}</td>
         {{/arrows}}
         {{/ends.0}}
-
         <td bgcolor='dimgrey'></td>
-
         {{#ends.1}}
         {{#arrows}}
             <td>{{.}}</td>
         {{/arrows}}
         {{/ends.1}}
-
         <td bgcolor='dimgrey'></td>
     </tr>
-
 
 
     <tr>
@@ -49,18 +45,14 @@
             <td>{{.}}</td>
         {{/arrows}}
         {{/ends.2}}
-
         <td bgcolor='dimgrey'></td>
-
         {{#ends.3}}
         {{#arrows}}
             <td>{{.}}</td>
         {{/arrows}}
         {{/ends.3}}
-
         <td bgcolor='dimgrey'></td>
     </tr>
-
 
 
     <tr>
@@ -69,7 +61,6 @@
             <td>{{.}}</td>
         {{/arrows}}
         {{/ends.4}}
-
         <td bgcolor='dimgrey'></td>
         <td></td>
         <td></td>
@@ -82,11 +73,12 @@
 
 </table>
 {{#summary}}
-<table class="table table-striped">
-    <th>Total score: {{total}}</th>
-    <th>Total spiders hit: {{spidtot}}</th>
-    <th>Total Hits: {{Hits}}</th>
-    <th>Total Golds: {{Golds}}</th>
+    <table class="table table-striped">
+            <th>Total score: {{total}}</th>
+            <th>Total spiders hit: {{spidtot}}</th>
+            <th>Total Hits: {{Hits}}</th>
+            <th>Total Golds: {{Golds}}</th>
+    </table>
 {{/summary}}
-</table>
+<br><br><br>
 {{/data}}

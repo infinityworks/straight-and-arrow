@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const cookieParser = require('cookie-parser')
 const port = 8888;
 const bodyParser = require('body-parser');
 const {
@@ -14,51 +17,86 @@ const config = {
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
 }
-
 const mustacheExpress = require('mustache-express')
 const app = express();
 const moment = require('moment')
+const bcrypt = require('bcrypt-nodejs')
+
+//utilities
+const utility = require('./util/utilities')
 
 
-function parseDate(date) {
-    let formattedDate = moment(date).format('dddd Do MMMM, YYYY')
-    return formattedDate
-}
+//model
+const tournamentArcherScore = require('./data/mGetTournamentArcherScore')(executeQuery);
+const tournamentArchers = require('./data/mGetTournamentArchers')(executeQuery);
+const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
+const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
+const tabulatedResults = require('./data/mTabulateResults');
+const predictions = require('./data/mGetPredictions')(executeQuery);
+
+//controller
+const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
+const registrationController = require('./controller/registration-controller')(executeQuery, app, utility, bcrypt)
+const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
+const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
+const createError = require('./controller/error-Controller');
+const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
+const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers, predictions);
 
 function run() {
     app.listen(port);
-
+    var sessionStore = new MySQLStore(config);
     app.use(bodyParser.urlencoded({
         extended: true
     }));
-
-    //Serving static code through public folder.
     app.use(express.static(path.join(__dirname, './public')));
-
-
+    app.use(cookieParser())
+    app.use(session({
+        name: 'rowans_first_cookie',
+        secret: 'super_secret_cookie_business',
+        cookie: { maxAge: null, expires: false },
+        store: new MySQLStore(config)
+    }));
     app.engine('html', mustacheExpress());
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
-
     app.get('/', showIndexPage);
+    app.get('/error', createError);
     app.get('/tournament', showTournamentsPage);
-
-    app.get('/archer', showArchersList)
-    app.get('/tournament/:id', showArcherTournament)
-
+    app.get('/archer', showArchersList);
+    app.get('/registration', registrationController.showRegistration);
+    app.get('/login', loginController.showLoginPage);
+    app.get('/logout', logout);
+    app.get('/tournament/:tid', showArcherTournament);
+    app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
+    app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
-    app.get('/admin', showAdminLogin);
-
-    app.get('/tournament/:tid/:aid', showTournamentArcherScore);
-
-
+    app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
+    app.get('/prediction/:tid', predictionController.showPredictionPage);
 
     app.post('/capture-email', [
         check('email').isEmail().withMessage("Please enter a valid email address."),
         check('fullname').not().isEmpty().withMessage("Please enter a name.")
     ], createLog)
+    app.post('/tournament-input', sendDatabaseEntry)
+    app.post('/registration',registrationController.sendRegistration)
+    app.post('/login',loginController.submitUserCredentials)
+    app.post('/prediction-input', predictionController.sendPrediction)
+
 }
 
+function logout(req, res){
+    req.session.destroy(function(err){
+        app.render('home.html', {}, (err, content) => {
+            res.render('fullpage.html', {
+                title: "Welcome to IWAO",
+                year: "2017",
+                content: content,
+                loginOptions: utility.loginOptions(false)
+            })
+        })
+    })
+}
 
 function goodRegister(req, res) {
     res.send({
@@ -67,15 +105,12 @@ function goodRegister(req, res) {
     })
 }
 
-
 function badRegister(req, res) {
     res.send({
         "status": "fail",
         "message": "Sorry invalid details, try again"
     })
-
 }
-
 
 function createLog(req, res) {
     const errors = validationResult(req);
@@ -83,36 +118,100 @@ function createLog(req, res) {
         console.log(errors.mapped());
         badRegister(req, res)
     } else {
-        console.log(`${req.body['email']} ---- ${req.body['fullname']} ----from---- ${req.headers['user-agent']}`);
+        console.log(`${req.body['email']} ----
+        ${req.body['fullname']} ----from----
+        ${req.headers['user-agent']}`);
         goodRegister(req, res)
     }
 }
 
+function sendDatabaseEntry(req, res) {
+    endSend = []
+    endInput = {}
+    endInput = req.body
+    counter = 0
+    for (var key in endInput) {
+        if (endInput.hasOwnProperty(key)){
+            keyPair = [key,endInput[key]]
+            endSend.push(keyPair)
+        }
+    }
+    let tournamentIDSend = endSend.splice(31)[0][1]
+    let archerIDSend = endSend.splice(30)[0][1]
+
+
+    for (var arrowI in endSend){
+        if (endSend.hasOwnProperty(arrowI)){
+
+            if (endSend[arrowI][1] == 'X' || endSend[arrowI][1] == 'x'){
+                endSend[arrowI][1] = 10
+                endSend[arrowI].push(1)
+            } else if (endSend[arrowI][1] == 'M' || endSend[arrowI][1] == 'm'){
+                endSend[arrowI][1] = 0
+                endSend[arrowI].push(0)
+            } else {
+                endSend[arrowI].push(0)
+            }
+
+
+
+            executeQuery(`INSERT INTO arrow (archer, tournament, arrow, score, spider)
+            VALUES (?,?,?,?,?)
+            ON DUPLICATE KEY UPDATE score=VALUES(score), spider=VALUES(spider)`,
+            [archerIDSend, tournamentIDSend, endSend[arrowI][0], endSend[arrowI][1], endSend[arrowI][2]],(result) =>{
+                counter++
+                if (counter == 30){
+                    res.redirect("/admin/"+req.body.tournamentID)
+                }
+            })
+        }
+    }
+}
 
 function showIndexPage(req, res) {
+    console.log(req.session);
     app.render('home.html', {}, (err, content) => {
         res.render('fullpage.html', {
             title: "Welcome to IWAO",
             year: "2017",
-            content: content
+            content: content,
+            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
         })
     })
 }
 
-
-
 function showTournamentsPage(req, res) {
+    const playerID = req.session.playerID
+
     executeQuery(`SELECT id, venue, datetime_start, datetime_end, location, type, arrows
-		FROM tournament
-		WHERE datetime_end > now()
-		ORDER BY datetime_end`, [], (result) => {
+	FROM tournament
+	ORDER BY datetime_start`, [], (result) => {
         let formattedResults = []
-
+        let now = new Date()
         result.forEach((row) => {
-
-            row.datetime_start = parseDate(row.datetime_start)
-            row.datetime_end = parseDate(row.datetime_end)
-
+            if (row.datetime_start > now){
+                if(req.session.email === undefined || req.session.email === ''){
+                    row.status = "Upcoming"
+                } else {
+                    executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [row.id],
+                        (predictaboolians)=> {
+                        let predictRows = predictaboolians[0].pbs
+                        if(predictRows == 3){
+                            row.status = "Make-Prediction"
+                            row.link = `/prediction/`+row.id
+                        } else {
+                            row.status = "Upcoming"
+                        }
+                    })
+                }
+            } else if (row.datetime_start <= now && row.datetime_end > now){
+                row.status = "Live-Result"
+            } else {
+               row.status = "Result"
+               row.link = `/tournament/`+row.id+`/result`
+            }
+            row.datetime_start = utility.parseDate(row.datetime_start)
+            row.datetime_end = utility.parseDate(row.datetime_end)
             formattedResults.push(row)
         })
 
@@ -122,7 +221,8 @@ function showTournamentsPage(req, res) {
             res.render('fullpage.html', {
                 title: "Tournament Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     })
@@ -130,20 +230,20 @@ function showTournamentsPage(req, res) {
 
 function showArchersList(req, res) {
     executeQuery(`SELECT name, country,
-		(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') -
-		(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')))
-		AS age
-		FROM archer
-		ORDER BY name`, [], (result) => {
+	(SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') -
+	(DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')))
+	AS age
+	FROM archer
+	ORDER BY name`, [], (result) => {
         app.render('archer-list.html', {
             data: result
         }, (err, content) => {
             res.render('fullpage.html', {
                 title: "Archer Details",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
-
         })
     })
 }
@@ -153,101 +253,54 @@ function showArcherTournament(req, res) {
 		FROM archer
 		INNER JOIN tournament_archer ta
 		ON archer.id = ta.archer_id
-		WHERE tournament_id = ? ORDER BY name`, [req.params.id], (archerDetail) => {
-        executeQuery(`SELECT venue, datetime_start, type FROM tournament WHERE id = ?`, [req.params.id], (tournamentDetail) => {
+		WHERE tournament_id = ? ORDER BY name`, [req.params.tid], (archerDetail) => {
+        executeQuery(`SELECT venue, datetime_start, datetime_end, type, id FROM tournament WHERE id = ?`, [req.params.tid], (tournamentDetail) => {
             let formattedResults = []
-
+            let now = new Date()
+            let predictionWriter = ''
             tournamentDetail.forEach((row) => {
-
-                row.datetime_start = parseDate(row.datetime_start)
-                row.datetime_end = parseDate(row.datetime_end)
-
+                if (row.datetime_start > now){
+                    row.status = "Upcoming"
+                } else if (row.datetime_start <= now && row.datetime_end > now){
+                    row.status = "Live-Result"
+                } else {
+                   row.status = "Result"
+                }
+                row.datetime_start = utility.parseDate(row.datetime_start)
+                row.datetime_end = utility.parseDate(row.datetime_end)
                 formattedResults.push(row)
             })
-            app.render('tournament.html', {
-                data: archerDetail,
-                tournament: formattedResults
-            }, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Archers in Tournament",
-                    year: "2017",
-                    content: content
-                })
-            })
-        })
-    })
-}
 
-
-function showAdminLogin(req, res) {
-    app.render('admin.html', {}, (err, content) => {
-        res.render('fullpage.html', {
-            title: "Admin Login",
-            year: "2017",
-            content: content
-        })
-    })
-}
-
-
-//WHAT WE IS DOING RIGHT NA!
-function showTournamentArcherScore(req, res) {
-    executeQuery(`SELECT arrow, score, spider
-		FROM arrow arr
-		INNER JOIN tournament tour
-		ON arr.tournament = tour.id
-		INNER JOIN archer arch
-		ON arr.archer = arch.id
-		WHERE arr.tournament = ? AND arr.archer = ? ORDER BY arr.arrow`, [req.params.tid, req.params.aid], (archerScore) => {
-        executeQuery(`SELECT SUM(arr.score) AS total,
-            SUM(arr.spider) AS spidtot,
-            Count(case arr.score when 0 then null else 1 END) as Hits,
-            Count(case arr.score when 0 then 1 else null END) as Misses,
-            Count(case arr.score when 9 then 1 when 10 then 1 else null END) as Golds
-            FROM arrow arr WHERE arr.tournament = ? AND archer = ?`, [req.params.tid, req.params.aid], (arrowTotal) => {
-            let tabulatedResults = []
-            let counter = 0
-            let endSelection = []
-
-
-            archerScore.forEach((row) => {
-            	if (row.score == 0){
-             		row.score = 'M'
-             	}
-             	if (row.spider.lastIndexOf(1) !== -1){
-             	    row.score = 'X'
- 				}
-                counter++
-                endSelection.push(row)
-                if (counter % 6 == 0) {
-                    tabulatedResults.push({
-                        endIndex: endSelection
-                    }) 
-                    endSelection = []
+            function predictionWriteFunction (emailfromcookie){
+                if(!(emailfromcookie === undefined || emailfromcookie === '')){
+                    predictionWrita = [
+                    {sentence: "You can enter your predictions for this tournament "},
+                    {linktext: "here."}]
+                    return predictionWrita
                 }
-            })
-            
-            if (archerScore.length == 0) {
-                app.render('no-info.html', {}, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Information not available",
-                        year: "2017",
-                        content: content
-                    })
-
-                })
-            } else {
-                app.render('archer-score.html', {
-                    data: tabulatedResults,
-                    scoreSend: arrowTotal
-                }, (err, content) => {
-                    res.render('fullpage.html', {
-                        title: "Archer Score for Tournament",
-                        year: "2017",
-                        content: content
-                    })
-                })
+                return
             }
+
+            executeQuery(`SELECT COUNT(*) AS pbs FROM tournament_archer ta WHERE ta.tournament_id = ? AND ta.predictabool = 1`, [tournamentDetail[0].id],
+                (predictaboolians)=> {
+                    let predictRows = predictaboolians[0].pbs
+                        if(predictRows == 3){
+                            predictionWriter = predictionWriteFunction(req.session.email)
+                        }
+
+                    app.render('tournament.html', {
+                        data: archerDetail,
+                        tournament: formattedResults,
+                        predictionSentence: predictionWriter
+                    }, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Archers in Tournament",
+                            year: "2017",
+                            content: content,
+                            loginOptions: utility.loginOptions(req.session.playerID !== undefined)
+                        })
+                    })
+            })
         })
     })
 }
@@ -258,10 +311,8 @@ function executeQuery(sql, params, callback) {
     let connection = mysql.createConnection(config)
     connection.connect((err) => {
         if (err) throw err;
-
         connection.query(sql, params, (err, result) => {
             if (err) throw err;
-
             connection.destroy()
             callback(result)
         })

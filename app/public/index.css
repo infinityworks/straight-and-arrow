@@ -28,8 +28,12 @@ p{
 	font-family:"Open sans";
 }
 
-body { 
-  background: url("archerybg.jpg") no-repeat center center fixed; 
+pessage{
+    font-size:18pt;
+}
+
+body {
+  background: url("archerybg.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -54,6 +58,14 @@ body {
 	text-align: center;
 }
 
+.predInfo{
+    width:70%;
+    font-size: 13pt;
+    margin:0 auto;
+    text-align: justify;
+
+}
+
 img{
 	display:block;
 	margin:0 auto;
@@ -72,12 +84,18 @@ iframe{
 input[type=email]{
 	width: 150px;
 	border: 1px solid black;
-	
+
 }
 
 input[type=text]{
 	width: 150px;
 	border: 1px solid black;
+}
+
+input#predpred{
+    margin-right:15%;
+    float: right;
+    width: 50px;
 }
 
 input[type=email]:focus{
@@ -106,7 +124,12 @@ input[type=submit]{
 
 .entry{
 	display: block;
-	margin: auto;
+	margin:0 auto;
+}
+
+.entry2{
+	float:right;
+    margin-right: 8px;
 }
 
 .entry input{
@@ -118,7 +141,7 @@ input[type=submit]{
 	padding: 10px 20px;
 	text-align: center;
 	font-size: 16pt;
-	
+
 }
 
 .aspect{
@@ -146,24 +169,18 @@ label{
 	margin: auto;
 }
 
-.btn-success{
-	background-color: #373434;
-	border-color:black;
-	font-family:"Open sans";
-}
-
 .btn-success:hover{
 	background-color: dimgrey;
 	border-color:dimgrey;
 }
 
-.video-container { 
-   position: relative; /* keeps the aspect ratio */ 
-   padding-bottom: 56.25%; /* fine tunes the video positioning */ 
+.video-container {
+   position: relative; /* keeps the aspect ratio */
+   padding-bottom: 56.25%; /* fine tunes the video positioning */
    padding-top: 60px; overflow: hidden;
    margin-right: 8%;
    margin-left: 8%;
-  
+
 }
 
 .video-container iframe,
@@ -185,7 +202,7 @@ label{
 }
 
 .table tr #clickRow{
-	
+
 }
 
 .table th {
@@ -199,4 +216,44 @@ label{
 
 .navbar-toggle {
 	margin-left: 15px;
+}
+
+.arrow {
+	max-width: 30px;
+}
+
+legend {
+	font-size: 11pt;
+	font-size:calc(100% + 0.5vw);
+	margin-right: 5px;
+	font-weight:normal;
+	font-family:"Open sans";
+}
+
+#playerRegistrationForm label.error, #commentForm input.submit {
+/*        margin-left: 253px;*/
+        display:block;
+        position:relative;
+        color: #b94a48 ;
+        background-color: #f2dede ;
+        border-color: #eed3d7 ;
+}
+
+#loginForm label.error, input.submit {
+/*        margin-left: 253px;*/
+        display:block;
+        position:relative;
+        color: #b94a48 ;
+        background-color: #f2dede ;
+        border-color: #eed3d7 ;
+}
+
+.predictionBox{
+	width:85%;
+    margin:0 auto;
+}
+
+.predators{
+    margin:10px;
+    width:400px;
 }
