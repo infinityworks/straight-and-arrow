@@ -48,6 +48,19 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
+        const tid = req.body.tournament_id[0]
+        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tid], (start)=> {
+            let startObject = start[0]
+            let startDateTime = startObject.datetime_start
+            let now = new Date()
+
+            if(startDateTime < now){
+                // someone is submitting the prediction form after the tourney has started
+                // this is naughty naughty and is not allowed therefore tell em to get to f*ck
+                throw 403
+            }
+        })
+
         const playerID = req.session.playerID
         scoreInput = req.body
         predictionList = []
