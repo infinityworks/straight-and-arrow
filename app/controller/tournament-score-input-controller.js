@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults) => {
 
    return { showTournamentScoreInput };
@@ -42,7 +44,8 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
                                     res.render('fullpage.html', {
                                         title: "Tournament Score Input",
                                         year: "2017",
-                                        content: content
+                                        content: content,
+                                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                                     })
                                 })
                             }
