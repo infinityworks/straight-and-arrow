@@ -1,3 +1,5 @@
+const utility = require('../util/utilities');
+
 module.exports = (executeQuery, app, bcrypt) => {
 
     return {
@@ -11,15 +13,16 @@ module.exports = (executeQuery, app, bcrypt) => {
             res.render('fullpage.html', {
                 title: "Login",
                 year: "2017",
-                content: content
+                content: content,
+                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
             })
         })
     }
 
     function submitUserCredentials(req, res) {
 
-        email = req.body.email
-        password = req.body.password
+        var email = req.body.email
+        var password = req.body.password
 
         executeQuery(`SELECT id, name, password FROM player WHERE email = ?`, [email], (result) => {
             if(result.length == 0){
@@ -27,7 +30,8 @@ module.exports = (executeQuery, app, bcrypt) => {
                     res.render('fullpage.html', {
                         title: "Login",
                         year: "2017",
-                        content: content
+                        content: content,
+                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                     })
                 })
             }
@@ -44,7 +48,8 @@ module.exports = (executeQuery, app, bcrypt) => {
                             res.render('fullpage.html', {
                                 title: "Login",
                                 year: "2017",
-                                content: content
+                                content: content,
+                                loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                             })
                         })
                     }

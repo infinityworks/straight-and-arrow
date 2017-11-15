@@ -6,8 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/index.css">
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
-
-
+	<link rel="icon" href="/bullseye.png"/>
 </head>
 <body>
 
@@ -15,23 +14,31 @@
 
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 			<div class="container-fluid">
-		        <div class="navbar-header">
-			      	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navBar">
-				        <span class="sr-only">Toggle navigation</span>
-				        <span class="icon-bar"></span>
-				        <span class="icon-bar"></span>
-				        <span class="icon-bar"></span>
-		      		</button>
-		    	</div>
-	    <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navBar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
 			    <div class="collapse navbar-collapse" id="navBar">
 					<ul class="nav navbar-nav">
 						<li><a href="/">Home</a></li>
-						<li><a href="/archer">Archer List</a></li>
-						<li><a href="/tournament">Tournament List</a></li>
-                        <li><a href="/registration">Registration</a></li>
+						<li><a href="/archer">Archers</a></li>
+						<li><a href="/tournament">Tournaments</a></li>
+                        
+                        {{#loginOptions}}
+                          <li><a href="{{link}}">{{name}}</a></li>
+                        {{/loginOptions}}
+
+<!--                        <li><a href="/registration">Registration</a></li>
                         <li><a href="/login">Login</a></li>
                         <li><a href="/logout">Logout</a></li>
+-->
+
+    
 					</ul>
 				</div>
 			</div>
