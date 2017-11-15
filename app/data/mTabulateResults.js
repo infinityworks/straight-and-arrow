@@ -1,7 +1,11 @@
 const convert = require('./convertmx')
 
 module.exports = (archerScore) => {
-    let scoreCopy = archerScore
+
+    let scoreCopy = archerScore.sort(function(a, b) {
+    return parseFloat(a.arrow) - parseFloat(b.arrow);
+    });
+
     let tabulatedResults = [
         {arrows:new Array(6)},
         {arrows:new Array(6)},
