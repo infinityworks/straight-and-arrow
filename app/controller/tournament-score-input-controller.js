@@ -4,46 +4,52 @@ module.exports = (executeQuery, app, tournamentArchers, tournamentScore, tournam
 
     function showTournamentScoreInput(req, res) {
 
-        const tournamentID = req.params.tid;
-        const archerID = req.params.aid;
-        let tournamentScores = []
-        tournamentArchers.getTournamentArchers(tournamentID, archerID, (archerIDs) => {
-            archerIDs.forEach((archerID)=>{
-                tournamentScore.getTournamentScore(tournamentID, archerID.archer_id, (archerData) => {
-                    tournamentStats.getTournamentStats(tournamentID, archerID.archer_id, (archerStats) => {
+        if(req.session.email != 'admin@sanda.co.uk'){
+            return res.redirect('/login');
+        }
+        else if(req.session.email === 'admin@sanda.co.uk'){
 
-                        let archer = []
-                        archer.id = archerID
-                        archer.ends = tabulatedResults(archerData)
-                        archer.summary = archerStats
-                        tournamentScores.push(archer)
+            const tournamentID = req.params.tid;
+            const archerID = req.params.aid;
+            let tournamentScores = []
+            tournamentArchers.getTournamentArchers(tournamentID, archerID, (archerIDs) => {
+                archerIDs.forEach((archerID)=>{
+                    tournamentScore.getTournamentScore(tournamentID, archerID.archer_id, (archerData) => {
+                        tournamentStats.getTournamentStats(tournamentID, archerID.archer_id, (archerStats) => {
 
-                        if (archerIDs.length == tournamentScores.length){
-                            tournamentScores.sort(compare)
+                            let archer = []
+                            archer.id = archerID
+                            archer.ends = tabulatedResults(archerData)
+                            archer.summary = archerStats
+                            tournamentScores.push(archer)
 
-                            function compare(a, b) {
-                              if (a.id.archer_id < b.id.archer_id ) {
-                                return -1;
-                              }
-                              if (a.id.archer_id > b.id.archer_id ) {
-                                return 1;
-                              }
-                              return 0;
-                            }
+                            if (archerIDs.length == tournamentScores.length){
+                                tournamentScores.sort(compare)
 
-                            app.render('score-input.html', {
-                                data: tournamentScores
-                            }, (err, content) => {
-                                res.render('fullpage.html', {
-                                    title: "Tournament Score Input",
-                                    year: "2017",
-                                    content: content
+                                function compare(a, b) {
+                                  if (a.id.archer_id < b.id.archer_id ) {
+                                    return -1;
+                                  }
+                                  if (a.id.archer_id > b.id.archer_id ) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                }
+
+                                app.render('score-input.html', {
+                                    data: tournamentScores
+                                }, (err, content) => {
+                                    res.render('fullpage.html', {
+                                        title: "Tournament Score Input",
+                                        year: "2017",
+                                        content: content
+                                    })
                                 })
-                            })
-                        }
+                            }
+                        })
                     })
                 })
             })
-        })
+        }
     }
 }

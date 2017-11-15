@@ -9,17 +9,34 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         let predictionsObject = []
         const tournamentID = req.params.tid
         const playerID = req.session.playerID
-        predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
-            playerPrediction.forEach((prediction) => {
-                predictionsObject.push({archerPrediction:prediction})
-            })
-            app.render('prediction.html', {predictionsObject}, (err, content) => {
-                res.render('fullpage.html', {
-                    title: "Predictions",
-                    year: "2017",
-                    content: content
+
+        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tournamentID], (start)=> {
+            let startObject = start[0]
+            let startDateTime = startObject.datetime_start
+            let now = new Date()
+            if(startDateTime > now){
+                predictions.getPredictions(playerID, tournamentID, (playerPrediction) =>{
+                    playerPrediction.forEach((prediction) => {
+                        predictionsObject.push({archerPrediction:prediction})
+                    })
+                    app.render('prediction.html', {predictionsObject}, (err, content) => {
+                        res.render('fullpage.html', {
+                            title: "Predictions",
+                            year: "2017",
+                            content: content
+                        })
+                    })
                 })
-            })
+            }
+            else {
+                app.render('no-info.html', {}, (err, content) => {
+                    res.render('fullpage.html', {
+                        title: "Information not available",
+                        year: "2017",
+                        content: content
+                    })
+                })
+            }
         })
     }
 
