@@ -44,13 +44,14 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
         if(req.session.email === undefined || req.session.email === ''){
             return res.redirect('/login');
         }
-        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tournamentID], (start)=> {
+        const tid = req.body.tournament_id[0]
+        executeQuery(`SELECT t.datetime_start FROM tournament t WHERE t.id = ?`, [tid], (start)=> {
             let startObject = start[0]
             let startDateTime = startObject.datetime_start
             let now = new Date()
 
-            if(startDateTime > now){
-                return 403
+            if(startDateTime < now){
+                throw 403
             }
         })
 
