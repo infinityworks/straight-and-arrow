@@ -21,9 +21,9 @@ INSERT INTO `tournament_archer` (`tournament_id`, `archer_id`, `predictabool`)
 VALUES
 	(1,1,0),
 	(1,2,0),
-	(1,3,0),
-	(1,4,0),
-	(1,5,0),
+	(1,3,1),
+	(1,4,1),
+	(1,5,1),
 	(1,6,0),
 	(1,7,0),
 	(1,8,0);
@@ -272,4 +272,31 @@ VALUES
 (828,8,1,28,0,0),
 (829,8,1,29,2,0),
 (830,8,1,30,1,0);
+
+INSERT INTO `player` (`name`, `email`, `password`)
+VALUES
+	('Player 1', 'player1@one.one', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S'),
+	('Biscuit Von Cheese', 'BVC@one.one', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S'),
+	('Pedalo Hippo', 'ph@one.one', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S'),
+	('Ben for POTUS', 'bfp@bfp.bfp', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S'),
+	('Player McPlayerface', 'player@mcplayface.com', '$2a$10$Olb6QEWU0DR3HRnxoyaVlujw73JSn45THGkHSpHSde90MHZaKTg2S');
+
+INSERT INTO `prediction` (`player`, `tournament`, `archer`, `pred_score`)
+VALUES
+	(1, 1, 3, 157),
+	(1, 1, 4, 201),
+	(1, 1, 5, 196),
+	(2, 1, 3, 144),
+	(2, 1, 4, 223),
+	(2, 1, 5, 98),
+	(3, 1, 3, 87),
+	(3, 1, 4, 113),
+	(3, 1, 5, 234),
+	(4, 1, 3, 110),
+	(4, 1, 4, 125),
+	(4, 1, 5, 204),
+	(5, 1, 3, 100),
+	(5, 1, 4, 246),
+	(5, 1, 5, 131);
+
 
