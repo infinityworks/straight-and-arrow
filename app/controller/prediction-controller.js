@@ -55,6 +55,8 @@ module.exports = (executeQuery, app, tournamentArchers, predictions) => {
             let now = new Date()
 
             if(startDateTime < now){
+                // someone is submitting the prediction form after the tourney has started
+                // this is naughty naughty and is not allowed therefore tell em to get to f*ck
                 throw 403
             }
         })
