@@ -42,7 +42,7 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
                     {playerScores: mustachePlayerScore}
                 , (err, content) => {
                     res.render('fullpage.html', {
-                        title: "Archer Scores for Tournament",
+                        title: "League Table",
                         year: "2017",
                         content: content
                 })
