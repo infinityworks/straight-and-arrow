@@ -1,4 +1,4 @@
-<p>Display page placeholder</p>
+<p>League Table</p>
 
 <table class="table table-striped">
   <tr>
@@ -6,13 +6,13 @@
     <th>Name</th>
     <th>Score</th>
   </tr>
-  {{#playerScore}}
-  {{#diff}}
+  {{#playerScores}}
+  {{#playerInfo}}
   <tr>
-    <td>1</td>
+    <td>{{rank}}</td>
     <td>{{name}}</td>
-    <td>{{rankingScore}}</td>
+    <td>{{predictionDiff}}</td>
   </tr>
-  {{/diff}}
-  {{/playerScore}}
+  {{/playerInfo}}
+  {{/playerScores}}
 </table>
