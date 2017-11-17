@@ -203,6 +203,7 @@ function showTournamentsPage(req, res) {
                 }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
+                row.link = `/tournament/`+row.id+`/result`
                 predictionLeagueLink = predictionLeagueFunction(req.session.email)
             } else {
                row.status = "Result"
