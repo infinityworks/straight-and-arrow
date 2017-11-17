@@ -283,10 +283,8 @@ function showArcherTournament(req, res) {
             function predictionWriteFunction (emailfromcookie){
                 if(!(emailfromcookie === undefined || emailfromcookie === '')){
                     predictionWrita = [
-                    {sentence: "You can enter your predictions for this tournament "},
-                    {linktext: "here."}, 
-                    {sentence2: "You can view the league table for this tournament"},
-                    {linktext2: "here."}]
+                    {sentence: "Click here to predict!"},
+                    {sentence2: "Click here to view the leaderboard!"}]
                     return predictionWrita
                 }
                 return
