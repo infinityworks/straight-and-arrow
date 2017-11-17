@@ -1,3 +1,5 @@
+const utility = require('../util/utilities')
+
 module.exports = (app, allPredictions, archerScoreSum) =>{
 
     return {showPredictionResults};
@@ -44,7 +46,8 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
                     res.render('fullpage.html', {
                         title: "League Table",
                         year: "2017",
-                        content: content
+                        content: content,
+                        loginOptions: utility.loginOptions(req.session.playerID !== undefined)
                 })
             })
             })

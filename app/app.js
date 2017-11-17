@@ -192,6 +192,7 @@ function showTournamentsPage(req, res) {
 	ORDER BY datetime_start`, [], (result) => {
         let formattedResults = []
         let now = new Date()
+        let predictionLeagueLink = ''
         result.forEach((row) => {
             if (row.datetime_start > now){
                 if(req.session.email === undefined || req.session.email === ''){
@@ -202,17 +203,29 @@ function showTournamentsPage(req, res) {
                 }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
+                predictionLeagueLink = predictionLeagueFunction(req.session.email)
             } else {
                row.status = "Result"
                row.link = `/tournament/`+row.id+`/result`
+               predictionLeagueLink = predictionLeagueFunction(req.session.email)
             }
             row.datetime_start = utility.parseDate(row.datetime_start)
             row.datetime_end = utility.parseDate(row.datetime_end)
             formattedResults.push(row)
         })
 
+        function predictionLeagueFunction (emailfromcookie){
+            if(!(emailfromcookie === undefined || emailfromcookie === '')){
+                predictionWrita = [
+                {leagueLink: "Leaderboard"}]
+                return predictionWrita
+                }
+            return
+        }
+
         app.render('tournament-list.html', {
-            tournament_result: formattedResults
+            tournament_result: formattedResults,
+            leagueTableLink: predictionLeagueLink
         }, (err, content) => {
             res.render('fullpage.html', {
                 title: "Tournament Details",
@@ -270,10 +283,8 @@ function showArcherTournament(req, res) {
             function predictionWriteFunction (emailfromcookie){
                 if(!(emailfromcookie === undefined || emailfromcookie === '')){
                     predictionWrita = [
-                    {sentence: "You can enter your predictions for this tournament "},
-                    {linktext: "here."}, 
-                    {sentence2: "You can view the league table for this tournament"},
-                    {linktext2: "here."}]
+                    {sentence: "Click here to predict!"},
+                    {sentence2: "Click here to view the leaderboard!"}]
                     return predictionWrita
                 }
                 return
