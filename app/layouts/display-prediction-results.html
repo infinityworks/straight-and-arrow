@@ -1,0 +1,18 @@
+<p>Player Leaderboard</p>
+
+<table class="table table-striped">
+  <tr>
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Score</th>
+  </tr>
+  {{#playerScores}}
+  {{#playerInfo}}
+  <tr>
+    <td>{{rank}}</td>
+    <td>{{name}}</td>
+    <td>{{predictionDiff}}</td>
+  </tr>
+  {{/playerInfo}}
+  {{/playerScores}}
+</table>

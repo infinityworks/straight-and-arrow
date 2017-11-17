@@ -3,10 +3,15 @@
 <p id={{status}}>Results for the full tournament can be found <a href="/tournament/{{id}}/result">here.</a></p>
 {{/tournament}}
 
-{{#predictionSentence}}
-<p> {{sentence}} <a href="/prediction/{{#tournament}}{{id}}{{/tournament}}">{{linktext}}</a></p> 
-{{/predictionSentence}}
+<br>
 
+{{#predictionSentence}}
+<p><a href="/prediction/{{#tournament}}{{id}}{{/tournament}}">{{sentence}}</a></p>
+{{/predictionSentence}}
+<br>
+{{#predictionSentence}}
+<p><a href="/tournament/{{#tournament}}{{id}}{{/tournament}}/prediction-result">{{sentence2}}</a></p>
+{{/predictionSentence}}
 
 <br>
 <table class="table table-striped">

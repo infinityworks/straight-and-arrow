@@ -33,12 +33,15 @@ const tournamentScore = require('./data/mGetTournamentScore')(executeQuery);
 const tournamentStats = require('./data/mGetTournamentStats')(executeQuery);
 const tabulatedResults = require('./data/mTabulateResults');
 const predictions = require('./data/mGetPredictions')(executeQuery);
+const allPredictions = require('./data/mAllPredictions')(executeQuery)
+const archerScoreSum = require('./data/getPredictableArcherScores')(executeQuery)
 
 //controller
 const tournamentController = require('./controller/tournament-controller')(executeQuery, app, tournamentArcherScore, tabulatedResults)
 const registrationController = require('./controller/registration-controller')(executeQuery, app, utility, bcrypt)
 const tournamentScoreInputController = require('./controller/tournament-score-input-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
 const tournamentScoreController = require('./controller/tournament-score-controller')(executeQuery, app, tournamentArchers, tournamentScore, tournamentStats, tabulatedResults)
+const tournamentPredictionResultsController = require('./controller/tournament-prediction-result-controller')(app, allPredictions, archerScoreSum, executeQuery)
 const createError = require('./controller/error-Controller');
 const loginController = require('./controller/login-Controller')(executeQuery, app, bcrypt);
 const predictionController = require('./controller/prediction-controller')(executeQuery, app, tournamentArchers, predictions);
@@ -69,6 +72,7 @@ function run() {
     app.get('/logout', logout);
     app.get('/tournament/:tid', showArcherTournament);
     app.get('/tournament/:tid/result', tournamentScoreController.showTournamentScore);
+    app.get('/tournament/:tid/prediction-result', tournamentPredictionResultsController.showPredictionResults)
     app.get('/tournament/:tid/:aid', tournamentController.showTournamentArcherScore);
     // app.get('/users', require('./usertest'));
     app.get('/admin/:tid', tournamentScoreInputController.showTournamentScoreInput);
@@ -188,6 +192,7 @@ function showTournamentsPage(req, res) {
 	ORDER BY datetime_start`, [], (result) => {
         let formattedResults = []
         let now = new Date()
+        let predictionLeagueLink = ''
         result.forEach((row) => {
             if (row.datetime_start > now){
                 if(req.session.email === undefined || req.session.email === ''){
@@ -198,9 +203,12 @@ function showTournamentsPage(req, res) {
                 }
             } else if (row.datetime_start <= now && row.datetime_end > now){
                 row.status = "Live-Result"
+                row.link = `/tournament/`+row.id+`/result`
+                predictionLeagueLink = predictionLeagueFunction(req.session.email)
             } else {
                row.status = "Result"
                row.link = `/tournament/`+row.id+`/result`
+               predictionLeagueLink = predictionLeagueFunction(req.session.email)
             }
             row.datetime_start = utility.parseDate(row.datetime_start)
             row.datetime_end = utility.parseDate(row.datetime_end)
@@ -208,7 +216,8 @@ function showTournamentsPage(req, res) {
         })
 
         app.render('tournament-list.html', {
-            tournament_result: formattedResults
+            tournament_result: formattedResults,
+            leagueTableLink: predictionLeagueLink
         }, (err, content) => {
             res.render('fullpage.html', {
                 title: "Tournament Details",
@@ -218,6 +227,15 @@ function showTournamentsPage(req, res) {
             })
         })
     })
+}
+
+function predictionLeagueFunction (emailfromcookie){
+    if(!(emailfromcookie === undefined || emailfromcookie === '')){
+        predictionWrita = [
+        {leagueLink: "Leaderboard"}]
+        return predictionWrita
+    }
+     return
 }
 
 function showArchersList(req, res) {
@@ -266,8 +284,8 @@ function showArcherTournament(req, res) {
             function predictionWriteFunction (emailfromcookie){
                 if(!(emailfromcookie === undefined || emailfromcookie === '')){
                     predictionWrita = [
-                    {sentence: "You can enter your predictions for this tournament "},
-                    {linktext: "here."}]
+                    {sentence: "Click here to predict!"},
+                    {sentence2: "Click here to view the leaderboard!"}]
                     return predictionWrita
                 }
                 return
