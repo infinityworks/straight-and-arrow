@@ -214,15 +214,6 @@ function showTournamentsPage(req, res) {
             formattedResults.push(row)
         })
 
-        function predictionLeagueFunction (emailfromcookie){
-            if(!(emailfromcookie === undefined || emailfromcookie === '')){
-                predictionWrita = [
-                {leagueLink: "Leaderboard"}]
-                return predictionWrita
-                }
-            return
-        }
-
         app.render('tournament-list.html', {
             tournament_result: formattedResults,
             leagueTableLink: predictionLeagueLink
@@ -235,6 +226,15 @@ function showTournamentsPage(req, res) {
             })
         })
     })
+}
+
+function predictionLeagueFunction (emailfromcookie){
+    if(!(emailfromcookie === undefined || emailfromcookie === '')){
+        predictionWrita = [
+        {leagueLink: "Leaderboard"}]
+        return predictionWrita
+    }
+     return
 }
 
 function showArchersList(req, res) {
