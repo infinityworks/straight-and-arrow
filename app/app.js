@@ -60,6 +60,12 @@ function run() {
         cookie: { maxAge: null, expires: false },
         store: new MySQLStore(config)
     }));
+    app.use(function (req, res, next) {
+       res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+       res.header('Expires', '-1');
+       res.header('Pragma', 'no-cache');
+       next()
+    });
     app.engine('html', mustacheExpress());
     app.set('view engine', 'mustache');
     app.set('views', __dirname + '/layouts');
