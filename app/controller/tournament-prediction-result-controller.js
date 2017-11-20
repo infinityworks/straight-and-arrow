@@ -11,6 +11,7 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
             allPredictions.getAllPredictions(tournamentID, (allPrediction) =>{
             playerScores = []
             mustachePlayerScore = []
+            let counter = 1
                 for (var i = 0; i < allPrediction.length; i++){
 
                     prediction = allPrediction[i]
@@ -23,7 +24,7 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
                     diff = Math.abs(predictedScore - archer_score)
 
                     if (!playerScores[player_ID]){
-                        playerScores[player_ID] = {name:player_name, predictionDiff:0}
+                        playerScores[player_ID] = {name:player_name, predictionDiff:0, rank:0}
                     }
                     playerScores[player_ID].predictionDiff += diff;
                 }
@@ -33,9 +34,10 @@ module.exports = (app, allPredictions, archerScoreSum) =>{
                 });
 
 
-                for (var i=0; i < (playerScores.length-1); i++) {
-                    playerScores[i].rank = i+1
-                    playerObject = playerScores[i]
+                for (var key in playerScores) {
+                    playerScores[key].rank = counter
+                    counter++
+                    playerObject = playerScores[key]
                     mustachePlayerScore.push({playerInfo: playerObject})
                 }
 
